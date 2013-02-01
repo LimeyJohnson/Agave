@@ -1,0 +1,10 @@
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\obj\Debug\AgaveApi.csprojResolveAssemblyReference.cache
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\AgaveApi.xml
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\AgaveApi.dll
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\AgaveApi.pdb
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\mscorlib.dll
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\Script.Web.dll
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\Script.Web.xml
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\bin\Debug\mscorlib.xml
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\obj\Debug\AgaveApi.dll
+C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\AgaveApi\obj\Debug\AgaveApi.pdb

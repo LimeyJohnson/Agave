@@ -1,0 +1,5 @@
+c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Web\bin\OfficeApp1Web.dll
+c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Web\bin\OfficeApp1Web.pdb
+c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Web\obj\Debug\OfficeApp1Web.dll
+c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Web\obj\Debug\OfficeApp1Web.pdb
+c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Web\obj\Debug\OfficeApp1Web.csprojResolveAssemblyReference.cache
