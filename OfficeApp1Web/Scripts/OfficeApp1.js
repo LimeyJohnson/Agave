@@ -7,12 +7,12 @@ Office.initialize = function (reason) {
 // Writes data from textbox to the current selection in the document
 function setBinding() {
     var bindingID = $('#BindingField').val();
-    Office.context.document.bindings.addFromNamedItemAsync(bindingID, Office.BindingType.Text, { id: bindingID+'binding' });
+    Office.context.document.bindings.addFromNamedItemAsync(bindingID, Office.BindingType.Text, { id: bindingID + 'binding' });
 }
 
 function getBinding() {
     var bindingID = $('#BindingField').val();
-    Office.select('bindings#'+bindingID+'binding').getDataAsync(
+    Office.select('bindings#' + bindingID + 'binding').getDataAsync(
         function (result) {
             if (result.status === 'succeeded') {
                 $('#selectedDataTxt').val(result.value);

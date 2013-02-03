@@ -1,2 +1,0 @@
-bin\Debug\OfficeAppManifests\OfficeApp1.xml
-c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1\bin\Debug\OfficeApp1.app

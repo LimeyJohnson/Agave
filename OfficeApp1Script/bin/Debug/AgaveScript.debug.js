@@ -1,4 +1,4 @@
-//! OfficeApp1Script.debug.js
+//! AgaveScript.debug.js
 //
 
 (function($) {
@@ -6,17 +6,17 @@
 Type.registerNamespace('OfficeApp1Script');
 
 ////////////////////////////////////////////////////////////////////////////////
-// AgaveScript
+// OfficeApp1Script.AgaveScript
 
-AgaveScript = function AgaveScript() {
+OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
 }
-AgaveScript.setBinding = function AgaveScript$setBinding() {
+OfficeApp1Script.AgaveScript.setBinding = function OfficeApp1Script_AgaveScript$setBinding() {
     var bindingID = $('#BindingField').val();
     var options = {};
     options.id = bindingID + 'binding';
-    Office.context.document.bindings.addFromNamedItemAsync(bindingID, Office.BindingType.text, options);
+    Office.context.document.bindings.addFromNamedItemAsync(bindingID, Office.BindingType.Text, options);
 }
-AgaveScript.getBinding = function AgaveScript$getBinding() {
+OfficeApp1Script.AgaveScript.getBinding = function OfficeApp1Script_AgaveScript$getBinding() {
     var bindingID = $('#BindingField').val();
     Office.select('bindings#' + bindingID + 'binding').getDataAsync(function(result) {
         if (result.status === 'succeeded') {
@@ -26,9 +26,9 @@ AgaveScript.getBinding = function AgaveScript$getBinding() {
 }
 
 
-AgaveScript.registerClass('AgaveScript');
+OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');
 (function () {
-    Office.intialize = function(reason) {
+    Office.initialize = function(reason) {
     };
 })();
 })(jQuery);

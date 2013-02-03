@@ -9,13 +9,13 @@ using AgaveApi;
 using System.Runtime.CompilerServices;
 namespace OfficeApp1Script
 {
-    [IgnoreNamespace]
     public static class AgaveScript
     {
         static AgaveScript()
         {
-            Office.Intialize = delegate(InializationEnum reason)
+            Office.Initialize = delegate(InializationEnum reason)
             {
+         //       Script.Alert("Is this working");
             };
         }
         public static void SetBinding()

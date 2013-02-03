@@ -8,8 +8,8 @@
     <ProjectGuid>{5EFDA868-0130-4EE1-AD54-0F91B5F98698}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OfficeApp1Script</RootNamespace>
-    <AssemblyName>OfficeApp1Script</AssemblyName>
+    <RootNamespace>AgaveScript</RootNamespace>
+    <AssemblyName>AgaveScript</AssemblyName>
     <ScriptTemplate>Properties\Script.template</ScriptTemplate>
     <CodeAnalysisRuleSet>Properties\FxCop.ruleset</CodeAnalysisRuleSet>
     <GenerateScript>True</GenerateScript>
@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Debug\OfficeApp1Script.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\AgaveScript.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -30,7 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Release\OfficeApp1Script.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\AgaveScript.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="packages.config" />

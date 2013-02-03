@@ -21,21 +21,23 @@ namespace AgaveApi
     {
         public static extern SelectObject Select(string binding);
         [IntrinsicProperty]
-        public static extern InitReason Intialize { get; set; }
+        public static extern InitReason Initialize { get; set; }
     }
     public sealed class ASyncResult
     {
         public string status;
         public string value;
     }
-    [ScriptName("Office.BindingType")]
+    [Imported, IgnoreNamespace, ScriptName("Office.BindingType")]
     public enum BindingType
     {
+        [PreserveCase]
         Text
     }
+    [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class NameItemAsyncOptions
     {
-        public string ID { get; set; }
+        public string ID;
     }
     public sealed class SelectObject
     {

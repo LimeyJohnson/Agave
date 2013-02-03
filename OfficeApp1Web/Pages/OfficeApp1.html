@@ -20,13 +20,14 @@
     <script src="../Scripts/Office/1.0/office.js"></script>
 
     <!-- Add your JavaScript to the following file -->
-    <script src="../Scripts/OfficeApp1Script.debug.js"></script>
+    <script src="../Scripts/mscorlib.debug.js"></script>
+    <script src="../Scripts/AgaveScript.debug.js"></script>
 </head>
 <body style="height: 108px">
     <!-- Replace the following with your content -->
     <div id="Content">
-        <input type="button" value="Set Binding" id="setBinding" onclick="setBinding()" style="padding: 0px; width: 100px;" />
-        <input type="button" value="Get data" id="getBinding" onclick="getBinding()" style="padding: 0px; width: 100px;" />
+        <input type="button" value="Set Binding" id="setBinding" onclick="OfficeApp1Script.AgaveScript.setBinding()" style="padding: 0px; width: 100px;" />
+        <input type="button" value="Get data" id="getBinding" onclick="OfficeApp1Script.AgaveScript.getBinding()" style="padding: 0px; width: 100px;" />
         <input type="button" value="Excel" id="Excel" onclick="getExcelData()" style="padding: 0px; width: 100px;" />
         <input type="text" value="Binding" id="BindingField" style="margin-top: 10px; width: 210px; height: 34px;" />
         <input type="text" value="Sample Data" id="selectedDataTxt" style="margin-top: 10px; width: 210px; height: 34px;" />

@@ -63,10 +63,12 @@
     <None Include="Properties\PublishProfiles\ddf.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\OfficeApp1.html" />
+    <Content Include="Scripts\AgaveScript.debug.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />
+    <Content Include="Scripts\mscorlib.debug.js" />
     <Content Include="Scripts\OfficeApp1.js" />
     <Content Include="Scripts\OfficeApp1Script.debug.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.debug.js" />
