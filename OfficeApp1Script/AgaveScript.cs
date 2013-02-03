@@ -12,10 +12,11 @@ namespace OfficeApp1Script
     [IgnoreNamespace]
     public static class AgaveScript
     {
-        [ScriptName("Office")]
-        public static void Initialize(InializationEnum initEnum)
+        static AgaveScript()
         {
-            Script.Alert("something");
+            Office.Intialize = delegate(InializationEnum reason)
+            {
+            };
         }
         public static void SetBinding()
         {
@@ -23,6 +24,17 @@ namespace OfficeApp1Script
             NameItemAsyncOptions options = new NameItemAsyncOptions();
             options.ID = bindingID + "binding";
             bindings.AddFromNamedItemAsync(bindingID, BindingType.Text, options);
+        }
+        public static void GetBinding()
+        {
+            string bindingID = jQuery.Select("#BindingField").GetValue();
+            Office.Select("bindings#" + bindingID + "binding").GetDataAsync(delegate(ASyncResult result)
+            {
+                if(result.status == "succeeded")
+                {
+                    jQuery.Select("#selectedDataTxt").Value(result.value);
+                }
+            });
         }
     }
     

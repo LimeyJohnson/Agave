@@ -13,3 +13,18 @@ C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Scr
 C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Script\bin\Debug\mscorlib.xml
 C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Script\obj\Debug\OfficeApp1Script.dll
 C:\Users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1Script\obj\Debug\OfficeApp1Script.pdb
+C:\Development\Agave\OfficeApp1Script\bin\Debug\OfficeApp1Script.xml
+C:\Development\Agave\OfficeApp1Script\bin\Debug\OfficeApp1Script.dll
+C:\Development\Agave\OfficeApp1Script\bin\Debug\OfficeApp1Script.pdb
+C:\Development\Agave\OfficeApp1Script\bin\Debug\AgaveApi.dll
+C:\Development\Agave\OfficeApp1Script\bin\Debug\mscorlib.dll
+C:\Development\Agave\OfficeApp1Script\bin\Debug\Script.jQuery.dll
+C:\Development\Agave\OfficeApp1Script\bin\Debug\Script.Web.dll
+C:\Development\Agave\OfficeApp1Script\bin\Debug\AgaveApi.pdb
+C:\Development\Agave\OfficeApp1Script\bin\Debug\AgaveApi.xml
+C:\Development\Agave\OfficeApp1Script\bin\Debug\Script.jQuery.xml
+C:\Development\Agave\OfficeApp1Script\bin\Debug\Script.Web.xml
+C:\Development\Agave\OfficeApp1Script\bin\Debug\mscorlib.xml
+C:\Development\Agave\OfficeApp1Script\obj\Debug\OfficeApp1Script.csprojResolveAssemblyReference.cache
+C:\Development\Agave\OfficeApp1Script\obj\Debug\OfficeApp1Script.dll
+C:\Development\Agave\OfficeApp1Script\obj\Debug\OfficeApp1Script.pdb
