@@ -17,3 +17,4 @@ C:\Development\Agave\AgaveApi\bin\Debug\Script.Web.xml
 C:\Development\Agave\AgaveApi\bin\Debug\mscorlib.xml
 C:\Development\Agave\AgaveApi\obj\Debug\AgaveApi.dll
 C:\Development\Agave\AgaveApi\obj\Debug\AgaveApi.pdb
+C:\Development\Agave\AgaveApi\obj\Debug\AgaveApi.csprojResolveAssemblyReference.cache

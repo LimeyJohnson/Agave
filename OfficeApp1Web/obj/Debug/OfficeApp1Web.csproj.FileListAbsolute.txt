@@ -7,3 +7,4 @@ C:\Development\Agave\OfficeApp1Web\bin\OfficeApp1Web.dll
 C:\Development\Agave\OfficeApp1Web\bin\OfficeApp1Web.pdb
 C:\Development\Agave\OfficeApp1Web\obj\Debug\OfficeApp1Web.dll
 C:\Development\Agave\OfficeApp1Web\obj\Debug\OfficeApp1Web.pdb
+C:\Development\Agave\OfficeApp1Web\obj\Debug\OfficeApp1Web.csprojResolveAssemblyReference.cache
