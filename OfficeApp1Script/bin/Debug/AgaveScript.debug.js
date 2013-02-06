@@ -16,6 +16,12 @@ OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
     /// <field name="tableBindingSuffix" type="String" static="true">
     /// </field>
 }
+OfficeApp1Script.AgaveScript.logIn = function OfficeApp1Script_AgaveScript$logIn() {
+    var options = {};
+    options.scope = 'email, user_likes, publish_stream';
+    FB.login(function(response) {
+    }, options);
+}
 OfficeApp1Script.AgaveScript.setFieldBinding = function OfficeApp1Script_AgaveScript$setFieldBinding() {
     var bindingID = $('#BindingField').val();
     Office.context.document.bindings.addFromNamedItemAsync(bindingID, Office.BindingType.Text, OfficeApp1Script.AgaveScript._createOptions(bindingID + OfficeApp1Script.AgaveScript.fieldBindingSuffix));
@@ -67,6 +73,18 @@ OfficeApp1Script.AgaveScript.rowBindingSuffix = 'RowBinding';
 OfficeApp1Script.AgaveScript.tableBindingSuffix = 'TableBinding';
 (function () {
     Office.initialize = function(reason) {
+        var options = {};
+        options.appId = '263395420459543';
+        options.status = true;
+        options.cookie = true;
+        options.xfbml = false;
+        FB.init(options);
+        FB.getLoginStatus(function(loginResponse) {
+            if (loginResponse.status === 'connected') {
+                var UserID = loginResponse.authResponse.userID;
+                $('results').val(UserID);
+            }
+        });
     };
 })();
 })(jQuery);

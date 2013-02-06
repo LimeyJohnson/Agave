@@ -11,7 +11,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://wilshere/_layouts/15/inc/accsvc/agave/OfficeApp1/Pages/OfficeApp1.html" />
+    <SourceLocation DefaultValue="http://localhost/_layouts/15/inc/accsvc/agave/OfficeApp1/Pages/OfficeApp1.html" />
     <RequestedWidth>400</RequestedWidth>
     <RequestedHeight>400</RequestedHeight>
   </DefaultSettings>

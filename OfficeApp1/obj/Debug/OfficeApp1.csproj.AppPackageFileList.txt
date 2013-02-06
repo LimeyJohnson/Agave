@@ -1,2 +1,2 @@
 bin\Debug\app.publish\OfficeAppManifests\OfficeApp1.xml
-c:\users\andrewjo\documents\visual studio 2012\Projects\OfficeApp1\OfficeApp1\bin\Debug\app.publish\OfficeApp1.app
+C:\Development\Agave\OfficeApp1\bin\Debug\app.publish\OfficeApp1.app

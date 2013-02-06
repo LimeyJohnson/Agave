@@ -7,6 +7,7 @@ using System.Html;
 using jQueryApi;
 using AgaveApi;
 using System.Runtime.CompilerServices;
+using FreindsLibrary;
 namespace OfficeApp1Script
 {
     public static class AgaveScript
@@ -18,8 +19,29 @@ namespace OfficeApp1Script
         {
             Office.Initialize = delegate(InializationEnum reason)
             {
-         //       Script.Alert("Is this working");
+                InitOptions options = new InitOptions();
+                options.appId = "263395420459543";
+                //options.channelUrl = "//limeyhouse.dyndns.org/channel.aspx";
+                options.status = true;
+                options.cookie = true;
+                options.xfbml = false;
+                Facebook.init(options);
+                Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
+                {
+                    if (loginResponse.status == "connected")
+                    {
+                        string UserID = loginResponse.authResponse.userID;
+                        jQuery.Select("results").Value(UserID);
+                    }
+                });
+
             };
+        }
+        public static void LogIn()
+        {
+            LoginOptions options = new LoginOptions();
+            options.scope = "email, user_likes, publish_stream";
+            Facebook.login(delegate(LoginResponse response) { }, options);
         }
         public static void SetFieldBinding()
         {

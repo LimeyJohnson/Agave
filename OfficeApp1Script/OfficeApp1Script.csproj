@@ -48,6 +48,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\JSFF\FriendsLibrary\FriendsLibrary.csproj">
+      <Project>{c41c452a-52dd-4c02-b885-d2976de2ae1f}</Project>
+      <Name>FriendsLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AgaveApi\AgaveApi.csproj">
       <Project>{e5ecd11a-e323-40cc-92a8-db58484a7fd4}</Project>
       <Name>AgaveApi</Name>
