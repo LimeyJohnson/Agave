@@ -1,2 +1,0 @@
-bin\Debug\app.publish\OfficeAppManifests\OfficeApp1.xml
-C:\Development\Agave\OfficeApp1\bin\Debug\app.publish\OfficeApp1.app
