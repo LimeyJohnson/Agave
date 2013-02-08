@@ -6,6 +6,15 @@
 Type.registerNamespace('OfficeApp1Script');
 
 ////////////////////////////////////////////////////////////////////////////////
+// OfficeApp1Script.Etsy
+
+OfficeApp1Script.Etsy = function OfficeApp1Script_Etsy() {
+}
+OfficeApp1Script.Etsy.sendRequest = function OfficeApp1Script_Etsy$sendRequest() {
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // OfficeApp1Script.AgaveScript
 
 OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
@@ -61,6 +70,7 @@ OfficeApp1Script.AgaveScript._createOptions = function OfficeApp1Script_AgaveScr
 }
 
 
+OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');
 OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');
 OfficeApp1Script.AgaveScript.fieldBindingSuffix = 'FieldBinding';
 OfficeApp1Script.AgaveScript.rowBindingSuffix = 'RowBinding';
