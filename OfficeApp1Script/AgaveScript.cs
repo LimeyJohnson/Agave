@@ -46,7 +46,7 @@ namespace OfficeApp1Script
         public static void SetFieldBinding()
         {
             string bindingID = jQuery.Select("#BindingField").GetValue();
-            bindings.AddFromNamedItemAsync(bindingID, BindingType.Text, CreateOptions(bindingID + FieldBindingSuffix));
+            Bindings.AddFromNamedItemAsync(bindingID, BindingType.Text, CreateOptions(bindingID + FieldBindingSuffix));
         }
         public static void GetFieldBinding()
         {
@@ -68,7 +68,7 @@ namespace OfficeApp1Script
         public static void SetTableBinding()
         {
             string bindingID = jQuery.Select("#BindingField").GetValue() + TableBindingSuffix;
-            bindings.AddFromSelectionAsync(BindingType.Matrix, CreateOptions(bindingID));
+            Bindings.AddFromSelectionAsync(BindingType.Matrix, CreateOptions(bindingID));
         }
         public static void GetTableBinding()
         {
