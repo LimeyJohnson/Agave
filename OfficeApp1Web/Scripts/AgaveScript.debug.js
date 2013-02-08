@@ -22,6 +22,8 @@ OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
     /// </field>
     /// <field name="tableBindingSuffix" type="String" static="true">
     /// </field>
+    /// <field name="rowBinding" type="String" static="true">
+    /// </field>
 }
 OfficeApp1Script.AgaveScript.logon = function OfficeApp1Script_AgaveScript$logon() {
     var options = {};
@@ -72,6 +74,33 @@ OfficeApp1Script.AgaveScript._createOptions = function OfficeApp1Script_AgaveScr
     options.id = ID;
     return options;
 }
+OfficeApp1Script.AgaveScript.getFields = function OfficeApp1Script_AgaveScript$getFields() {
+    /// <returns type="Array"></returns>
+    var items = [];
+    OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).getDataAsync(function(result) {
+        var combo = $('#rows');
+        combo.html('');
+        var fields = result.value[0][0];
+        $.each(fields, function(i, o) {
+            var html = '<option>' + o.toString() + '</option>';
+            combo.append(html);
+        });
+    });
+    return items;
+}
+OfficeApp1Script.AgaveScript.select = function OfficeApp1Script_AgaveScript$select(bindingID) {
+    /// <param name="bindingID" type="String">
+    /// </param>
+    /// <returns type="AgaveApi.SelectObject"></returns>
+    return Office.select('bindings#' + bindingID);
+}
+OfficeApp1Script.AgaveScript.setBinding = function OfficeApp1Script_AgaveScript$setBinding(bindingID, type) {
+    /// <param name="bindingID" type="String">
+    /// </param>
+    /// <param name="type" type="Office.BindingType">
+    /// </param>
+    Office.context.document.bindings.addFromNamedItemAsync(bindingID, type, OfficeApp1Script.AgaveScript._createOptions(bindingID));
+}
 
 
 OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');
@@ -79,19 +108,11 @@ OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');
 OfficeApp1Script.AgaveScript.fieldBindingSuffix = 'FieldBinding';
 OfficeApp1Script.AgaveScript.rowBindingSuffix = 'RowBinding';
 OfficeApp1Script.AgaveScript.tableBindingSuffix = 'TableBinding';
+OfficeApp1Script.AgaveScript.rowBinding = 'Row';
 (function () {
     Office.initialize = function(reason) {
-        var options = {};
-        options.appId = '263395420459543';
-        options.status = true;
-        options.cookie = false;
-        options.xfbml = false;
-        FB.init(options);
-        FB.getLoginStatus(function(loginResponse) {
-            if (loginResponse.status === 'connected') {
-                (document.getElementById('image')).src = 'http://graph.facebook.com/' + loginResponse.authResponse.userID + '/picture';
-            }
-        });
+        OfficeApp1Script.AgaveScript.setBinding(OfficeApp1Script.AgaveScript.rowBinding, Office.BindingType.Matrix);
+        OfficeApp1Script.AgaveScript.getFields();
     };
 })();
 })(jQuery);

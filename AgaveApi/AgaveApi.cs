@@ -14,19 +14,14 @@ namespace AgaveApi
     [Imported, IgnoreNamespace, ScriptName("Office.context.document.bindings")]
     public static class Bindings
     {
-
         public static extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, NameItemAsyncOptions options);
         public static extern void AddFromSelectionAsync(BindingType bindingType, NameItemAsyncOptions options);
-
-
     }
     [Imported, IgnoreNamespace, ScriptName("Office.context.document")]
     public static class Document
     {
-
         public static extern void AddHandlerAsync(EventType eventType, EventHandler handler);
         public static extern void AddHandlerAsync(EventType eventType, EventHandlerWithString handler);
-
     }
     [Imported, IgnoreNamespace, ScriptName("Office")]
     public static class Office
@@ -39,6 +34,8 @@ namespace AgaveApi
     {
         public string status;
         public string value;
+        [ScriptName("value")]
+        public object[][] matrixValue;
     }
     [Imported, IgnoreNamespace, ScriptName("Office.BindingType")]
     public enum BindingType
@@ -80,5 +77,6 @@ namespace AgaveApi
     {
         public string CoercionType;
     }
-
+   
+    
 }

@@ -15,24 +15,13 @@ namespace OfficeApp1Script
         public static string FieldBindingSuffix = "FieldBinding";
         public static string RowBindingSuffix = "RowBinding";
         public static string TableBindingSuffix = "TableBinding";
+        public static string RowBinding = "Row";
         static AgaveScript()
         {
             Office.Initialize = delegate(InializationEnum reason)
             {
-                InitOptions options = new InitOptions();
-                options.appId = "263395420459543";
-                options.status = true;
-                options.cookie = false;
-                options.xfbml = false;
-                Facebook.init(options);
-
-                Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
-                {
-                    if (loginResponse.status == "connected")
-                    {
-                        ((ImageElement)Document.GetElementById("image")).Src = "http://graph.facebook.com/" + loginResponse.authResponse.userID +"/picture";
-                    }
-                });
+                SetBinding(RowBinding, BindingType.Matrix);
+                GetFields();
             };
 
         }
@@ -63,6 +52,7 @@ namespace OfficeApp1Script
             string bindingID = jQuery.Select("#BindingField").GetValue() + FieldBindingSuffix;
             string data = jQuery.Select("#selectedDataTxt").GetValue();
             Office.Select("bindings#" + bindingID).SetDataAsync(data, CreateCoercionType("text"));
+           // ComboBoxElement e = new ComboBoxElement();
         }
         public static void SetTableBinding()
         {
@@ -89,6 +79,30 @@ namespace OfficeApp1Script
             NameItemAsyncOptions options = new NameItemAsyncOptions();
             options.ID = ID;
             return options;
+        }
+        public static Array GetFields()
+        {
+            Array items = new Array();
+            Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
+            {
+                jQueryObject combo = jQuery.Select("#rows");
+                combo.Html("");
+                Array fields = (Array)result.matrixValue[0][0];
+                jQuery.Each(fields, delegate(int i, object o)
+                {
+                    string html = "<option>" + o.ToString() + "</option>";
+                    combo.Append(html);
+                });
+            });
+            return items;
+        }
+        public static SelectObject Select(string bindingID)
+        {
+            return Office.Select("bindings#" + bindingID);
+        }
+        public static void SetBinding(string bindingID, BindingType type)
+        {
+            Bindings.AddFromNamedItemAsync(bindingID, type, CreateOptions(bindingID));
         }
     }
     

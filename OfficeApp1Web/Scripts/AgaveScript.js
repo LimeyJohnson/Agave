@@ -13,7 +13,11 @@ OfficeApp1Script.AgaveScript.getTableBinding=function(){var $0=$('#BindingField'
 alert('Break point');});}
 OfficeApp1Script.AgaveScript.$0=function($p0){var $0={};$0.coercionType=$p0;return $0;}
 OfficeApp1Script.AgaveScript.$1=function($p0){var $0={};$0.id=$p0;return $0;}
-OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');OfficeApp1Script.AgaveScript.fieldBindingSuffix='FieldBinding';OfficeApp1Script.AgaveScript.rowBindingSuffix='RowBinding';OfficeApp1Script.AgaveScript.tableBindingSuffix='TableBinding';(function(){Office.initialize=function($p1_0){
-var $1_0={};$1_0.appId='263395420459543';$1_0.status=true;$1_0.cookie=false;$1_0.xfbml=false;FB.init($1_0);FB.getLoginStatus(function($p2_0){
-if($p2_0.status==='connected'){(document.getElementById('image')).src='http://graph.facebook.com/'+$p2_0.authResponse.userID+'/picture';}});};})();
+OfficeApp1Script.AgaveScript.getFields=function(){var $0=[];OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).getDataAsync(function($p1_0){
+var $1_0=$('#rows');$1_0.html('');var $1_1=$p1_0.value[0][0];$.each($1_1,function($p2_0,$p2_1){
+var $2_0='<option>'+$p2_1.toString()+'</option>';$1_0.append($2_0);});});return $0;}
+OfficeApp1Script.AgaveScript.select=function(bindingID){return Office.select('bindings#'+bindingID);}
+OfficeApp1Script.AgaveScript.setBinding=function(bindingID,type){Office.context.document.bindings.addFromNamedItemAsync(bindingID,type,OfficeApp1Script.AgaveScript.$1(bindingID));}
+OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');OfficeApp1Script.AgaveScript.fieldBindingSuffix='FieldBinding';OfficeApp1Script.AgaveScript.rowBindingSuffix='RowBinding';OfficeApp1Script.AgaveScript.tableBindingSuffix='TableBinding';OfficeApp1Script.AgaveScript.rowBinding='Row';(function(){Office.initialize=function($p1_0){
+OfficeApp1Script.AgaveScript.setBinding(OfficeApp1Script.AgaveScript.rowBinding,Office.BindingType.Matrix);OfficeApp1Script.AgaveScript.getFields();};})();
 })(jQuery);// This script was generated using Script# v0.7.4.0
