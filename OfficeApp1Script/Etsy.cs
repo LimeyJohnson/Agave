@@ -11,8 +11,6 @@ namespace OfficeApp1Script
 {
     public static class Etsy
     {
-        public static void SendRequest()
-        {
-        }
+        
     }
 }

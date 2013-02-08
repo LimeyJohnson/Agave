@@ -10,8 +10,6 @@ Type.registerNamespace('OfficeApp1Script');
 
 OfficeApp1Script.Etsy = function OfficeApp1Script_Etsy() {
 }
-OfficeApp1Script.Etsy.sendRequest = function OfficeApp1Script_Etsy$sendRequest() {
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +22,12 @@ OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
     /// </field>
     /// <field name="tableBindingSuffix" type="String" static="true">
     /// </field>
+}
+OfficeApp1Script.AgaveScript.logon = function OfficeApp1Script_AgaveScript$logon() {
+    var options = {};
+    options.scope = 'email, user_likes, publish_stream';
+    FB.login(function(response) {
+    }, options);
 }
 OfficeApp1Script.AgaveScript.setFieldBinding = function OfficeApp1Script_AgaveScript$setFieldBinding() {
     var bindingID = $('#BindingField').val();
@@ -77,6 +81,17 @@ OfficeApp1Script.AgaveScript.rowBindingSuffix = 'RowBinding';
 OfficeApp1Script.AgaveScript.tableBindingSuffix = 'TableBinding';
 (function () {
     Office.initialize = function(reason) {
+        var options = {};
+        options.appId = '263395420459543';
+        options.status = true;
+        options.cookie = false;
+        options.xfbml = false;
+        FB.init(options);
+        FB.getLoginStatus(function(loginResponse) {
+            if (loginResponse.status === 'connected') {
+                (document.getElementById('image')).src = 'http://graph.facebook.com/' + loginResponse.authResponse.userID + '/picture';
+            }
+        });
     };
 })();
 })(jQuery);
