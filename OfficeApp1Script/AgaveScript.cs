@@ -21,23 +21,22 @@ namespace OfficeApp1Script
             {
                 InitOptions options = new InitOptions();
                 options.appId = "263395420459543";
-                //options.channelUrl = "//limeyhouse.dyndns.org/channel.aspx";
                 options.status = true;
-                options.cookie = true;
+                options.cookie = false;
                 options.xfbml = false;
                 Facebook.init(options);
+
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
                     if (loginResponse.status == "connected")
                     {
-                        string UserID = loginResponse.authResponse.userID;
-                        jQuery.Select("results").Value(UserID);
+                        ((ImageElement)Document.GetElementById("image")).Src = "http://graph.facebook.com/" + loginResponse.authResponse.userID +"/picture";
                     }
                 });
-
             };
+
         }
-        public static void LogIn()
+        public static void Logon()
         {
             LoginOptions options = new LoginOptions();
             options.scope = "email, user_likes, publish_stream";

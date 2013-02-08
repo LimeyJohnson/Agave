@@ -46,7 +46,6 @@
     </None>
     <Content Include="OfficeApp1\OfficeApp1.xml">
       <OpcRelationship>manifest-oemanifest</OpcRelationship>
-      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

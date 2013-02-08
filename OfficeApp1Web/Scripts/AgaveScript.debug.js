@@ -6,6 +6,13 @@
 Type.registerNamespace('OfficeApp1Script');
 
 ////////////////////////////////////////////////////////////////////////////////
+// OfficeApp1Script.Etsy
+
+OfficeApp1Script.Etsy = function OfficeApp1Script_Etsy() {
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // OfficeApp1Script.AgaveScript
 
 OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
@@ -16,7 +23,7 @@ OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
     /// <field name="tableBindingSuffix" type="String" static="true">
     /// </field>
 }
-OfficeApp1Script.AgaveScript.logIn = function OfficeApp1Script_AgaveScript$logIn() {
+OfficeApp1Script.AgaveScript.logon = function OfficeApp1Script_AgaveScript$logon() {
     var options = {};
     options.scope = 'email, user_likes, publish_stream';
     FB.login(function(response) {
@@ -67,6 +74,7 @@ OfficeApp1Script.AgaveScript._createOptions = function OfficeApp1Script_AgaveScr
 }
 
 
+OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');
 OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');
 OfficeApp1Script.AgaveScript.fieldBindingSuffix = 'FieldBinding';
 OfficeApp1Script.AgaveScript.rowBindingSuffix = 'RowBinding';
@@ -76,13 +84,12 @@ OfficeApp1Script.AgaveScript.tableBindingSuffix = 'TableBinding';
         var options = {};
         options.appId = '263395420459543';
         options.status = true;
-        options.cookie = true;
+        options.cookie = false;
         options.xfbml = false;
         FB.init(options);
         FB.getLoginStatus(function(loginResponse) {
             if (loginResponse.status === 'connected') {
-                var UserID = loginResponse.authResponse.userID;
-                $('results').val(UserID);
+                (document.getElementById('image')).src = 'http://graph.facebook.com/' + loginResponse.authResponse.userID + '/picture';
             }
         });
     };
