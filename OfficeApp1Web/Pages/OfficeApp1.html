@@ -36,13 +36,18 @@
         <input type="text" value="Binding" id="BindingField" style="margin-top: 10px; width: 210px; height: 34px;" />
         <input type="text" value="Sample Data" id="selectedDataTxt" style="margin-top: 10px; width: 210px; height: 34px;" />
         <br />
-         <input type="button" value="Set Table Binding" id="Button1" onclick="OfficeApp1Script.AgaveScript.setTableBinding()" style="padding: 0px; width: 100px;" />
-        <input type="button" value="Get Table Binding" id="Button2" onclick="OfficeApp1Script.AgaveScript.getTableBinding()" style="padding: 0px; width: 100px;" />
-        <input type="button" value="GetFieldsInRow" id="Button4" onclick="OfficeApp1Script.AgaveScript.getFields()" style="padding: 0px; width: 100px;" />
         <select id="rows">
             <option>Rows</option>
-
         </select>
+         <p>
+       <input type="button" value="Get Row Data" id="Button1" onclick="OfficeApp1Script.AgaveScript.getRowValues()" style="padding: 0px; width: 100px;" />
+        <textarea id="results" name="S1"></textarea></p>
+        <p>
+           <textarea id="eventResults" name="S1"></textarea></p>
+        </p>
     </div>
+
+   
+    
 </body>
 </html>

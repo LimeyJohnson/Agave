@@ -10,7 +10,7 @@ namespace AgaveApi
     public delegate void ASyncResultCallBack(ASyncResult result);
     public delegate void InitReason(InializationEnum inializationEnum);
     public delegate void EventHandler();
-    public delegate void EventHandlerWithString(string ID);
+    public delegate void BindingDataChanged(BindingDataChangedEventArgs args);
     [Imported, IgnoreNamespace, ScriptName("Office.context.document.bindings")]
     public static class Bindings
     {
@@ -21,7 +21,7 @@ namespace AgaveApi
     public static class Document
     {
         public static extern void AddHandlerAsync(EventType eventType, EventHandler handler);
-        public static extern void AddHandlerAsync(EventType eventType, EventHandlerWithString handler);
+        public static extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
     }
     [Imported, IgnoreNamespace, ScriptName("Office")]
     public static class Office
@@ -65,7 +65,9 @@ namespace AgaveApi
         public extern void GetDataAsync(ASyncResultCallBack callback);
         public extern void GetDataAsync(CoercionTypeOptions options, ASyncResultCallBack callback);
         public extern void SetDataAsync(string data, CoercionTypeOptions options);
-        public extern void AddHandlerAsync(EventType eventType, EventHandlerWithString handler);
+        public extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
+        public string Id;
+        public EventType Type;
     }
     public enum InializationEnum
     {
@@ -76,6 +78,12 @@ namespace AgaveApi
     public sealed class CoercionTypeOptions
     {
         public string CoercionType;
+    }
+    [Imported, IgnoreNamespace, ScriptName("Object")]
+    public sealed class BindingDataChangedEventArgs
+    {
+        public SelectObject Binding;
+        public EventType Type;
     }
    
     

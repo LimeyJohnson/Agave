@@ -74,8 +74,7 @@ OfficeApp1Script.AgaveScript._createOptions = function OfficeApp1Script_AgaveScr
     options.id = ID;
     return options;
 }
-OfficeApp1Script.AgaveScript.getFields = function OfficeApp1Script_AgaveScript$getFields() {
-    /// <returns type="Array"></returns>
+OfficeApp1Script.AgaveScript.populateRowCombo = function OfficeApp1Script_AgaveScript$populateRowCombo() {
     var items = [];
     OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).getDataAsync(function(result) {
         var combo = $('#rows');
@@ -86,7 +85,6 @@ OfficeApp1Script.AgaveScript.getFields = function OfficeApp1Script_AgaveScript$g
             combo.append(html);
         });
     });
-    return items;
 }
 OfficeApp1Script.AgaveScript.select = function OfficeApp1Script_AgaveScript$select(bindingID) {
     /// <param name="bindingID" type="String">
@@ -101,6 +99,18 @@ OfficeApp1Script.AgaveScript.setBinding = function OfficeApp1Script_AgaveScript$
     /// </param>
     Office.context.document.bindings.addFromNamedItemAsync(bindingID, type, OfficeApp1Script.AgaveScript._createOptions(bindingID));
 }
+OfficeApp1Script.AgaveScript.getRowValues = function OfficeApp1Script_AgaveScript$getRowValues() {
+    OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).getDataAsync(function(result) {
+        var combo = $('#results');
+        combo.html('');
+        var fields = result.value[1];
+        $.each(fields, function(i, o) {
+            var fieldNames = result.value[0][0];
+            var appendText = fieldNames[i] + ' : ' + ((o != null) ? o.toString() : 'JSNULL') + '<br/>';
+            combo.append(appendText);
+        });
+    });
+}
 
 
 OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');
@@ -112,7 +122,10 @@ OfficeApp1Script.AgaveScript.rowBinding = 'Row';
 (function () {
     Office.initialize = function(reason) {
         OfficeApp1Script.AgaveScript.setBinding(OfficeApp1Script.AgaveScript.rowBinding, Office.BindingType.Matrix);
-        OfficeApp1Script.AgaveScript.getFields();
+        OfficeApp1Script.AgaveScript.populateRowCombo();
+        OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).addHandlerAsync(Office.EventType.BindingDataChanged, function(args) {
+            $('#eventResults').append('Event fired: ' + args.binding.id + ' Type: ' + args.type.toString());
+        });
     };
 })();
 })(jQuery);

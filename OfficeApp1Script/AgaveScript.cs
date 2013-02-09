@@ -21,7 +21,11 @@ namespace OfficeApp1Script
             Office.Initialize = delegate(InializationEnum reason)
             {
                 SetBinding(RowBinding, BindingType.Matrix);
-                GetFields();
+                PopulateRowCombo();
+                Select(RowBinding).AddHandlerAsync(EventType.BindingDataChanged, delegate(BindingDataChangedEventArgs args)
+                {
+                    jQuery.Select("#eventResults").Append("Event fired: " + args.Binding.Id + " Type: " + args.Type.ToString());
+                });
             };
 
         }
@@ -80,7 +84,7 @@ namespace OfficeApp1Script
             options.ID = ID;
             return options;
         }
-        public static Array GetFields()
+        public static void PopulateRowCombo()
         {
             Array items = new Array();
             Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
@@ -94,7 +98,6 @@ namespace OfficeApp1Script
                     combo.Append(html);
                 });
             });
-            return items;
         }
         public static SelectObject Select(string bindingID)
         {
@@ -103,6 +106,21 @@ namespace OfficeApp1Script
         public static void SetBinding(string bindingID, BindingType type)
         {
             Bindings.AddFromNamedItemAsync(bindingID, type, CreateOptions(bindingID));
+        }
+        public static void GetRowValues()
+        {
+            Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
+            {
+                jQueryObject combo = jQuery.Select("#results");
+                combo.Html("");
+                Array fields = (Array)result.matrixValue[1];
+                jQuery.Each(fields, delegate(int i, object o)
+                {
+                    string[] fieldNames = (string[])result.matrixValue[0][0];
+                    string appendText = fieldNames[i].ToString() + " : " + (o != null ? o.ToString() : "JSNULL") + "<br/>" ;
+                    combo.Append(appendText);
+                });
+            });
         }
     }
     
