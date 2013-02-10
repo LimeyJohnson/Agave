@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Published:a2ba41A2-b704-4a9d-a9ed-aecacc1d43ed-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest" Name="OfficeApplication" ProductID="{1d4d4230-06ed-41c7-a630-49dee35b1914}" Version="1.0.0.0" SharePointMinVersion="15.0.0.0">
+  <Properties>
+    <Title>OfficeApplication</Title>
+    <StartPage>http://www.example.com</StartPage>
+  </Properties>
+  <AppPrincipal>
+    <Internal />
+  </AppPrincipal>
+</App>

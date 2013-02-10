@@ -22,10 +22,14 @@ namespace OfficeApp1Script
             {
                 SetBinding(RowBinding, BindingType.Matrix);
                 PopulateRowCombo();
-                Select(RowBinding).AddHandlerAsync(EventType.BindingDataChanged, delegate(BindingDataChangedEventArgs args)
+                GetRowValues();
+                Office.Context.Document.AddHandlerAsync(EventType.DocumentSelectionChanged, delegate(DocumentSelectionChangedEventArgs args)
                 {
-                    jQuery.Select("#eventResults").Append("Event fired: " + args.Binding.Id + " Type: " + args.Type.ToString());
+                    jQuery.Select("#eventResults").Append("Event fired: " + args.Document.Mode.ToString() + " Type: " + args.Type.ToString() + "<br/>");
+                    GetRowValues();
                 });
+                
+
             };
 
         }
@@ -38,7 +42,7 @@ namespace OfficeApp1Script
         public static void SetFieldBinding()
         {
             string bindingID = jQuery.Select("#BindingField").GetValue();
-            Bindings.AddFromNamedItemAsync(bindingID, BindingType.Text, CreateOptions(bindingID + FieldBindingSuffix));
+            Office.Context.Document.Bindings.AddFromNamedItemAsync(bindingID, BindingType.Text, CreateOptions(bindingID + FieldBindingSuffix));
         }
         public static void GetFieldBinding()
         {
@@ -61,7 +65,7 @@ namespace OfficeApp1Script
         public static void SetTableBinding()
         {
             string bindingID = jQuery.Select("#BindingField").GetValue() + TableBindingSuffix;
-            Bindings.AddFromSelectionAsync(BindingType.Matrix, CreateOptions(bindingID));
+            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Matrix, CreateOptions(bindingID));
         }
         public static void GetTableBinding()
         {
@@ -105,7 +109,7 @@ namespace OfficeApp1Script
         }
         public static void SetBinding(string bindingID, BindingType type)
         {
-            Bindings.AddFromNamedItemAsync(bindingID, type, CreateOptions(bindingID));
+            Office.Context.Document.Bindings.AddFromNamedItemAsync(bindingID, type, CreateOptions(bindingID));
         }
         public static void GetRowValues()
         {

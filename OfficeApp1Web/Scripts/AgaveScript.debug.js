@@ -123,8 +123,10 @@ OfficeApp1Script.AgaveScript.rowBinding = 'Row';
     Office.initialize = function(reason) {
         OfficeApp1Script.AgaveScript.setBinding(OfficeApp1Script.AgaveScript.rowBinding, Office.BindingType.Matrix);
         OfficeApp1Script.AgaveScript.populateRowCombo();
-        OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).addHandlerAsync(Office.EventType.BindingDataChanged, function(args) {
-            $('#eventResults').append('Event fired: ' + args.binding.id + ' Type: ' + args.type.toString());
+        OfficeApp1Script.AgaveScript.getRowValues();
+        Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, function(args) {
+            $('#eventResults').append('Event fired: ' + args.document.mode.toString() + ' Type: ' + args.type.toString());
+            OfficeApp1Script.AgaveScript.getRowValues();
         });
     };
 })();
