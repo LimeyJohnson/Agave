@@ -49,9 +49,9 @@ namespace OfficeApp1Script
             string bindingID = jQuery.Select("#BindingField").GetValue() + FieldBindingSuffix;
             Office.Select("bindings#" + bindingID).GetDataAsync(delegate(ASyncResult result)
             {
-                if(result.status == "succeeded")
+                if(result.Status == AsyncResultStatus.Succeeded)
                 {
-                    jQuery.Select("#selectedDataTxt").Value(result.value);
+                    jQuery.Select("#selectedDataTxt").Value(result.TextValue);
                 }
             });
         }
@@ -59,7 +59,7 @@ namespace OfficeApp1Script
         {
             string bindingID = jQuery.Select("#BindingField").GetValue() + FieldBindingSuffix;
             string data = jQuery.Select("#selectedDataTxt").GetValue();
-            Office.Select("bindings#" + bindingID).SetDataAsync(data, CreateCoercionType("text"));
+            Office.Select("bindings#" + bindingID).SetDataAsync(data, CreateCoercionTypeOptions(CoercionType.Text));
            // ComboBoxElement e = new ComboBoxElement();
         }
         public static void SetTableBinding()
@@ -70,15 +70,15 @@ namespace OfficeApp1Script
         public static void GetTableBinding()
         {
             string bindingID = jQuery.Select("#BindingField").GetValue() + TableBindingSuffix;
-            Office.Select("bindings#" + bindingID).GetDataAsync(CreateCoercionType("table"), delegate(ASyncResult result)
+            Office.Select("bindings#" + bindingID).GetDataAsync(CreateCoercionTypeOptions(CoercionType.Matrix), delegate(ASyncResult result)
             {
                 Script.Alert("Break point");
             });
         }
 
-        private static CoercionTypeOptions CreateCoercionType(string type)
+        private static GetDataAsyncOptions CreateCoercionTypeOptions(CoercionType type)
         {
-            CoercionTypeOptions options = new CoercionTypeOptions();
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
             options.CoercionType = type;
             return options;
         }
@@ -91,11 +91,11 @@ namespace OfficeApp1Script
         public static void PopulateRowCombo()
         {
             Array items = new Array();
-            Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
+            Select(RowBinding).GetDataAsync(CreateCoercionTypeOptions(CoercionType.Matrix), delegate(ASyncResult result)
             {
                 jQueryObject combo = jQuery.Select("#rows");
                 combo.Html("");
-                Array fields = (Array)result.matrixValue[0][0];
+                Array fields = (Array)result.MatrixValue[0][0];
                 jQuery.Each(fields, delegate(int i, object o)
                 {
                     string html = "<option>" + o.ToString() + "</option>";
@@ -115,16 +115,27 @@ namespace OfficeApp1Script
         {
             Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
             {
-                jQueryObject combo = jQuery.Select("#results");
-                combo.Html("");
-                Array fields = (Array)result.matrixValue[1];
-                jQuery.Each(fields, delegate(int i, object o)
+                if (result.Status == AsyncResultStatus.Succeeded)
                 {
-                    string[] fieldNames = (string[])result.matrixValue[0][0];
-                    string appendText = fieldNames[i].ToString() + " : " + (o != null ? o.ToString() : "JSNULL") + "<br/>" ;
-                    combo.Append(appendText);
-                });
+                    jQueryObject combo = jQuery.Select("#results");
+                    combo.Html("");
+                    Array fields = (Array)result.MatrixValue[1];
+                    jQuery.Each(fields, delegate(int i, object o)
+                    {
+                        string[] fieldNames = (string[])result.MatrixValue[0][0];
+                        string appendText = fieldNames[i].ToString() + " : " + (o != null ? o.ToString() : "JSNULL") + "<br/>";
+                        combo.Append(appendText);
+                    });
+                }
+                else
+                {
+                    SetError("GetDataAsync in GetRowValues() failed");
+                }
             });
+        }
+        public static void SetError(string errorText)
+        {
+            jQuery.Select("#error").Value(errorText);
         }
     }
     

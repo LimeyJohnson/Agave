@@ -45,8 +45,8 @@ namespace AgaveApi
     public sealed class SelectObject
     {
         public extern void GetDataAsync(ASyncResultCallBack callback);
-        public extern void GetDataAsync(CoercionTypeOptions options, ASyncResultCallBack callback);
-        public extern void SetDataAsync(string data, CoercionTypeOptions options);
+        public extern void GetDataAsync(GetDataAsyncOptions options, ASyncResultCallBack callback);
+        public extern void SetDataAsync(string data, GetDataAsyncOptions options);
         public extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
         public string Id;
         public EventType Type;
@@ -54,10 +54,11 @@ namespace AgaveApi
     #region Options and Callback Args
     public sealed class ASyncResult
     {
-        public string status;
-        public string value;
+        public AsyncResultStatus Status;
         [ScriptName("value")]
-        public object[][] matrixValue;
+        public string TextValue;
+        [ScriptName("value")]
+        public object[][] MatrixValue;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class NameItemAsyncOptions
@@ -67,9 +68,16 @@ namespace AgaveApi
 
 
     [Imported, IgnoreNamespace, ScriptName("Object")]
-    public sealed class CoercionTypeOptions
+    public sealed class GetDataAsyncOptions
     {
-        public string CoercionType;
+        public CoercionType CoercionType;
+        public ValueFormat ValueFormat;
+        public FilterType FilterType;
+        public int StartRow;
+        public int StartColumn;
+        public int RowCount;
+        public int ColumnCount;
+        public object AsyncContext;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class BindingDataChangedEventArgs
@@ -86,7 +94,40 @@ namespace AgaveApi
     #endregion
     #endregion
     #region Enums
-
+    [Imported, IgnoreNamespace, ScriptName("Office.AsyncResultStatus")]
+    public enum AsyncResultStatus
+    {
+        [PreserveCase]
+        Succeeded,
+        [PreserveCase]
+        Failed,
+    }
+    [Imported, IgnoreNamespace, ScriptName("Office.FilterType")]
+    public enum FilterType
+    {
+        [PreserveCase]
+        All,
+        [PreserveCase]
+        OnlyVisible,
+    }
+    [Imported, IgnoreNamespace, ScriptName("Office.ValueFormat")]
+    public enum ValueFormat
+    {
+        [PreserveCase]
+        Formatted,
+        [PreserveCase]
+        UnFormatted,
+    }
+    [Imported, IgnoreNamespace, ScriptName("Office.CoercionType")]
+    public enum CoercionType
+    {
+        [PreserveCase]
+        Text,
+        [PreserveCase]
+        Matrix,
+        [PreserveCase]
+        Table
+    }
     [Imported, IgnoreNamespace, ScriptName("Office.BindingType")]
     public enum BindingType
     {
