@@ -20,7 +20,7 @@ OfficeApp1Script.AgaveScript = function OfficeApp1Script_AgaveScript() {
     /// </field>
     /// <field name="rowBindingSuffix" type="String" static="true">
     /// </field>
-    /// <field name="tableBindingSuffix" type="String" static="true">
+    /// <field name="tableBinding" type="String" static="true">
     /// </field>
     /// <field name="rowBinding" type="String" static="true">
     /// </field>
@@ -49,14 +49,8 @@ OfficeApp1Script.AgaveScript.setFieldData = function OfficeApp1Script_AgaveScrip
     Office.select('bindings#' + bindingID).setDataAsync(data, OfficeApp1Script.AgaveScript._createCoercionTypeOptions(Office.CoercionType.Text));
 }
 OfficeApp1Script.AgaveScript.setTableBinding = function OfficeApp1Script_AgaveScript$setTableBinding() {
-    var bindingID = $('#BindingField').val() + OfficeApp1Script.AgaveScript.tableBindingSuffix;
+    var bindingID = $('#BindingField').val() + OfficeApp1Script.AgaveScript.tableBinding;
     Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Matrix, OfficeApp1Script.AgaveScript._createOptions(bindingID));
-}
-OfficeApp1Script.AgaveScript.getTableBinding = function OfficeApp1Script_AgaveScript$getTableBinding() {
-    var bindingID = $('#BindingField').val() + OfficeApp1Script.AgaveScript.tableBindingSuffix;
-    Office.select('bindings#' + bindingID).getDataAsync(OfficeApp1Script.AgaveScript._createCoercionTypeOptions(Office.CoercionType.Matrix), function(result) {
-        alert('Break point');
-    });
 }
 OfficeApp1Script.AgaveScript._createCoercionTypeOptions = function OfficeApp1Script_AgaveScript$_createCoercionTypeOptions(type) {
     /// <param name="type" type="Office.CoercionType">
@@ -97,12 +91,17 @@ OfficeApp1Script.AgaveScript.setBinding = function OfficeApp1Script_AgaveScript$
     /// </param>
     /// <param name="type" type="Office.BindingType">
     /// </param>
-    Office.context.document.bindings.addFromNamedItemAsync(bindingID, type, OfficeApp1Script.AgaveScript._createOptions(bindingID));
+    if (type === Office.BindingType.Matrix) {
+        Office.context.document.bindings.addFromSelectionAsync(type, OfficeApp1Script.AgaveScript._createOptions(bindingID), OfficeApp1Script.AgaveScript.checkAsyncCallbackForErrors);
+    }
+    else {
+        Office.context.document.bindings.addFromNamedItemAsync(bindingID, type, OfficeApp1Script.AgaveScript._createOptions(bindingID), OfficeApp1Script.AgaveScript.checkAsyncCallbackForErrors);
+    }
 }
 OfficeApp1Script.AgaveScript.getRowValues = function OfficeApp1Script_AgaveScript$getRowValues() {
     OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.rowBinding).getDataAsync(function(result) {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
-            var combo = $('#results');
+            var combo = $('#row');
             combo.html('');
             var fields = result.value[1];
             $.each(fields, function(i, o) {
@@ -116,10 +115,34 @@ OfficeApp1Script.AgaveScript.getRowValues = function OfficeApp1Script_AgaveScrip
         }
     });
 }
+OfficeApp1Script.AgaveScript.getTableBinding = function OfficeApp1Script_AgaveScript$getTableBinding() {
+    OfficeApp1Script.AgaveScript.select(OfficeApp1Script.AgaveScript.tableBinding).getDataAsync(function(result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+            var combo = $('#table');
+            combo.html('');
+            var fields = result.value[1];
+            $.each(fields, function(i, o) {
+                var fieldNames = result.value[0][0];
+                var appendText = fieldNames[i] + ' : ' + ((o != null) ? o.toString() : 'JSNULL') + '<br/>';
+                combo.append(appendText);
+            });
+        }
+        else {
+            OfficeApp1Script.AgaveScript.setError('GetDataAsync in GetRowValues() failed');
+        }
+    });
+}
+OfficeApp1Script.AgaveScript.checkAsyncCallbackForErrors = function OfficeApp1Script_AgaveScript$checkAsyncCallbackForErrors(result) {
+    /// <param name="result" type="AgaveApi.ASyncResult">
+    /// </param>
+    if (result.status !== Office.AsyncResultStatus.Succeeded) {
+        OfficeApp1Script.AgaveScript.setError('ASync Result Failed');
+    }
+}
 OfficeApp1Script.AgaveScript.setError = function OfficeApp1Script_AgaveScript$setError(errorText) {
     /// <param name="errorText" type="String">
     /// </param>
-    $('#error').val(errorText);
+    $('#error').append(errorText);
 }
 
 
@@ -127,11 +150,12 @@ OfficeApp1Script.Etsy.registerClass('OfficeApp1Script.Etsy');
 OfficeApp1Script.AgaveScript.registerClass('OfficeApp1Script.AgaveScript');
 OfficeApp1Script.AgaveScript.fieldBindingSuffix = 'FieldBinding';
 OfficeApp1Script.AgaveScript.rowBindingSuffix = 'RowBinding';
-OfficeApp1Script.AgaveScript.tableBindingSuffix = 'TableBinding';
-OfficeApp1Script.AgaveScript.rowBinding = 'Row';
+OfficeApp1Script.AgaveScript.tableBinding = 'TableBinding';
+OfficeApp1Script.AgaveScript.rowBinding = 'DataTypes';
 (function () {
     Office.initialize = function(reason) {
         OfficeApp1Script.AgaveScript.setBinding(OfficeApp1Script.AgaveScript.rowBinding, Office.BindingType.Matrix);
+        OfficeApp1Script.AgaveScript.setBinding(OfficeApp1Script.AgaveScript.tableBinding, Office.BindingType.Table);
         OfficeApp1Script.AgaveScript.populateRowCombo();
         OfficeApp1Script.AgaveScript.getRowValues();
         Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, function(args) {

@@ -33,7 +33,9 @@ namespace AgaveApi
     public class BindingsObject
     {
         public extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, NameItemAsyncOptions options);
+        public extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, NameItemAsyncOptions options, ASyncResultCallBack callback);
         public extern void AddFromSelectionAsync(BindingType bindingType, NameItemAsyncOptions options);
+        public extern void AddFromSelectionAsync(BindingType bindingType, NameItemAsyncOptions options, ASyncResultCallBack callback);
     }
     [Imported, IgnoreNamespace]
     public class DocumentObject
