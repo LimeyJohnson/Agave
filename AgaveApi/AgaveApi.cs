@@ -9,7 +9,7 @@ namespace AgaveApi
 {
     #region Delegates
     public delegate void ASyncResultCallBack(ASyncResult result);
-    public delegate void InitReason(InializationEnum inializationEnum);
+    public delegate void InitReason(InitializationEnum inializationEnum);
     public delegate void EventHandler();
     public delegate void BindingDataChanged(BindingDataChangedEventArgs args);
     public delegate void DocumentSelectionChanged(DocumentSelectionChangedEventArgs args);
@@ -156,7 +156,7 @@ namespace AgaveApi
         [PreserveCase]
         ReadWrite
     }
-    public enum InializationEnum
+    public enum InitializationEnum
     {
         Inserted,
         DocumentOpenend

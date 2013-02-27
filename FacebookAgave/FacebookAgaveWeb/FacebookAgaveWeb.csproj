@@ -60,6 +60,7 @@
     <Content Include="Content\App.css" />
     <Content Include="Content\Office.css" />
     <Content Include="packages.config" />
+    <Content Include="Pages\channel.ashx" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\FacebookAgave.html" />
     <Content Include="Scripts\FacebookAgave.js" />
@@ -253,6 +254,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\channel.ashx.cs">
+      <DependentUpon>channel.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -276,7 +280,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>58081</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:62587/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

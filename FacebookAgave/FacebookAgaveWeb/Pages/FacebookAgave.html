@@ -18,16 +18,16 @@
     <!-- Use the local script references for Office.js to enable offline debugging -->
     <script src="../Scripts/Office/1.0/MicrosoftAjax.js"></script>
     <script src="../Scripts/Office/1.0/office.js"></script>
-
+    <script type="text/javascript" src="//connect.facebook.net/en_US/all/debug.js"></script>
     <!-- Add your JavaScript to the following file -->
-    <script src="../Scripts/FacebookAgave.js"></script>
+    <script src="../Scripts/mscorlib.js"></script>
+    <script src="../Scripts/FacebookScript.debug.js"></script>
 </head>
 <body>
+    <div id="fb-root"></div>
     <!-- Replace the following with your content -->
     <div id="Content">
-        <input type="button" value="Set data" id="setDataBtn" style="margin-right: 10px; padding: 0px; width: 100px;" />
-        <input type="button" value="Get data" id="getDataBtn" style="padding: 0px; width: 100px;" />
-        <input type="text" value="Sample Data" id="selectedDataTxt" style="margin-top: 10px; width: 210px" />
+        <input type="button" value="FB Login" id="FBLogin" />
     </div>
 </body>
 </html>

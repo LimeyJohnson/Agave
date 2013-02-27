@@ -11,7 +11,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="~remoteAppUrl/Pages/FacebookAgave.html" />
+    <SourceLocation DefaultValue="http://facebookagave.azurewebsites.net/" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>
