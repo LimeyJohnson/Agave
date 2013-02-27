@@ -23,50 +23,51 @@
     <script src="../Scripts/mscorlib.debug.js"></script>
     <script src="../Scripts/AgaveScript.debug.js"></script>
 </head>
-<body style="height: 108px">
-    <!-- Replace the following with your content -->
-    <div class="fb-login-button">
-    </div>
-    <div id="fb-root">
-    </div>
+<body>
     <div id="Content" style="width: 850px">
-        <input type="button" value="Set Field Binding" id="setBinding" onclick="OfficeApp1Script.AgaveScript.setFieldBinding()" style="padding: 0px; width: 100px;" />
-        <input type="button" value="Get Field data" id="getBinding" onclick="OfficeApp1Script.AgaveScript.getFieldBinding()" style="padding: 0px; width: 100px;" />
-        <input type="button" value="Set Field data" id="Button3" onclick="OfficeApp1Script.AgaveScript.setFieldData()" style="padding: 0px; width: 100px;" />
-        <input type="text" value="Binding" id="BindingField" style="margin-top: 10px; width: 210px; height: 34px;" />
-        <input type="text" value="Sample Data" id="selectedDataTxt" style="margin-top: 10px; width: 210px; height: 34px;" />
-        <br />
+        <div class="LeftSection">
+            <input type="text" value="Binding" id="BindingField" />
+        </div>
+        <div class="RightSection">
+            <input class="RightSection" type="text" value="Sample Data" id="selectedDataTxt" />
+        </div>
         <select id="rows">
             <option>Rows</option>
         </select>
-        <div style="width: 800px; padding:10px">
-            <div style="width: 750px;">
-                <div style="float: left; width: 50%">
-                    <input type="button" value="Get Row Data" id="Button1" onclick="OfficeApp1Script.AgaveScript.getRowValues()" style="padding: 0px; width: 100px;" /><br />
-                    <textarea id="row" style="width: 90%"></textarea>
-                </div>
-                <div style="float: left; width: 50%">
-                    Binding Events Changed:
-            <br />
-                    <textarea id="eventResults" style="width: 90%"></textarea>
-                </div>
+
+        <div class="LongSection">
+            <div class="LeftSection">
+                <input type="button" value="Get Row Data" id="Button1" onclick="OfficeApp1Script.AgaveScript.getRowValues()" style="padding: 0px; width: 100px;" />
             </div>
-            <div style="width: 750px;">
-                <div style="float: left; width: 50%">
-                    <input type="button" value="Get Table Data" id="Button2" onclick="OfficeApp1Script.AgaveScript.getTableBinding()" style="padding: 0px; width: 100px;" /><br />
-                    <textarea id="tableData" style="width: 90%"></textarea>
-                </div>
-                <div style="float: left; width: 50%">
-                    Errors:
-            <br />
-                    <textarea id="error" style="width: 90%"></textarea>
-                </div>
+            <div class="RightSection">
+                Binding Events Changed:
             </div>
         </div>
+        <div class="LongSection">
+            <div class="LeftSection">
+                <textarea id="row"></textarea>
+            </div>
+            <div class="RightSection">
+                <textarea id="eventResults"></textarea>
+            </div>
+        </div>
+        <div class="LongSection">
+            <div class="LeftSection">
+                <input type="button" value="Get Table Data" id="Button2" onclick="OfficeApp1Script.AgaveScript.getTableBinding()" style="padding: 0px; width: 100px;" />
+            </div>
+            <div class="RightSection">
+                Error: 
+            </div>
+        </div>
+        <div class="LongSection">
+            <div class="LeftSection">
+                <textarea id="tableData"></textarea>
+            </div>
+            <div class="RightSection">
+                <textarea id="error"></textarea>
+            </div>
+
+        </div>
     </div>
-
-
-
-
 </body>
 </html>

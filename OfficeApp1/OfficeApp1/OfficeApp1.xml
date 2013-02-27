@@ -11,8 +11,8 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://localhost/_layouts/15/inc/accsvc/agave/OfficeApp1/Pages/OfficeApp1.html" />
-    <RequestedWidth>400</RequestedWidth>
+    <SourceLocation DefaultValue="~remoteAppUrl/Pages/OfficeApp1.html" />
+    <RequestedWidth>850</RequestedWidth>
     <RequestedHeight>400</RequestedHeight>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>

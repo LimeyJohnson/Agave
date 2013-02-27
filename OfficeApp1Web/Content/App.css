@@ -1,3 +1,15 @@
-﻿/* Add your CSS styles here
-***************************************************************/
-
+﻿.LongSection {
+    width: 750px;
+    clear: both;
+}
+.RightSection {
+    float:right;
+    width: 50%;
+}
+.LeftSection {
+    float:left;
+    width: 50%;
+}
+textarea {
+    width:90%;
+}
