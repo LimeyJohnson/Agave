@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeApp1Web", "OfficeApp1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeApp1Script", "OfficeApp1Script\OfficeApp1Script.csproj", "{5EFDA868-0130-4EE1-AD54-0F91B5F98698}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgaveApi", "AgaveApi\AgaveApi.csproj", "{E5ECD11A-E323-40CC-92A8-DB58484A7FD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgaveApi", "..\AgaveApi\AgaveApi.csproj", "{E5ECD11A-E323-40CC-92A8-DB58484A7FD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
