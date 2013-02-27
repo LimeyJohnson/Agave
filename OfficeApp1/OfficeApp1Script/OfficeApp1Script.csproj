@@ -49,7 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AgaveApi\AgaveApi.csproj">
+    <ProjectReference Include="..\..\AgaveApi\AgaveApi.csproj">
       <Project>{e5ecd11a-e323-40cc-92a8-db58484a7fd4}</Project>
       <Name>AgaveApi</Name>
     </ProjectReference>

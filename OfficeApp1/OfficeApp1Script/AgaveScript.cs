@@ -18,7 +18,7 @@ namespace OfficeApp1Script
         public static string RowBinding = "DataTypes";
         static AgaveScript()
         {
-            Office.Initialize = delegate(InializationEnum reason)
+            Office.Initialize = delegate(InitializationEnum reason)
             {
                 SetBinding(RowBinding, BindingType.Matrix);
                 SetBinding(TableBinding, BindingType.Table);
