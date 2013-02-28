@@ -8,6 +8,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAKorO+KDgOki3bD8Blrtr5wAAAAACAAAAAAADZgAAwAAAABAAAAAB2DfspQ9eTQLR6cYy0UTcAAAAAASAAACgAAAAEAAAAAl3CferQBAJbTQ8xw2iPUAYAAAAcxM+uIgs7/3whwHRgFn2LDxPMJtMYrR5FAAAANZvjSkaFaLbyoUcgrA1P11Jdgro</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA+fbgzFm6BEucWZ+fwFSg8gAAAAACAAAAAAADZgAAwAAAABAAAAAGtEolf/A2oF8ulBgbVls9AAAAAASAAACgAAAAEAAAALGcD2iA6ZfbED+C1Jvr85mAAAAAiSS4Bf8B6zmHedVlx/NPTg/r1w2kos54wLmJiTLeb0zyR64kGcqlpElc+CBG8LouErQL7NUOiQRnjA5qWQSZJh1oWS8S9OPO+aBF7EJ8/oJa8XkHRwkHemhk9HCjHf/N69olDV51y2Q4LJn/nPsMrymkXd8PFl9wgs1jbdCiDKsUAAAA4rhkl8fqWdSgZLJMmwVDGkjzj9o=</EncryptedPassword>
   </PropertyGroup>
 </Project>

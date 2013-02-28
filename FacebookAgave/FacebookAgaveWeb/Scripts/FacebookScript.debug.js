@@ -14,34 +14,42 @@ FacebookScript.FacebookScript = function FacebookScript_FacebookScript() {
     /// <field name="accessToken" type="String" static="true">
     /// </field>
 }
-FacebookScript.FacebookScript.checkLogin = function FacebookScript_FacebookScript$checkLogin() {
-    FB.getLoginStatus(function(loginResponse) {
-        if (loginResponse.status === 'connected') {
-            alert(loginResponse.authResponse.userID);
+FacebookScript.FacebookScript.checkTable = function FacebookScript_FacebookScript$checkTable() {
+    var myTable = new Office.TableData();
+    myTable.headers = [ [ 'Cities', 'Names' ] ];
+    myTable.rows = [ [ 'Berlin', 'Andrew' ], [ 'Roma', 'Eric' ], [ 'Tokyo', 'Johnson' ], [ 'Seattle', 'People' ] ];
+    var options = {};
+    options.coercionType = Office.CoercionType.Table;
+    Office.context.document.setSelectedDataAsync(myTable, options, function(result) {
+        if (result.status === Office.AsyncResultStatus.Failed) {
+            write('Script Failed');
         }
     });
 }
 FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookScript$insertFriends(eventArgs) {
     /// <param name="eventArgs" type="jQueryEvent">
     /// </param>
-    var query = 'Select first_name, last_name, email, sex from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
+    var query = 'Select first_name, last_name, birthday_date, sex, friend_count from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
     var queryOptions = {};
     queryOptions.q = query;
     var td = new Office.TableData();
-    td.headers = [ 'First Name', 'Last Name', 'Email', 'Gender' ];
+    td.headers = [ [ 'First Name', 'Last Name', 'Birthday', 'Gender', 'Friend Count' ] ];
     FB.api('fql', queryOptions, function(response) {
         td.rows = new Array(response.data.length);
         for (var i = 0; i < response.data.length; i++) {
-            td.rows[i] = new Array(4);
+            td.rows[i] = new Array(5);
             td.rows[i][0] = response.data[i].first_name || 'null';
             td.rows[i][1] = response.data[i].last_name || 'null';
-            td.rows[i][2] = response.data[i].email || 'null';
+            td.rows[i][2] = response.data[i].birthday_date || 'null';
             td.rows[i][3] = response.data[i].sex || 'null';
+            td.rows[i][4] = response.data[i].friend_count || 'null';
         }
         var options = {};
         options.coercionType = Office.CoercionType.Table;
         Office.context.document.setSelectedDataAsync(td, options, function(result) {
-            var b = result.value;
+            if (result.status === Office.AsyncResultStatus.Failed) {
+                write(result.error.name + ' : '+result.error.message);
+            }
         });
     });
 }

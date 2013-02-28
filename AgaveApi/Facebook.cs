@@ -82,10 +82,7 @@ namespace FreindsLibrary
     {
         public string uid1;
         public string uid2;
-        public string first_name;
-        public string last_name;
-        public string email;
-        public string sex;
+        
     }
     public class FBEvent
     {
@@ -98,6 +95,8 @@ namespace FreindsLibrary
         public string last_name;
         public string email;
         public string sex;
+        public string birthday_date;
+        public string friend_count;
     }
     public delegate void EventChange(LoginResponse response);
 

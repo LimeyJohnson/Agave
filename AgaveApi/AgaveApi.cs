@@ -59,16 +59,25 @@ namespace AgaveApi
     #region Options and Callback Args
     public sealed class ASyncResult
     {
+        public Error Error;
         public AsyncResultStatus Status;
         [ScriptName("value")]
         public string TextValue;
         [ScriptName("value")]
         public object[][] MatrixValue;
     }
+    [Imported, IgnoreNamespace]
+    public sealed class Error
+    {
+        public string Name;
+        public string Message;
+    }
     [Imported, IgnoreNamespace, ScriptName("Office.TableData")]
     public sealed class TableData
     {
         public object[] Headers;
+        [ScriptName("headers")]
+        public object[][] HeadersDouble;
         public object[][] Rows;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]

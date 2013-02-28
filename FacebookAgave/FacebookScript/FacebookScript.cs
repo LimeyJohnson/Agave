@@ -47,40 +47,49 @@ namespace FacebookScript
             };
             Office.Initialize(InitializationEnum.DocumentOpenend);
         }
-        public static void CheckLogin()
+        public static void CheckTable()
         {
-            Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
+            TableData myTable = new TableData();
+            myTable.HeadersDouble = new string[][] { new string[] { "Cities", "Names" } };
+            myTable.Rows = new string[][] { new string[] { "Berlin", "Andrew" }, new string[] { "Roma", "Eric" }, new string[] { "Tokyo", "Johnson"}, new string[] { "Seattle","People" } };
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Table;
+            Office.Context.Document.SetSelectedDataAsync(myTable, options, delegate(ASyncResult result)
             {
-                if (loginResponse.status == "connected")
+                if (result.Status == AsyncResultStatus.Failed)
                 {
-                    Script.Literal("alert({0})", loginResponse.authResponse.userID);
+                    Script.Literal("write('Script Failed')");
                 }
             });
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            string query = "Select first_name, last_name, email, sex from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
+            string query = "Select first_name, last_name, birthday_date, sex, friend_count from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-           TableData td = new TableData();
-            td.Headers = new object[] {  "First Name", "Last Name","Email", "Gender" };
-          
+            TableData td = new TableData();
+            td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
+
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
                 td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
-                    td.Rows[i] = new string[4];
+                    td.Rows[i] = new string[5];
                     td.Rows[i][0] = response.data[i].first_name ?? "null";
                     td.Rows[i][1] = response.data[i].last_name ?? "null";
-                    td.Rows[i][2] = response.data[i].email ?? "null";
+                    td.Rows[i][2] = response.data[i].birthday_date ?? "null";
                     td.Rows[i][3] = response.data[i].sex ?? "null";
+                    td.Rows[i][4] = response.data[i].friend_count ?? "null";
                 }
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result) 
+                Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
-                    string b = result.TextValue;
+                    if (result.Status == AsyncResultStatus.Failed)
+                    {
+                        Script.Literal("write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                    }
                 });
             });
             //Facebook.api(queryOptions, delegate(QueryResponse[] queryResponse)

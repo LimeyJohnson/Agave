@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA+fbgzFm6BEucWZ+fwFSg8gAAAAACAAAAAAADZgAAwAAAABAAAACJdVmGGzWciiUGf8kwLH3VAAAAAASAAACgAAAAEAAAAObzZiKYMTcWgODqj4hYFSKAAAAAs7LMMU0aQTBPdb6kO2XHMztUEAhOFrbyFhsAWABUyYmKRHM1znoz+QHbcskfITH8BV9NupfKZrJAxgZWubHNwAya1ashP4pwrwb4W35oJpGzLsFEmkP63v1qbhVkIy3HknGcBfm+kxfFZzPSgLfA4tY7i4aZsdGvS6OpZOhlxGwUAAAAOI2gGwGGVTX1g1sg2tmQ1du1lB4=</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA+fbgzFm6BEucWZ+fwFSg8gAAAAACAAAAAAADZgAAwAAAABAAAACPZxw2upZIALdqISvN1I7+AAAAAASAAACgAAAAEAAAALsNgzeGDVtBw2firNyfY4yAAAAAAAA3P5zSs8MFXx40tHQIoanE6RwlsSKnpXQ7C2ojKXTt33EzNRGvhvKWz6ioed3yRDflH8G87Algdm0L8zCJ6N1rlIalb/btPdCsNqrng2LwIyvvEu03Q7LJ+3Vu2ee3dHHepRGfQSi8F3t2NWl7+Z5kYDraPWF8UxSwGOveUKIUAAAAYj6IFYZxdmpHfEXp1vy8LGvV1NE=</EncryptedPassword>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Web.config">
