@@ -41,7 +41,9 @@ namespace AgaveApi
     public class DocumentObject
     {
         public extern void AddHandlerAsync(EventType eventType, DocumentSelectionChanged handler);
-        public extern void SetSelectedDataAsync(TableData data, GetDataAsyncOptions options);
+        public extern void SetSelectedDataAsync(string[][] data, GetDataAsyncOptions options, ASyncResultCallBack callback);
+        public extern void SetSelectedDataAsync(string[][] data, ASyncResultCallBack callback);
+        public extern void SetSelectedDataAsync(TableData td, GetDataAsyncOptions options, ASyncResultCallBack callback);
         public BindingsObject Bindings;
         public DocumentMode Mode;
     }
@@ -66,7 +68,7 @@ namespace AgaveApi
     [Imported, IgnoreNamespace, ScriptName("Office.TableData")]
     public sealed class TableData
     {
-        public object[][] Headers;
+        public object[] Headers;
         public object[][] Rows;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]

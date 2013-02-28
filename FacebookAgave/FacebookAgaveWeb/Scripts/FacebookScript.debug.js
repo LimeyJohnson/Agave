@@ -28,19 +28,21 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
     var queryOptions = {};
     queryOptions.q = query;
     var td = new Office.TableData();
-    td.headers = [ [ 'First Name', 'Last Name', 'Email', 'Gender' ] ];
+    td.headers = [ 'First Name', 'Last Name', 'Email', 'Gender' ];
     FB.api('fql', queryOptions, function(response) {
         td.rows = new Array(response.data.length);
         for (var i = 0; i < response.data.length; i++) {
             td.rows[i] = new Array(4);
-            td.rows[i][0] = response.data[i].first_name;
-            td.rows[i][1] = response.data[i].last_name;
-            td.rows[i][2] = response.data[i].email;
-            td.rows[i][3] = response.data[i].sex;
+            td.rows[i][0] = response.data[i].first_name || 'null';
+            td.rows[i][1] = response.data[i].last_name || 'null';
+            td.rows[i][2] = response.data[i].email || 'null';
+            td.rows[i][3] = response.data[i].sex || 'null';
         }
         var options = {};
         options.coercionType = Office.CoercionType.Table;
-        Office.context.document.setSelectedDataAsync(td, options);
+        Office.context.document.setSelectedDataAsync(td, options, function(result) {
+            var b = result.value;
+        });
     });
 }
 

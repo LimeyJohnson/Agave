@@ -5,9 +5,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
-    <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAKorO+KDgOki3bD8Blrtr5wAAAAACAAAAAAADZgAAwAAAABAAAAAB2DfspQ9eTQLR6cYy0UTcAAAAAASAAACgAAAAEAAAAAl3CferQBAJbTQ8xw2iPUAYAAAAcxM+uIgs7/3whwHRgFn2LDxPMJtMYrR5FAAAANZvjSkaFaLbyoUcgrA1P11Jdgro</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAKorO+KDgOki3bD8Blrtr5wAAAAACAAAAAAADZgAAwAAAABAAAAB5rDi0UDokJwpyfIqD/A/bAAAAAASAAACgAAAAEAAAALvL5iS1YjdnJ+mYOn4n+iGAAAAA+J3XAn6o5b4B6mF0voxhwosOMVbVg2Vtdzi3z+ts7AedGSusxuu+mvA0UsBaITfe5jexaXBjrrlpWy1LzRjRivolYctA9UGxyQ3h0Bu4utfto5vqdqGx8/nxDEQ+pQYvuKQ1qmaR2CoFIjp/avcB/YCrPn/eTme4QjMGCWviNMIUAAAAdZUA+rapZgY0nugFqivBd9uNAhc=</EncryptedPassword>
   </PropertyGroup>
 </Project>

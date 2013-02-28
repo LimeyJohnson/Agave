@@ -62,23 +62,26 @@ namespace FacebookScript
             string query = "Select first_name, last_name, email, sex from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-            TableData td = new TableData();
-            td.Headers = new object[][] { new string[] { "First Name", "Last Name", "Email", "Gender" } };
-            
+           TableData td = new TableData();
+            td.Headers = new object[] {  "First Name", "Last Name","Email", "Gender" };
+          
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
-                td.Rows = new object[response.data.Length][];
+                td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
-                    td.Rows[i] = new object[4];
-                    td.Rows[i][0] = response.data[i].first_name;
-                    td.Rows[i][1] = response.data[i].last_name;
-                    td.Rows[i][2] = response.data[i].email;
-                    td.Rows[i][3] = response.data[i].sex;
+                    td.Rows[i] = new string[4];
+                    td.Rows[i][0] = response.data[i].first_name ?? "null";
+                    td.Rows[i][1] = response.data[i].last_name ?? "null";
+                    td.Rows[i][2] = response.data[i].email ?? "null";
+                    td.Rows[i][3] = response.data[i].sex ?? "null";
                 }
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                Office.Context.Document.SetSelectedDataAsync(td, options);
+                Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result) 
+                {
+                    string b = result.TextValue;
+                });
             });
             //Facebook.api(queryOptions, delegate(QueryResponse[] queryResponse)
             //{
