@@ -28,7 +28,7 @@ namespace AgaveApi
     {
         public DocumentObject Document;
     }
-    
+
     [Imported, IgnoreNamespace]
     public class BindingsObject
     {
@@ -41,6 +41,7 @@ namespace AgaveApi
     public class DocumentObject
     {
         public extern void AddHandlerAsync(EventType eventType, DocumentSelectionChanged handler);
+        public extern void SetSelectedDataAsync(TableData data, GetDataAsyncOptions options);
         public BindingsObject Bindings;
         public DocumentMode Mode;
     }
@@ -61,6 +62,12 @@ namespace AgaveApi
         public string TextValue;
         [ScriptName("value")]
         public object[][] MatrixValue;
+    }
+    [Imported, IgnoreNamespace, ScriptName("Office.TableData")]
+    public sealed class TableData
+    {
+        public object[][] Headers;
+        public object[][] Rows;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class NameItemAsyncOptions
@@ -156,13 +163,16 @@ namespace AgaveApi
         [PreserveCase]
         ReadWrite
     }
+    [Imported, IgnoreNamespace, ScriptName("Office.InitializationReason")]
     public enum InitializationEnum
     {
+        [PreserveCase]
         Inserted,
+        [PreserveCase]
         DocumentOpenend
     }
     #endregion
-    
-   
-    
+
+
+
 }

@@ -16,7 +16,7 @@ namespace FreindsLibrary
         public delegate void LogoutDelegate();
         public static void init(InitOptions options) { }
         public static void api(string apiCall, ApiDelegate response) { }
-        public static void api(string apiCall, string noun, ApiOptions options, ApiDelegate response) { }
+        public static void api(string apiCall, ApiOptions options, ApiDelegate response) { }
         public static void api(ApiOptions options, QueryDelgate response) { }
         public static void login(LoginDelegate d) { }
         public static void login(LoginDelegate d, LoginOptions options) { }
@@ -55,6 +55,7 @@ namespace FreindsLibrary
     {
         public string message;
         public string method;
+        public string Q;
         public Queries queries;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
@@ -81,6 +82,10 @@ namespace FreindsLibrary
     {
         public string uid1;
         public string uid2;
+        public string first_name;
+        public string last_name;
+        public string email;
+        public string sex;
     }
     public class FBEvent
     {
@@ -89,7 +94,10 @@ namespace FreindsLibrary
     public sealed class FriendInfo
     {
         public string id;
-        public string name;
+        public string first_name;
+        public string last_name;
+        public string email;
+        public string sex;
     }
     public delegate void EventChange(LoginResponse response);
 
