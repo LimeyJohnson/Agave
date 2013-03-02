@@ -13,6 +13,8 @@ FacebookScript.FacebookScript = function FacebookScript_FacebookScript() {
     /// </field>
     /// <field name="accessToken" type="String" static="true">
     /// </field>
+    /// <field name="tableBinding" type="String" static="true">
+    /// </field>
 }
 FacebookScript.FacebookScript.checkTable = function FacebookScript_FacebookScript$checkTable() {
     var myTable = new Office.TableData();
@@ -21,9 +23,11 @@ FacebookScript.FacebookScript.checkTable = function FacebookScript_FacebookScrip
     var options = {};
     options.coercionType = Office.CoercionType.Table;
     Office.context.document.setSelectedDataAsync(myTable, options, function(result) {
-        if (result.status === Office.AsyncResultStatus.Failed) {
-            write('Script Failed');
-        }
+        var namedOptions = {};
+        namedOptions.id = FacebookScript.FacebookScript.tableBinding;
+        Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Table, namedOptions, function(results) {
+            Office.select('bindings#' + FacebookScript.FacebookScript.tableBinding);
+        });
     });
 }
 FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookScript$insertFriends(eventArgs) {
@@ -58,6 +62,7 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
 FacebookScript.FacebookScript.registerClass('FacebookScript.FacebookScript');
 FacebookScript.FacebookScript.userID = null;
 FacebookScript.FacebookScript.accessToken = null;
+FacebookScript.FacebookScript.tableBinding = 'TableBinding';
 Office.initialize = function(initReason) {
     var options = {};
     options.channelUrl = 'http://facebookagave.azurewebsites.net/pages/channel.ashx';

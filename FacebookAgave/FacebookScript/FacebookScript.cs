@@ -14,6 +14,7 @@ namespace FacebookScript
     {
         public static string UserID;
         public static string AccessToken;
+        public static string TableBinding = "TableBinding";
         static FacebookScript()
         {
 
@@ -56,10 +57,12 @@ namespace FacebookScript
             options.CoercionType = CoercionType.Table;
             Office.Context.Document.SetSelectedDataAsync(myTable, options, delegate(ASyncResult result)
             {
-                if (result.Status == AsyncResultStatus.Failed)
+                NameItemAsyncOptions namedOptions = new NameItemAsyncOptions();
+                namedOptions.ID = TableBinding;
+                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, namedOptions, delegate(ASyncResult results)
                 {
-                    Script.Literal("write('Script Failed')");
-                }
+                    Office.Select("bindings#" + TableBinding);
+                });
             });
         }
         public static void InsertFriends(jQueryEvent eventArgs)
