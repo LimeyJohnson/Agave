@@ -61,6 +61,8 @@
     <Content Include="Content\Office.css" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />
+    <None Include="Properties\PublishProfiles\FacebookAgave - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\FacebookAgave - Web Deploy %282%29.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\FacebookAgave.html" />
     <Content Include="Scripts\FacebookAgave.js" />
@@ -267,9 +269,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

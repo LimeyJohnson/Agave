@@ -33,20 +33,25 @@ FacebookScript.FacebookScript.checkTable = function FacebookScript_FacebookScrip
 FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookScript$insertFriends(eventArgs) {
     /// <param name="eventArgs" type="jQueryEvent">
     /// </param>
-    var query = 'Select first_name, last_name, birthday_date, sex, friend_count from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
+    var query = 'SELECT uid, first_name, last_name, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
     var queryOptions = {};
     queryOptions.q = query;
     var td = new Office.TableData();
-    td.headers = [ [ 'First Name', 'Last Name', 'Birthday', 'Gender', 'Friend Count' ] ];
     FB.api('fql', queryOptions, function(response) {
+        var fields = new Array(Object.getKeyCount(response.data[0]));
+        var x = 0;
+        td.headers = [ fields ];
+        var $dict1 = response.data[0];
+        for (var $key2 in $dict1) {
+            var entry = { key: $key2, value: $dict1[$key2] };
+            fields[x++] = entry.key;
+        }
         td.rows = new Array(response.data.length);
         for (var i = 0; i < response.data.length; i++) {
-            td.rows[i] = new Array(5);
-            td.rows[i][0] = response.data[i].first_name || 'null';
-            td.rows[i][1] = response.data[i].last_name || 'null';
-            td.rows[i][2] = response.data[i].birthday_date || 'null';
-            td.rows[i][3] = response.data[i].sex || 'null';
-            td.rows[i][4] = response.data[i].friend_count || 'null';
+            td.rows[i] = new Array(fields.length);
+            for (var y = 0; y < fields.length; y++) {
+                td.rows[i][y] = response.data[i][fields[y]] || 'null';
+            }
         }
         var options = {};
         options.coercionType = Office.CoercionType.Table;

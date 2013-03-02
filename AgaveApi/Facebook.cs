@@ -70,7 +70,7 @@ namespace FreindsLibrary
         public string name;
         public string id;
         public string error;
-        public FriendInfo[] data;
+        public Dictionary[] data;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class QueryResponse

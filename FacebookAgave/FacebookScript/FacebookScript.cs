@@ -7,6 +7,7 @@ using System.Html;
 using jQueryApi;
 using FreindsLibrary;
 using AgaveApi;
+using System.Collections;
 namespace FacebookScript
 {
 
@@ -67,23 +68,29 @@ namespace FacebookScript
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            string query = "Select first_name, last_name, birthday_date, sex, friend_count from user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
+            string query = "SELECT uid, first_name, last_name, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
             TableData td = new TableData();
-            td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
+           // td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
 
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
+                string[] fields = new string[response.data[0].Count];
+                int x = 0;
+                td.Headers = new string[][] { fields };
+                foreach (DictionaryEntry entry in Dictionary.GetDictionary(response.data[0]))
+                {
+                    fields[x++] = entry.Key;
+                }
                 td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
-                    td.Rows[i] = new string[5];
-                    td.Rows[i][0] = response.data[i].first_name ?? "null";
-                    td.Rows[i][1] = response.data[i].last_name ?? "null";
-                    td.Rows[i][2] = response.data[i].birthday_date ?? "null";
-                    td.Rows[i][3] = response.data[i].sex ?? "null";
-                    td.Rows[i][4] = response.data[i].friend_count ?? "null";
+                    td.Rows[i] = new string[fields.Length];
+                    for(int y = 0; y<fields.Length; y++)
+                    {
+                        td.Rows[i][y] = response.data[i][fields[y]]?? "null";
+                    }
                 }
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
