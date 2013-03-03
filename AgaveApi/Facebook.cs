@@ -4,16 +4,15 @@ using System.Runtime.CompilerServices;
 using System.Collections;
 namespace FreindsLibrary
 {
-
-    [Imported]
-    [IgnoreNamespace]
-    [ScriptName("FB")]
+    public delegate void AsyncInitDelegate();
+    [Imported, IgnoreNamespace,ScriptName("FB")]
     public static class Facebook
     {
         public delegate void ApiDelegate(ApiResponse response);
         public delegate void QueryDelgate(QueryResponse[] response);
         public delegate void LoginDelegate(LoginResponse response);
         public delegate void LogoutDelegate();
+        
         public static void init(InitOptions options) { }
         public static void api(string apiCall, ApiDelegate response) { }
         public static void api(string apiCall, ApiOptions options, ApiDelegate response) { }
@@ -24,6 +23,13 @@ namespace FreindsLibrary
         public static void getLoginStatus(LoginDelegate response) { }
         [ScriptName("Event")]
         public static FBEvent Event;
+      
+    }
+    [Imported, IgnoreNamespace, ScriptName("window")]
+    public static class FacebookWindow
+    {
+        [IntrinsicProperty, ScriptName("fbAsyncInit")]
+        public static extern AsyncInitDelegate AsyncInit { get; set; }
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class InitOptions

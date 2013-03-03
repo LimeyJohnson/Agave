@@ -18,10 +18,8 @@ namespace FacebookScript
         public static string TableBinding = "TableBinding";
         static FacebookScript()
         {
-
-            Office.Initialize = delegate(InitializationEnum initReason)
+            FacebookWindow.AsyncInit = delegate()
             {
-
                 InitOptions options = new InitOptions();
                 options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
                 options.appId = "263395420459543";
@@ -29,15 +27,7 @@ namespace FacebookScript
                 options.cookie = false;
                 Facebook.init(options);
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
-                jQuery.Select("#FBLogin").Click(new jQueryEventHandler(delegate(jQueryEvent eventArgs)
-                    {
-                        LoginOptions LoginOptions = new LoginOptions();
-                        LoginOptions.scope = "email,create_event,user_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
-                        Facebook.login(delegate(LoginResponse response)
-                        {
-                            UserID = response.authResponse.userID;
-                        }, LoginOptions);
-                    }));
+                jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
                     if (loginResponse.status == "connected")
@@ -45,26 +35,36 @@ namespace FacebookScript
                         UserID = loginResponse.authResponse.userID;
                         AccessToken = loginResponse.authResponse.accessToken;
                     }
+                    else
+                    {
+                        LoginOptions LoginOptions = new LoginOptions();
+                        LoginOptions.scope = "email,create_event,user_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
+                        Facebook.login(delegate(LoginResponse response)
+                        {
+                            UserID = response.authResponse.userID;
+                        }, LoginOptions);
+                    }
                 });
             };
-            Office.Initialize(InitializationEnum.DocumentOpenend);
-        }
-        public static void CheckTable()
-        {
-            TableData myTable = new TableData();
-            myTable.HeadersDouble = new string[][] { new string[] { "Cities", "Names" } };
-            myTable.Rows = new string[][] { new string[] { "Berlin", "Andrew" }, new string[] { "Roma", "Eric" }, new string[] { "Tokyo", "Johnson"}, new string[] { "Seattle","People" } };
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Table;
-            Office.Context.Document.SetSelectedDataAsync(myTable, options, delegate(ASyncResult result)
+            Office.Initialize = delegate(InitializationEnum initReason)
             {
-                NameItemAsyncOptions namedOptions = new NameItemAsyncOptions();
-                namedOptions.ID = TableBinding;
-                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, namedOptions, delegate(ASyncResult results)
-                {
-                    Office.Select("bindings#" + TableBinding);
-                });
-            });
+                
+            };
+            Element reference = Document.GetElementsByTagName("script")[0];
+            string JSID = "facebook-jssdk";
+            if (reference.ID != JSID)
+            {
+                ScriptElement js = (ScriptElement)Document.CreateElement("script");
+                js.ID = JSID;
+                js.SetAttribute("async", true);
+                js.Src = "//connect.facebook.net/en_US/all.js";
+                reference.ParentNode.InsertBefore(js, reference);
+            }
+
+        }
+        public static void LogOutOfFacebook(jQueryEvent eventArgs)
+        {
+            Facebook.logout(delegate() { });
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
@@ -72,7 +72,7 @@ namespace FacebookScript
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
             TableData td = new TableData();
-           // td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
+            // td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
 
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
@@ -87,9 +87,9 @@ namespace FacebookScript
                 for (int i = 0; i < response.data.Length; i++)
                 {
                     td.Rows[i] = new string[fields.Length];
-                    for(int y = 0; y<fields.Length; y++)
+                    for (int y = 0; y < fields.Length; y++)
                     {
-                        td.Rows[i][y] = response.data[i][fields[y]]?? "null";
+                        td.Rows[i][y] = response.data[i][fields[y]] ?? "null";
                     }
                 }
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
