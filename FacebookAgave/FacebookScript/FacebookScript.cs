@@ -28,6 +28,7 @@ namespace FacebookScript
                 Facebook.init(options);
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
+                jQuery.Select("#ckbSelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
                     if (loginResponse.status == "connected")
@@ -48,7 +49,7 @@ namespace FacebookScript
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
-                
+
             };
             Element reference = Document.GetElementsByTagName("script")[0];
             string JSID = "facebook-jssdk";
@@ -76,27 +77,27 @@ namespace FacebookScript
             td.HeadersDouble[0] = new string[comboBoxes.Length];
             comboBoxes.Each(delegate(int i, Element e)
             {
-                
-                  //  fieldList[(string)e.GetAttribute("field")] = (string)e.GetAttribute("display");
-                    fieldNames.Add(e.GetAttribute("field"));
-                   td.HeadersDouble[0][i] = (string)e.GetAttribute("display");
-                
-                
+
+                //  fieldList[(string)e.GetAttribute("field")] = (string)e.GetAttribute("display");
+                fieldNames.Add(e.GetAttribute("field"));
+                td.HeadersDouble[0][i] = (string)e.GetAttribute("display");
+
+
             });
             string query = "SELECT " + fieldNames.Join(",") + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
-       //     Script.Literal("document.write('Query: '+{0})", query);
+            //     Script.Literal("document.write('Query: '+{0})", query);
             //string query = "SELECT uid, first_name, last_name, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-            
+
             // td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
 
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
-                
-               // int x = 0;
+
+                // int x = 0;
                 //td.Headers = new string[][] { (string[])fieldNames };
-                
+
                 td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
@@ -120,30 +121,24 @@ namespace FacebookScript
                         bindingOptions.ID = TableBinding;
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
-                            Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, delegate(BindingDataChangedEventArgs args)
-                            {
-                                Script.Literal("document.write({0})", args.Binding);
-                            });
+                            Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingDataChanged(HandleTableSelection));
+
                         });
                     }
                 });
             });
-            //Facebook.api(queryOptions, delegate(QueryResponse[] queryResponse)
-            //{
-            //    for (int i = 0; i < queryResponse[2].fql_result_set.Length; i++)
-            //    {
-            //        MultiQueryResults results = queryResponse[2].fql_result_set[i];
-            //        td.Rows[i][0] = results.first_name;
-            //        td.Rows[i][1] = results.last_name;
-            //        td.Rows[i][2] = results.email;
-            //        td.Rows[i][3] = results.sex;
-            //    }
-            //    GetDataAsyncOptions options = new GetDataAsyncOptions();
-            //    options.CoercionType = CoercionType.Table;
-            //    Office.Context.Document.SetSelectedDataAsync(td, options);
-            //});
-
         }
+        public static void HandleTableSelection(BindingDataChangedEventArgs args)
+        {
+        }
+        public static void HandleSelectAllCheckBox(jQueryEvent eventArgs)
+        {
+            bool convertToChecked = jQuery.Select("#ckbSelectAll").Is(":checked");
 
+            jQuery.Select("#FieldChoices input").Each(delegate(int i, Element e)
+            {
+                ((CheckBoxElement)e).Checked = convertToChecked;
+            });
+        }
     }
 }

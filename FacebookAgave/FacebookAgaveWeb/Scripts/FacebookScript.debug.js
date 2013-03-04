@@ -55,12 +55,22 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
                 var bindingOptions = {};
                 bindingOptions.id = FacebookScript.FacebookScript.tableBinding;
                 Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Table, bindingOptions, function(bindingResult) {
-                    Office.select('bindings#' + FacebookScript.FacebookScript.tableBinding).addHandlerAsync(Office.EventType.BindingSelectionChanged, function(args) {
-                        document.write(args.binding);
-                    });
+                    Office.select('bindings#' + FacebookScript.FacebookScript.tableBinding).addHandlerAsync(Office.EventType.BindingSelectionChanged, FacebookScript.FacebookScript.handleTableSelection);
                 });
             }
         });
+    });
+}
+FacebookScript.FacebookScript.handleTableSelection = function FacebookScript_FacebookScript$handleTableSelection(args) {
+    /// <param name="args" type="Object">
+    /// </param>
+}
+FacebookScript.FacebookScript.handleSelectAllCheckBox = function FacebookScript_FacebookScript$handleSelectAllCheckBox(eventArgs) {
+    /// <param name="eventArgs" type="jQueryEvent">
+    /// </param>
+    var convertToChecked = $('#ckbSelectAll').is(':checked');
+    $('#FieldChoices input').each(function(i, e) {
+        (e).checked = convertToChecked;
     });
 }
 
@@ -79,6 +89,7 @@ FacebookScript.FacebookScript.tableBinding = 'TableBinding';
         FB.init(options);
         $('#GetFriends').click(FacebookScript.FacebookScript.insertFriends);
         $('#LogOut').click(FacebookScript.FacebookScript.logOutOfFacebook);
+        $('#ckbSelectAll').click(FacebookScript.FacebookScript.handleSelectAllCheckBox);
         FB.getLoginStatus(function(loginResponse) {
             if (loginResponse.status === 'connected') {
                 FacebookScript.FacebookScript.userID = loginResponse.authResponse.userID;
