@@ -68,28 +68,42 @@ namespace FacebookScript
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            string query = "SELECT uid, first_name, last_name, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
+            //Dictionary<string, string> fieldList = new Dictionary<string,string>();
+            ArrayList fieldNames = new ArrayList();
+            TableData td = new TableData();
+            jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
+            td.HeadersDouble = new string[1][];
+            td.HeadersDouble[0] = new string[comboBoxes.Length];
+            comboBoxes.Each(delegate(int i, Element e)
+            {
+                
+                  //  fieldList[(string)e.GetAttribute("field")] = (string)e.GetAttribute("display");
+                    fieldNames.Add(e.GetAttribute("field"));
+                   td.HeadersDouble[0][i] = (string)e.GetAttribute("display");
+                
+                
+            });
+            string query = "SELECT " + fieldNames.Join(",") + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
+       //     Script.Literal("document.write('Query: '+{0})", query);
+            //string query = "SELECT uid, first_name, last_name, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-            TableData td = new TableData();
+            
             // td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
 
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
-                string[] fields = new string[response.data[0].Count];
-                int x = 0;
-                td.Headers = new string[][] { fields };
-                foreach (DictionaryEntry entry in Dictionary.GetDictionary(response.data[0]))
-                {
-                    fields[x++] = entry.Key;
-                }
+                
+               // int x = 0;
+                //td.Headers = new string[][] { (string[])fieldNames };
+                
                 td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
-                    td.Rows[i] = new string[fields.Length];
-                    for (int y = 0; y < fields.Length; y++)
+                    td.Rows[i] = new string[fieldNames.Count];
+                    for (int y = 0; y < fieldNames.Count; y++)
                     {
-                        td.Rows[i][y] = response.data[i][fields[y]] ?? "null";
+                        td.Rows[i][y] = response.data[i][(string)fieldNames[y]] ?? "null";
                     }
                 }
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
@@ -99,6 +113,18 @@ namespace FacebookScript
                     if (result.Status == AsyncResultStatus.Failed)
                     {
                         Script.Literal("write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                    }
+                    if (result.Status == AsyncResultStatus.Succeeded)
+                    {
+                        NameItemAsyncOptions bindingOptions = new NameItemAsyncOptions();
+                        bindingOptions.ID = TableBinding;
+                        Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
+                        {
+                            Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, delegate(BindingDataChangedEventArgs args)
+                            {
+                                Script.Literal("document.write({0})", args.Binding);
+                            });
+                        });
                     }
                 });
             });

@@ -164,6 +164,9 @@ namespace AgaveApi
         [PreserveCase]
         DocumentSelectionChanged,
         [PreserveCase]
+        BindingSelectionChanged,
+
+        [PreserveCase]
         BindingDataChanged
     }
     [Imported, IgnoreNamespace, ScriptName("Office.DocumentMode")]

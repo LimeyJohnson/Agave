@@ -25,24 +25,24 @@ FacebookScript.FacebookScript.logOutOfFacebook = function FacebookScript_Faceboo
 FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookScript$insertFriends(eventArgs) {
     /// <param name="eventArgs" type="jQueryEvent">
     /// </param>
-    var query = 'SELECT uid, first_name, last_name,contact_email, friend_request_count, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
+    var fieldNames = [];
+    var td = new Office.TableData();
+    var comboBoxes = $('#FieldChoices input:checked');
+    td.headers = new Array(1);
+    td.headers[0] = new Array(comboBoxes.length);
+    comboBoxes.each(function(i, e) {
+        fieldNames.add(e.getAttribute('field'));
+        td.headers[0][i] = e.getAttribute('display');
+    });
+    var query = 'SELECT ' + fieldNames.join(',') + ' FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
     var queryOptions = {};
     queryOptions.q = query;
-    var td = new Office.TableData();
     FB.api('fql', queryOptions, function(response) {
-        var fields = new Array(Object.getKeyCount(response.data[0]));
-        var x = 0;
-        td.headers = [ fields ];
-        var $dict1 = response.data[0];
-        for (var $key2 in $dict1) {
-            var entry = { key: $key2, value: $dict1[$key2] };
-            fields[x++] = entry.key;
-        }
         td.rows = new Array(response.data.length);
-        for (var i = 0; i < response.data.length; i++) {5
-            td.rows[i] = new Array(fields.length);
-            for (var y = 0; y < fields.length; y++) {
-                td.rows[i][y] = response.data[i][fields[y]] || 'null';
+        for (var i = 0; i < response.data.length; i++) {
+            td.rows[i] = new Array(fieldNames.length);
+            for (var y = 0; y < fieldNames.length; y++) {
+                td.rows[i][y] = response.data[i][fieldNames[y]] || 'null';
             }
         }
         var options = {};
@@ -50,6 +50,15 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
         Office.context.document.setSelectedDataAsync(td, options, function(result) {
             if (result.status === Office.AsyncResultStatus.Failed) {
                 write(result.error.name + ' : '+result.error.message);
+            }
+            if (result.status === Office.AsyncResultStatus.Succeeded) {
+                var bindingOptions = {};
+                bindingOptions.id = FacebookScript.FacebookScript.tableBinding;
+                Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Table, bindingOptions, function(bindingResult) {
+                    Office.select('bindings#' + FacebookScript.FacebookScript.tableBinding).addHandlerAsync(Office.EventType.BindingSelectionChanged, function(args) {
+                        document.write(args.binding);
+                    });
+                });
             }
         });
     });
