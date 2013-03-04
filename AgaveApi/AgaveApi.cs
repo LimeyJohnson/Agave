@@ -13,6 +13,7 @@ namespace AgaveApi
     public delegate void EventHandler();
     public delegate void BindingDataChanged(BindingDataChangedEventArgs args);
     public delegate void DocumentSelectionChanged(DocumentSelectionChangedEventArgs args);
+    public delegate void BindingSelectionChanged(BindingSelectionChangedEventArgs args);
     #endregion
     #region Classes
     [Imported, IgnoreNamespace]
@@ -53,6 +54,7 @@ namespace AgaveApi
         public extern void GetDataAsync(GetDataAsyncOptions options, ASyncResultCallBack callback);
         public extern void SetDataAsync(string data, GetDataAsyncOptions options);
         public extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
+        public extern void AddHandlerAsync(EventType eventType, BindingSelectionChanged handler);
         public string Id;
         public EventType Type;
     }
@@ -65,6 +67,8 @@ namespace AgaveApi
         public string TextValue;
         [ScriptName("value")]
         public object[][] MatrixValue;
+        [ScriptName("value")]
+        public TableData TableValue;
     }
     [Imported, IgnoreNamespace]
     public sealed class Error
@@ -109,6 +113,16 @@ namespace AgaveApi
     public sealed class DocumentSelectionChangedEventArgs
     {
         public DocumentObject Document;
+        public EventType Type;
+    }
+    [Imported, IgnoreNamespace, ScriptName("Object")]
+    public sealed class BindingSelectionChangedEventArgs
+    {
+        public BindingsObject Binding;
+        public int ColumnCount;
+        public int RowCount;
+        public int StartRow;
+        public int StartColumn;
         public EventType Type;
     }
     #endregion

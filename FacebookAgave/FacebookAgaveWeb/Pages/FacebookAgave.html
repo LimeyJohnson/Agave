@@ -20,29 +20,34 @@
     <script src="../Scripts/Office/1.0/office.js"></script>
     <script type="text/javascript" src="//connect.facebook.net/en_US/all/debug.js"></script>
     <!-- Add your JavaScript to the following file -->
-    <script src="../Scripts/mscorlib.js"></script>
+    <script src="../Scripts/mscorlib.debug.js"></script>
     <script src="../Scripts/FacebookScript.debug.js"></script>
 </head>
 <body>
     <div id="fb-root"></div>
     <!-- Replace the following with your content -->
-    <div id="Content">
-        <input type="button" value="Log Out" id="LogOut" />
-        <input type="button" value="Insert Friends Table" id="GetFriends" />
-    </div>
-    <div id="SelectAll">
-        <input id="ckbSelectAll" type="checkbox" />Select All<br />
-    </div>
-    <div id="FieldChoices">
-        <!-- Combo boxes of field choices-->
+    <div id="insert">
+        <div id="buttons">
+            <input type="button" value="Log Out" id="LogOut" />
+            <input type="button" value="Insert Friends Table" id="GetFriends" />
+        </div>
+        <div id="SelectAll">
+            <input id="ckbSelectAll" type="checkbox" />Select All<br />
+        </div>
+        <div id="FieldChoices">
+            <!-- Combo boxes of field choices-->
 
-        <input id="Checkbox1" type="checkbox" field="first_name" display="First Name" />First Name<br />
-    
-    <input id="Checkbox2" type="checkbox" field="last_name" display="Last Name" />Last Name<br />
-    <input id="Checkbox3" type="checkbox" field="birthday_date" display="Birthday" />Birthday<br />
-    <input id="Checkbox4" type="checkbox" field="sex" display="Sex" />Sex<br />
-    <input id="Checkbox5" type="checkbox" field="friend_count" display="Friend Count" />Friend Count
+            <input id="Checkbox1" type="checkbox" field="first_name" display="First Name" />First Name<br />
 
+            <input id="Checkbox2" type="checkbox" field="last_name" display="Last Name" />Last Name<br />
+            <input id="Checkbox3" type="checkbox" field="birthday_date" display="Birthday" />Birthday<br />
+            <input id="Checkbox4" type="checkbox" field="sex" display="Sex" />Sex<br />
+            <input id="Checkbox5" type="checkbox" field="friend_count" display="Friend Count" />Friend Count
+
+        </div>
+    </div>
+    <div id="friend">
+        <img id="profilepic" alt="Profile Pic" />
     </div>
 </body>
 </html>

@@ -18,8 +18,10 @@ namespace FacebookScript
         public static string TableBinding = "TableBinding";
         static FacebookScript()
         {
+
             FacebookWindow.AsyncInit = delegate()
             {
+
                 InitOptions options = new InitOptions();
                 options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
                 options.appId = "263395420459543";
@@ -28,7 +30,8 @@ namespace FacebookScript
                 Facebook.init(options);
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
-                jQuery.Select("#ckbSelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
+                jQuery.Select("#SelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
+                jQuery.Select("#friend").Hide();
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
                     if (loginResponse.status == "connected")
@@ -71,16 +74,19 @@ namespace FacebookScript
         {
             //Dictionary<string, string> fieldList = new Dictionary<string,string>();
             ArrayList fieldNames = new ArrayList();
+            
             TableData td = new TableData();
             jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
             td.HeadersDouble = new string[1][];
-            td.HeadersDouble[0] = new string[comboBoxes.Length];
+            td.HeadersDouble[0] = new string[comboBoxes.Length+1];
+            fieldNames.Add("uid");
+            td.HeadersDouble[0][0] = "ID";
             comboBoxes.Each(delegate(int i, Element e)
             {
 
                 //  fieldList[(string)e.GetAttribute("field")] = (string)e.GetAttribute("display");
                 fieldNames.Add(e.GetAttribute("field"));
-                td.HeadersDouble[0][i] = (string)e.GetAttribute("display");
+                td.HeadersDouble[0][i+1] = (string)e.GetAttribute("display");
 
 
             });
@@ -107,6 +113,7 @@ namespace FacebookScript
                         td.Rows[i][y] = response.data[i][(string)fieldNames[y]] ?? "null";
                     }
                 }
+                ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
                 Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
@@ -119,17 +126,35 @@ namespace FacebookScript
                     {
                         NameItemAsyncOptions bindingOptions = new NameItemAsyncOptions();
                         bindingOptions.ID = TableBinding;
+                        jQuery.Select("#friend").Show();
+                        jQuery.Select("#insert").Hide();
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
-                            Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingDataChanged(HandleTableSelection));
+                            Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+
+                            
 
                         });
                     }
                 });
             });
         }
-        public static void HandleTableSelection(BindingDataChangedEventArgs args)
+        public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.StartRow = args.StartRow;
+            options.StartColumn = 0;
+            options.RowCount = 1;
+            options.ColumnCount = 1;
+            options.CoercionType = CoercionType.Table;
+            Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
+            {
+                if (result.Status == AsyncResultStatus.Succeeded)
+                {
+                    string ID = (string)result.TableValue.Rows[0][0];
+                    ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + ID + "/picture";
+                }
+            });
         }
         public static void HandleSelectAllCheckBox(jQueryEvent eventArgs)
         {

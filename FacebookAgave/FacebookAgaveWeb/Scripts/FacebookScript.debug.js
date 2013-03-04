@@ -29,10 +29,12 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
     var td = new Office.TableData();
     var comboBoxes = $('#FieldChoices input:checked');
     td.headers = new Array(1);
-    td.headers[0] = new Array(comboBoxes.length);
+    td.headers[0] = new Array(comboBoxes.length + 1);
+    fieldNames.add('uid');
+    td.headers[0][0] = 'ID';
     comboBoxes.each(function(i, e) {
         fieldNames.add(e.getAttribute('field'));
-        td.headers[0][i] = e.getAttribute('display');
+        td.headers[0][i + 1] = e.getAttribute('display');
     });
     var query = 'SELECT ' + fieldNames.join(',') + ' FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
     var queryOptions = {};
@@ -45,6 +47,7 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
                 td.rows[i][y] = response.data[i][fieldNames[y]] || 'null';
             }
         }
+        (document.getElementById('profilepic')).src = 'http://graph.facebook.com/' + td.rows[0][0] + '/picture';
         var options = {};
         options.coercionType = Office.CoercionType.Table;
         Office.context.document.setSelectedDataAsync(td, options, function(result) {
@@ -54,6 +57,8 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
             if (result.status === Office.AsyncResultStatus.Succeeded) {
                 var bindingOptions = {};
                 bindingOptions.id = FacebookScript.FacebookScript.tableBinding;
+                $('#friend').show();
+                $('#insert').hide();
                 Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Table, bindingOptions, function(bindingResult) {
                     Office.select('bindings#' + FacebookScript.FacebookScript.tableBinding).addHandlerAsync(Office.EventType.BindingSelectionChanged, FacebookScript.FacebookScript.handleTableSelection);
                 });
@@ -64,6 +69,18 @@ FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookSc
 FacebookScript.FacebookScript.handleTableSelection = function FacebookScript_FacebookScript$handleTableSelection(args) {
     /// <param name="args" type="Object">
     /// </param>
+    var options = {};
+    options.startRow = args.startRow;
+    options.startColumn = 0;
+    options.rowCount = 1;
+    options.columnCount = 1;
+    options.coercionType = Office.CoercionType.Table;
+    Office.select('bindings#' + FacebookScript.FacebookScript.tableBinding).getDataAsync(options, function(result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+            var ID = result.value.rows[0][0];
+            (document.getElementById('profilepic')).src = 'http://graph.facebook.com/' + ID + '/picture';
+        }
+    });
 }
 FacebookScript.FacebookScript.handleSelectAllCheckBox = function FacebookScript_FacebookScript$handleSelectAllCheckBox(eventArgs) {
     /// <param name="eventArgs" type="jQueryEvent">
@@ -89,7 +106,8 @@ FacebookScript.FacebookScript.tableBinding = 'TableBinding';
         FB.init(options);
         $('#GetFriends').click(FacebookScript.FacebookScript.insertFriends);
         $('#LogOut').click(FacebookScript.FacebookScript.logOutOfFacebook);
-        $('#ckbSelectAll').click(FacebookScript.FacebookScript.handleSelectAllCheckBox);
+        $('#SelectAll').click(FacebookScript.FacebookScript.handleSelectAllCheckBox);
+        $('#friend').hide();
         FB.getLoginStatus(function(loginResponse) {
             if (loginResponse.status === 'connected') {
                 FacebookScript.FacebookScript.userID = loginResponse.authResponse.userID;
