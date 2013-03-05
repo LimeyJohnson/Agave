@@ -73,19 +73,19 @@ namespace FacebookScript
         public static void InsertFriends(jQueryEvent eventArgs)
         {
             //Dictionary<string, string> fieldList = new Dictionary<string,string>();
-            ArrayList fieldNames = new ArrayList();
             
             TableData td = new TableData();
             jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
             td.HeadersDouble = new string[1][];
             td.HeadersDouble[0] = new string[comboBoxes.Length+1];
-            fieldNames.Add("uid");
+            string[] fieldNames = new string[comboBoxes.Length + 1];
+            fieldNames[0] = "uid";
             td.HeadersDouble[0][0] = "ID";
             comboBoxes.Each(delegate(int i, Element e)
             {
 
                 //  fieldList[(string)e.GetAttribute("field")] = (string)e.GetAttribute("display");
-                fieldNames.Add(e.GetAttribute("field"));
+                fieldNames[i] = (string)e.GetAttribute("field");
                 td.HeadersDouble[0][i+1] = (string)e.GetAttribute("display");
 
 
@@ -107,8 +107,8 @@ namespace FacebookScript
                 td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
-                    td.Rows[i] = new string[fieldNames.Count];
-                    for (int y = 0; y < fieldNames.Count; y++)
+                    td.Rows[i] = new string[fieldNames.Length];
+                    for (int y = 0; y < fieldNames.Length; y++)
                     {
                         td.Rows[i][y] = response.data[i][(string)fieldNames[y]] ?? "null";
                     }

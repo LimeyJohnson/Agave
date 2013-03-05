@@ -25,15 +25,15 @@ FacebookScript.FacebookScript.logOutOfFacebook = function FacebookScript_Faceboo
 FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookScript$insertFriends(eventArgs) {
     /// <param name="eventArgs" type="jQueryEvent">
     /// </param>
-    var fieldNames = [];
     var td = new Office.TableData();
     var comboBoxes = $('#FieldChoices input:checked');
     td.headers = new Array(1);
     td.headers[0] = new Array(comboBoxes.length + 1);
-    fieldNames.add('uid');
+    var fieldNames = new Array(comboBoxes.length + 1);
+    fieldNames[0] = 'uid';
     td.headers[0][0] = 'ID';
     comboBoxes.each(function(i, e) {
-        fieldNames.add(e.getAttribute('field'));
+        fieldNames[i] = e.getAttribute('field');
         td.headers[0][i + 1] = e.getAttribute('display');
     });
     var query = 'SELECT ' + fieldNames.join(',') + ' FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';
