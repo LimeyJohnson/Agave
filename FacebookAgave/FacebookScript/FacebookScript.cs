@@ -76,38 +76,27 @@ namespace FacebookScript
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            //Dictionary<string, string> fieldList = new Dictionary<string,string>();
-            
-            TableData td = new TableData();
             jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
+
+            TableData td = new TableData();
             td.HeadersDouble = new string[1][];
             td.HeadersDouble[0] = new string[comboBoxes.Length+1];
-            string[] fieldNames = new string[comboBoxes.Length + 1];
-            fieldNames[0] = "uid";
             td.HeadersDouble[0][0] = "ID";
+
+            Array fieldNames = new Array();
+            fieldNames[fieldNames.Length] = "uid";
+            
             comboBoxes.Each(delegate(int i, Element e)
             {
-
-                //  fieldList[(string)e.GetAttribute("field")] = (string)e.GetAttribute("display");
-                fieldNames[i] = (string)e.GetAttribute("field");
+                fieldNames[fieldNames.Length] = (string)e.GetAttribute("field");
                 td.HeadersDouble[0][i+1] = (string)e.GetAttribute("display");
-
-
             });
             string query = "SELECT " + fieldNames.Join(",") + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
-            //     Script.Literal("document.write('Query: '+{0})", query);
-            //string query = "SELECT uid, first_name, last_name, birthday_date, sex, friend_count FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-
-            // td.HeadersDouble = new string[][] { new string[]{"First Name", "Last Name", "Birthday", "Gender", "Friend Count"} };
-
+          
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
-
-                // int x = 0;
-                //td.Headers = new string[][] { (string[])fieldNames };
-
                 td.Rows = new string[response.data.Length][];
                 for (int i = 0; i < response.data.Length; i++)
                 {
@@ -135,9 +124,6 @@ namespace FacebookScript
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-
-                            
-
                         });
                     }
                 });
