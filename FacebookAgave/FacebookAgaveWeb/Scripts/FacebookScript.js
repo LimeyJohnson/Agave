@@ -2,7 +2,7 @@
 (function($){
 Type.registerNamespace('FacebookScript');FacebookScript.FacebookScript=function(){}
 FacebookScript.FacebookScript.logOutOfFacebook=function(eventArgs){FB.logout(function(){
-});}
+FacebookScript.FacebookScript.userID=null;FacebookScript.FacebookScript.accessToken=null;});}
 FacebookScript.FacebookScript.insertFriends=function(eventArgs){var $0=[];var $1=new Office.TableData();var $2=$('#FieldChoices input:checked');$1.headers=new Array(1);$1.headers[0]=new Array($2.length+1);$0.add('uid');$1.headers[0][0]='ID';$2.each(function($p1_0,$p1_1){
 $0.add($p1_1.getAttribute('field'));$1.headers[0][$p1_0+1]=$p1_1.getAttribute('display');});var $3='SELECT '+$0.join(',')+' FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())';var $4={};$4.q=$3;FB.api('fql',$4,function($p1_0){
 $1.rows=new Array($p1_0.data.length);for(var $1_1=0;$1_1<$p1_0.data.length;$1_1++){$1.rows[$1_1]=new Array($0.length);for(var $1_2=0;$1_2<$0.length;$1_2++){$1.rows[$1_1][$1_2]=$p1_0.data[$1_1][$0[$1_2]]||'null';}}(document.getElementById('profilepic')).src='http://graph.facebook.com/'+$1.rows[0][0]+'/picture';var $1_0={};$1_0.coercionType=Office.CoercionType.Table;Office.context.document.setSelectedDataAsync($1,$1_0,function($p2_0){

@@ -20,6 +20,8 @@ FacebookScript.FacebookScript.logOutOfFacebook = function FacebookScript_Faceboo
     /// <param name="eventArgs" type="jQueryEvent">
     /// </param>
     FB.logout(function() {
+        FacebookScript.FacebookScript.userID = null;
+        FacebookScript.FacebookScript.accessToken = null;
     });
 }
 FacebookScript.FacebookScript.insertFriends = function FacebookScript_FacebookScript$insertFriends(eventArgs) {

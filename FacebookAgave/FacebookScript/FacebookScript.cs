@@ -68,7 +68,11 @@ namespace FacebookScript
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
-            Facebook.logout(delegate() { });
+            Facebook.logout(delegate() 
+            {
+                UserID = null;
+                AccessToken = null;
+            });
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
