@@ -81,7 +81,7 @@ namespace AgaveApi
     {
         public object[] Headers;
         [ScriptName("headers")]
-        public object[][] HeadersDouble;
+        public Array[] HeadersDouble;
         public object[][] Rows;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]

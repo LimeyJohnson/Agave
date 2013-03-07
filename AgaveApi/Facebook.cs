@@ -11,16 +11,19 @@ namespace FreindsLibrary
         public delegate void ApiDelegate(ApiResponse response);
         public delegate void QueryDelgate(QueryResponse[] response);
         public delegate void LoginDelegate(LoginResponse response);
+        public delegate void UIDelegate(UIResponse response);
         public delegate void LogoutDelegate();
         
         public static void init(InitOptions options) { }
         public static void api(string apiCall, ApiDelegate response) { }
         public static void api(string apiCall, ApiOptions options, ApiDelegate response) { }
+        public static void api(string apiCall, string noun, ApiOptions options, ApiDelegate response) { }
         public static void api(ApiOptions options, QueryDelgate response) { }
         public static void login(LoginDelegate d) { }
         public static void login(LoginDelegate d, LoginOptions options) { }
         public static void logout(LogoutDelegate d) { }
         public static void getLoginStatus(LoginDelegate response) { }
+        public static void ui(UIOptions options, UIDelegate response) { }
         [ScriptName("Event")]
         public static FBEvent Event;
       
@@ -39,6 +42,25 @@ namespace FreindsLibrary
         public bool status;
         public bool cookie;
         public bool xfbml;
+    }
+    [Imported, IgnoreNamespace, ScriptName("Object")]
+    public sealed class UIOptions
+    {
+        public string Method;
+        public string Display;
+        public string Redirect_uri;
+        public string Link;
+        public string Picture;
+        public string Name;
+        public string Caption;
+        public string Discription;
+        public string From;
+        public string To;
+
+    }
+    public sealed class UIResponse
+    {
+        public string Post_id;
     }
     public sealed class LoginResponse
     {
