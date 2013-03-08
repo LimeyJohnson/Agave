@@ -205,5 +205,28 @@ namespace FacebookScript
                 });
             });
         }
+        public static void setBinding()
+        {
+            NameItemAsyncOptions options = new NameItemAsyncOptions();
+            options.ID = "TextBinding";
+            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Text, options, delegate(ASyncResult result)
+            {
+                Office.Select("bindings#TextBinding").AddHandlerAsync(EventType.BindingDataChanged, new BindingSelectionChanged(DataChanged));
+            });
+           
+        }
+        public static void DataChanged(BindingSelectionChangedEventArgs args)
+        {
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Text;
+           Office.Select("bindings#TextBinding").GetDataAsync(options,delegate(ASyncResult result)
+           {
+               if(result.Status == AsyncResultStatus.Succeeded)
+               {
+                   jQuery.Select("#selectedDataTxt").Value(result.TextValue);
+               }
+           });
+            
+        }
     }
 }

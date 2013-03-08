@@ -135,6 +135,24 @@ FacebookScript.FacebookScript.postToAllFreinds = function FacebookScript_Faceboo
         });
     });
 }
+FacebookScript.FacebookScript.setBinding = function FacebookScript_FacebookScript$setBinding() {
+    var options = {};
+    options.id = 'TextBinding';
+    Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Text, options, function(result) {
+        Office.select('bindings#TextBinding').addHandlerAsync(Office.EventType.BindingDataChanged, FacebookScript.FacebookScript.dataChanged);
+    });
+}
+FacebookScript.FacebookScript.dataChanged = function FacebookScript_FacebookScript$dataChanged(args) {
+    /// <param name="args" type="Object">
+    /// </param>
+    var options = {};
+    options.coercionType = Office.CoercionType.Text;
+    Office.select('bindings#TextBinding').getDataAsync(options, function(result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+            $('#selectedDataTxt').val(result.value);
+        }
+    });
+}
 
 
 FacebookScript.FacebookScript.registerClass('FacebookScript.FacebookScript');
