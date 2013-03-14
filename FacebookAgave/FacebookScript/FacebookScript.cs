@@ -82,11 +82,6 @@ namespace FacebookScript
             dict["uid"] = "ID";
             jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
 
-            
-
-          //  Array fieldNames = new Array();
-           // fieldNames[fieldNames.Length] = "uid";
-            
             comboBoxes.Each(delegate(int i, Element e)
             {
                 dict[(string)e.GetAttribute("field")] = e.GetAttribute("display");
@@ -126,7 +121,7 @@ namespace FacebookScript
                     }
                     if (result.Status == AsyncResultStatus.Succeeded)
                     {
-                        NameItemAsyncOptions bindingOptions = new NameItemAsyncOptions();
+                        BindingOptions bindingOptions = new BindingOptions();
                         bindingOptions.ID = TableBinding;
                         jQuery.Select("#friend").Show();
                         jQuery.Select("#insert").Hide();
@@ -207,7 +202,7 @@ namespace FacebookScript
         }
         public static void setBinding()
         {
-            NameItemAsyncOptions options = new NameItemAsyncOptions();
+            BindingOptions options = new BindingOptions();
             options.ID = "TextBinding";
             Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Text, options, delegate(ASyncResult result)
             {

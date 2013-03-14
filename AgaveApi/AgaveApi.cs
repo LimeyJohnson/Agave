@@ -33,10 +33,12 @@ namespace AgaveApi
     [Imported, IgnoreNamespace]
     public class BindingsObject
     {
-        public extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, NameItemAsyncOptions options);
-        public extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, NameItemAsyncOptions options, ASyncResultCallBack callback);
-        public extern void AddFromSelectionAsync(BindingType bindingType, NameItemAsyncOptions options);
-        public extern void AddFromSelectionAsync(BindingType bindingType, NameItemAsyncOptions options, ASyncResultCallBack callback);
+        public extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, BindingOptions options);
+        public extern void AddFromNamedItemAsync(string bindingID, BindingType bindingType, BindingOptions options, ASyncResultCallBack callback);
+        public extern void AddFromSelectionAsync(BindingType bindingType, BindingOptions options);
+        public extern void AddFromSelectionAsync(BindingType bindingType, BindingOptions options, ASyncResultCallBack callback);
+        public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options);
+        public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options, ASyncResultCallBack callback);
     }
     [Imported, IgnoreNamespace]
     public class DocumentObject
@@ -85,11 +87,16 @@ namespace AgaveApi
         public object[][] Rows;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
-    public sealed class NameItemAsyncOptions
+    public class BindingOptions
     {
         public string ID;
+        public object AsyncContext;
     }
-
+    [Imported, IgnoreNamespace, ScriptName("Object")]
+   public sealed class PromptBindingOptions: BindingOptions
+    {
+        string PromptText;
+    }
 
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class GetDataAsyncOptions

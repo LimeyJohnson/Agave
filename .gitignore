@@ -2,6 +2,7 @@
 bin
 obj
 *.suo
-
+FacebookScript.debug.js
+FacebookScript.js
 # mstest test results
 TestResults
