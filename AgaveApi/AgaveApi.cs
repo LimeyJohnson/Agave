@@ -55,6 +55,7 @@ namespace AgaveApi
         public extern void GetDataAsync(ASyncResultCallBack callback);
         public extern void GetDataAsync(GetDataAsyncOptions options, ASyncResultCallBack callback);
         public extern void SetDataAsync(string data, GetDataAsyncOptions options);
+        public extern void SetDataAsync(TableData data, GetDataAsyncOptions options, ASyncResultCallBack callback);
         public extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
         public extern void AddHandlerAsync(EventType eventType, BindingSelectionChanged handler);
         public string Id;

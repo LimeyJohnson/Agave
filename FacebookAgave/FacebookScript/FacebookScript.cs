@@ -17,6 +17,8 @@ namespace FacebookScript
         public static string AccessToken;
         public static string TableBinding = "TableBinding";
         public static string FriendID;
+        public static TableData DeleteMedata;
+        public static Dictionary<string, FacebookField> fields;
         static FacebookScript()
         {
 
@@ -34,6 +36,7 @@ namespace FacebookScript
                 jQuery.Select("#SelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
                 jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
+                jQuery.Select("#SetDataAgain").Click(new jQueryEventHandler(SetDataAgain));
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
                     if (loginResponse.status == "connected")
@@ -68,13 +71,49 @@ namespace FacebookScript
             }
 
         }
+        public static void InitFields()
+        {
+            fields["first_name"] = new FacebookField("first_name","First Name");
+            //fields["last_name" Last Name"Last Name<br />
+            //fields["birthday_date" Birthday"Birthday<br />
+            //fields["sex" Sex" Sex<br />
+            //fields["mutual_friend_count" Mutual Friends" Mutual Friends<br />
+            //fields["quotes" Quotes " Quotes<br />
+            //fields["political" Political" Political<br />
+            //fields["relationship_status" Relationship Status" Relationship Status<br />
+            //fields["religion" Religion" Religion<br />
+            //fields["wall_count" Wall Count" Wall Count<br />
+            //fields["friend_count" Friend Count"Friend Count
+        }
+        public static void InsertFieldCheckboxes()
+        {
+        }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
-            Facebook.logout(delegate() 
+            Facebook.logout(delegate()
             {
                 UserID = null;
                 AccessToken = null;
             });
+        }
+        public static void SetDataAgain(jQueryEvent eventArgs)
+        {
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Table;
+            object[][] newRows = new object[1][];
+            newRows[0] = new object[3];
+            newRows[0][0] = "This";
+            newRows[0][1] = "new";
+            newRows[0][2] = "row";
+            DeleteMedata.Rows = newRows;
+
+            Office.Select("bindings#" + TableBinding).SetDataAsync(DeleteMedata, options, delegate(ASyncResult setResult)
+            {
+                if (setResult.Status == AsyncResultStatus.Succeeded)
+                {
+                }
+            });
+
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
@@ -85,8 +124,8 @@ namespace FacebookScript
             comboBoxes.Each(delegate(int i, Element e)
             {
                 dict[(string)e.GetAttribute("field")] = e.GetAttribute("display");
-               // fieldNames[fieldNames.Length] = (string)e.GetAttribute("field");
-               // td.HeadersDouble[0][i+1] = (string)e.GetAttribute("display");
+                // fieldNames[fieldNames.Length] = (string)e.GetAttribute("field");
+                // td.HeadersDouble[0][i+1] = (string)e.GetAttribute("display");
             });
             TableData td = new TableData();
             td.HeadersDouble = new Array[1];
@@ -98,7 +137,7 @@ namespace FacebookScript
             string query = "SELECT " + dict.Keys.Join(",") + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-          
+
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
                 td.Rows = new string[response.data.Length][];
@@ -113,6 +152,7 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
+                DeleteMedata = td;
                 Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
                     if (result.Status == AsyncResultStatus.Failed)
@@ -124,7 +164,7 @@ namespace FacebookScript
                         BindingOptions bindingOptions = new BindingOptions();
                         bindingOptions.ID = TableBinding;
                         jQuery.Select("#friend").Show();
-                        jQuery.Select("#insert").Hide();
+                        //jQuery.Select("#insert").Hide();
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
@@ -163,7 +203,7 @@ namespace FacebookScript
         {
             if (FriendID != null && FriendID != "")
             {
-               UIOptions options = new UIOptions();
+                UIOptions options = new UIOptions();
                 options.To = FriendID;
                 options.From = UserID;
                 options.Method = "feed";
@@ -208,20 +248,20 @@ namespace FacebookScript
             {
                 Office.Select("bindings#TextBinding").AddHandlerAsync(EventType.BindingDataChanged, new BindingSelectionChanged(DataChanged));
             });
-           
+
         }
         public static void DataChanged(BindingSelectionChangedEventArgs args)
         {
             GetDataAsyncOptions options = new GetDataAsyncOptions();
             options.CoercionType = CoercionType.Text;
-           Office.Select("bindings#TextBinding").GetDataAsync(options,delegate(ASyncResult result)
-           {
-               if(result.Status == AsyncResultStatus.Succeeded)
-               {
-                   jQuery.Select("#selectedDataTxt").Value(result.TextValue);
-               }
-           });
-            
+            Office.Select("bindings#TextBinding").GetDataAsync(options, delegate(ASyncResult result)
+            {
+                if (result.Status == AsyncResultStatus.Succeeded)
+                {
+                    jQuery.Select("#selectedDataTxt").Value(result.TextValue);
+                }
+            });
+
         }
     }
 }
