@@ -36,7 +36,7 @@ namespace FacebookScript
                 return this.m_fieldName;
             }
         }
-        public string Html
+        public virtual string Html
         {
             get
             {

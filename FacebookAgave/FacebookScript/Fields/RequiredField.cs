@@ -18,5 +18,12 @@ namespace FacebookScript
                 return true;
             }
         }
+        public override string Html
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }

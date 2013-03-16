@@ -87,14 +87,19 @@ namespace FacebookScript
             fields["religion"] = new Field("religion", "Religion");
             fields["wall_count"] = new Field("wall_count", "Wall Count");
             fields["friend_count"] = new Field("friend_count", "Friend Count");
-            fields["work"] = new ArrayField("work", "Employer", "employer", "name");
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name");
+            fields["work_Position"] = new StructField("work", "Position", "position", "name");
         }
         public static void InsertFieldCheckboxes()
         {
             jQueryObject comboBoxLocation = jQuery.Select("#FieldChoices");
             jQuery.Each(fields, delegate(string s, object f) 
             {
-                comboBoxLocation.Append(((Field) f).Html);
+                string html = ((Field) f).Html;
+                if(html != null && html != "")
+                {
+                  comboBoxLocation.Append(html);
+                }
             });
             
             //foreach (DictionaryEntry field in Dictionary.GetDictionary(fields))
@@ -131,20 +136,30 @@ namespace FacebookScript
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            Dictionary dict = new Dictionary();
-            foreach (DictionaryEntry entry in Dictionary.GetDictionary(fields))
-            {
-                Field ff = (Field) entry.Value;
-                if(ff.Checked) dict[ff.FieldName] = ff.DisplayText;
-            }
             TableData td = new TableData();
+            Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
             td.HeadersDouble[0] = new Array();
-            foreach (DictionaryEntry entry in Dictionary.GetDictionary(dict))
+            
+            Dictionary<string, Field> dict = new Dictionary<string, Field>();
+            jQuery.Each(fields, delegate(string name, object value)
             {
-                td.HeadersDouble[0][td.HeadersDouble[0].Length] = entry.Value;
-            }
-            string query = "SELECT " + dict.Keys.Join(",") + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
+                Field ff = (Field)value;
+                if(ff.Checked)
+                {
+                    dict[name] = ff;
+                    td.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
+                    fieldNames[fieldNames.Length] = ff.FieldName;
+                }
+            });
+            
+            //remove duplicates from field name
+            fieldNames = fieldNames.Filter(delegate(object o, int i, Array a)
+            {
+                return fieldNames.IndexOf(o) == i;
+            });
+            string fieldList = fieldNames.Join(",");
+            string query = "SELECT " +fieldList+ " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
             

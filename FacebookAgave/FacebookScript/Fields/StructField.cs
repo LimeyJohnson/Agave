@@ -9,11 +9,11 @@ using System.Collections;
 
 namespace FacebookScript
 {
-    public class ArrayField:Field
+    public class StructField:Field
     {
         string DictField;
         string SubDictField;
-        public ArrayField(string fieldName, string displayName, string dictField, string subDictField)
+        public StructField(string fieldName, string displayName, string dictField, string subDictField)
             : base(fieldName, displayName)
         {
             this.DictField = dictField;
