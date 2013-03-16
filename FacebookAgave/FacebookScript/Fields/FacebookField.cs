@@ -32,22 +32,19 @@ namespace FacebookScript
                 return this.m_fieldName;
             }
         }
-        public CheckBoxElement CheckBox
+        public string Html
         {
             get
             {
-                CheckBoxElement cb = (CheckBoxElement)Document.CreateElement("input");
-                cb.Type = "checkbox";
-                cb.ID = ID;
-                cb.Checked = true;
-                return cb;
+                string template = @"<input id='{0}' type='checkbox' checked='checked' />{1}<br />";
+                return string.Format(template, ID, DisplayText);
             }
         }
         public bool Checked
         {
             get
             {
-                return jQuery.Select(ID).Is(":checked");
+                return jQuery.Select("#"+ID).Is(":checked");
             }
         }
         private string ID

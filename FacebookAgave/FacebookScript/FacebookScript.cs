@@ -57,7 +57,8 @@ namespace FacebookScript
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
-
+                InitFields();
+                InsertFieldCheckboxes();
             };
             Element reference = Document.GetElementsByTagName("script")[0];
             string JSID = "facebook-jssdk";
@@ -73,20 +74,31 @@ namespace FacebookScript
         }
         public static void InitFields()
         {
-            fields["first_name"] = new FacebookField("first_name","First Name");
-            //fields["last_name" Last Name"Last Name<br />
-            //fields["birthday_date" Birthday"Birthday<br />
-            //fields["sex" Sex" Sex<br />
-            //fields["mutual_friend_count" Mutual Friends" Mutual Friends<br />
-            //fields["quotes" Quotes " Quotes<br />
-            //fields["political" Political" Political<br />
-            //fields["relationship_status" Relationship Status" Relationship Status<br />
-            //fields["religion" Religion" Religion<br />
-            //fields["wall_count" Wall Count" Wall Count<br />
-            //fields["friend_count" Friend Count"Friend Count
+            fields = new Dictionary<string, FacebookField>();
+            fields["first_name"] = new FacebookField("first_name", "First Name");
+            fields["last_name"] = new FacebookField("last_name", "Last Name");
+            fields["birthday_date"] = new FacebookField("birthday_date", "Birthday");
+            fields["sex"] = new FacebookField("sex", "Sex");
+            fields["mutual_friend_count"] = new FacebookField("mutual_friend_count", "Mutual Friends");
+            fields["quotes"] = new FacebookField("quotes", "Quotes");
+            fields["political"] = new FacebookField("political", "Political");
+            fields["relationship_status"] = new FacebookField("relationship_status", "Relationship Status");
+            fields["religion"] = new FacebookField("religion", "Religion");
+            fields["wall_count"] = new FacebookField("wall_count", "Wall Count");
+            fields["friend_count"] = new FacebookField("friend_count", "Friend Count");
         }
         public static void InsertFieldCheckboxes()
         {
+            jQueryObject comboBoxLocation = jQuery.Select("#FieldChoices");
+            jQuery.Each(fields, delegate(string s, object f) 
+            {
+                comboBoxLocation.Append(((FacebookField) f).Html);
+            });
+            
+            //foreach (DictionaryEntry field in Dictionary.GetDictionary(fields))
+            //{
+            //    comboBoxLocation.Append(((FacebookField)field.Value).Html);
+            //}
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
@@ -121,12 +133,11 @@ namespace FacebookScript
             dict["uid"] = "ID";
             jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
 
-            comboBoxes.Each(delegate(int i, Element e)
+            foreach (DictionaryEntry entry in Dictionary.GetDictionary(fields))
             {
-                dict[(string)e.GetAttribute("field")] = e.GetAttribute("display");
-                // fieldNames[fieldNames.Length] = (string)e.GetAttribute("field");
-                // td.HeadersDouble[0][i+1] = (string)e.GetAttribute("display");
-            });
+                FacebookField ff = (FacebookField) entry.Value;
+                if(ff.Checked) dict[ff.FieldName] = ff.DisplayText;
+            }
             TableData td = new TableData();
             td.HeadersDouble = new Array[1];
             td.HeadersDouble[0] = new Array();
@@ -137,7 +148,7 @@ namespace FacebookScript
             string query = "SELECT " + dict.Keys.Join(",") + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-
+            
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
                 td.Rows = new string[response.data.Length][];
