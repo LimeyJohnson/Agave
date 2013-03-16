@@ -18,7 +18,7 @@ namespace FacebookScript
         public static string TableBinding = "TableBinding";
         public static string FriendID;
         public static TableData DeleteMedata;
-        public static Dictionary<string, FacebookField> fields;
+        public static Dictionary<string, Field> fields;
         static FacebookScript()
         {
 
@@ -74,25 +74,27 @@ namespace FacebookScript
         }
         public static void InitFields()
         {
-            fields = new Dictionary<string, FacebookField>();
-            fields["first_name"] = new FacebookField("first_name", "First Name");
-            fields["last_name"] = new FacebookField("last_name", "Last Name");
-            fields["birthday_date"] = new FacebookField("birthday_date", "Birthday");
-            fields["sex"] = new FacebookField("sex", "Sex");
-            fields["mutual_friend_count"] = new FacebookField("mutual_friend_count", "Mutual Friends");
-            fields["quotes"] = new FacebookField("quotes", "Quotes");
-            fields["political"] = new FacebookField("political", "Political");
-            fields["relationship_status"] = new FacebookField("relationship_status", "Relationship Status");
-            fields["religion"] = new FacebookField("religion", "Religion");
-            fields["wall_count"] = new FacebookField("wall_count", "Wall Count");
-            fields["friend_count"] = new FacebookField("friend_count", "Friend Count");
+            fields = new Dictionary<string, Field>();
+            fields["uid"] = new RequiredField("uid", "ID");
+            fields["first_name"] = new Field("first_name", "First Name");
+            fields["last_name"] = new Field("last_name", "Last Name");
+            fields["birthday_date"] = new Field("birthday_date", "Birthday");
+            fields["sex"] = new Field("sex", "Sex");
+            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends");
+            fields["quotes"] = new Field("quotes", "Quotes");
+            fields["political"] = new Field("political", "Political");
+            fields["relationship_status"] = new Field("relationship_status", "Relationship Status");
+            fields["religion"] = new Field("religion", "Religion");
+            fields["wall_count"] = new Field("wall_count", "Wall Count");
+            fields["friend_count"] = new Field("friend_count", "Friend Count");
+            fields["work"] = new ArrayField("work", "Employer", "employer", "name");
         }
         public static void InsertFieldCheckboxes()
         {
             jQueryObject comboBoxLocation = jQuery.Select("#FieldChoices");
             jQuery.Each(fields, delegate(string s, object f) 
             {
-                comboBoxLocation.Append(((FacebookField) f).Html);
+                comboBoxLocation.Append(((Field) f).Html);
             });
             
             //foreach (DictionaryEntry field in Dictionary.GetDictionary(fields))
@@ -130,12 +132,9 @@ namespace FacebookScript
         public static void InsertFriends(jQueryEvent eventArgs)
         {
             Dictionary dict = new Dictionary();
-            dict["uid"] = "ID";
-            jQueryObject comboBoxes = jQuery.Select("#FieldChoices input:checked");
-
             foreach (DictionaryEntry entry in Dictionary.GetDictionary(fields))
             {
-                FacebookField ff = (FacebookField) entry.Value;
+                Field ff = (Field) entry.Value;
                 if(ff.Checked) dict[ff.FieldName] = ff.DisplayText;
             }
             TableData td = new TableData();
@@ -157,7 +156,9 @@ namespace FacebookScript
                     td.Rows[i] = new string[td.HeadersDouble[0].Length];
                     for (int y = 0; y < td.HeadersDouble[0].Length; y++)
                     {
-                        td.Rows[i][y] = response.data[i][dict.Keys[y]] ?? "null";
+                        string fn = dict.Keys[y];
+                        Field f = fields[fn];
+                        td.Rows[i][y] = f.ParseResult(response.data[i]);
                     }
                 }
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";

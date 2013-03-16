@@ -38,7 +38,9 @@
     </None>
     <None Include="Properties\FxCop.ruleset" />
     <None Include="Properties\Script.template" />
-    <Compile Include="Fields\FacebookField.cs" />
+    <Compile Include="Fields\ArrayField.cs" />
+    <Compile Include="Fields\Field.cs" />
+    <Compile Include="Fields\RequiredField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FacebookScript.cs" />
   </ItemGroup>

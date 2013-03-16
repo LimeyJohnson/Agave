@@ -8,15 +8,19 @@ using System.Collections;
 
 namespace FacebookScript
 {
-    public class FacebookField
+    public class Field
     {
         private string m_displayText;
         private string m_fieldName;
         private static string checkBoxPrefix = "fieldscb";
-        public FacebookField(string fieldName, string displayName)
+        public Field(string fieldName, string displayName)
         {
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
+        }
+        public virtual string ParseResult(Dictionary row)
+        {
+            return (string)row[FieldName] ?? "null";
         }
         public string DisplayText
         {
@@ -40,7 +44,7 @@ namespace FacebookScript
                 return string.Format(template, ID, DisplayText);
             }
         }
-        public bool Checked
+        public virtual bool Checked
         {
             get
             {
@@ -54,5 +58,6 @@ namespace FacebookScript
                 return checkBoxPrefix + FieldName;
             }
         }
+        
     }
 }
