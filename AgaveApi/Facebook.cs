@@ -56,6 +56,8 @@ namespace FreindsLibrary
         public string Discription;
         public string From;
         public string To;
+        [ScriptName("to")]
+        public Array ToArray;
 
     }
     public sealed class UIResponse

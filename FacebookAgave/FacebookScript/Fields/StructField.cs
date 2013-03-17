@@ -5,6 +5,7 @@ using jQueryApi;
 using FreindsLibrary;
 using AgaveApi;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 
 namespace FacebookScript
@@ -13,11 +14,15 @@ namespace FacebookScript
     {
         string DictField;
         string SubDictField;
-        public StructField(string fieldName, string displayName, string dictField, string subDictField)
+        int? ArrayIndex;
+        [AlternateSignature]
+        public extern StructField(string fieldName, string displayName, string dictField, string subDictField);
+        public StructField(string fieldName, string displayName, string dictField, string subDictField, int? arrayIndex)
             : base(fieldName, displayName)
         {
             this.DictField = dictField;
             this.SubDictField = subDictField;
+            this.ArrayIndex = arrayIndex;
         }
 
         public override string ParseResult(System.Collections.Dictionary row)
@@ -25,7 +30,22 @@ namespace FacebookScript
             string retVal= null;
             try
             {
-                retVal = (string)Script.Literal("{0}[{1}][{2}][{3}][{4}]", row,FieldName, 0, DictField, SubDictField);
+                if (ArrayIndex == null)
+                {
+                    if (SubDictField == null)
+                    {
+                        retVal = (string)Script.Literal("{0}[{1}][{2}]", row, FieldName, DictField);
+                    }
+                    else
+                    {
+                        throw Exception.Create("Not Implemented", null);
+                    }
+                }
+                else
+                {
+                    retVal = (string)Script.Literal("{0}[{1}][{2}][{3}][{4}]", row, FieldName, ArrayIndex, DictField, SubDictField);
+                }
+                
             }
             catch
             {

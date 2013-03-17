@@ -47,7 +47,7 @@ namespace FacebookScript
                     else
                     {
                         LoginOptions LoginOptions = new LoginOptions();
-                        LoginOptions.scope = "email,publish_actions,create_event,user_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
+                        LoginOptions.scope = "email,publish_actions,create_event,user_likes,friends_education_history, friends_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
                         Facebook.login(delegate(LoginResponse response)
                         {
                             UserID = response.authResponse.userID;
@@ -87,8 +87,16 @@ namespace FacebookScript
             fields["religion"] = new Field("religion", "Religion");
             fields["wall_count"] = new Field("wall_count", "Wall Count");
             fields["friend_count"] = new Field("friend_count", "Friend Count");
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name");
-            fields["work_Position"] = new StructField("work", "Position", "position", "name");
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name",0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name",0);
+            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null);
+            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null);
+            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null);
+            fields["interests"] = new Field("interests", "Interests");
+            fields["profile_url"] = new Field("profile_url", "Profile URL");
+            fields["sports"] = new ArrayField("sports", "Sports", "name");
+            fields["status_Message"] = new StructField("status", "Current Status", "message", null);
+            fields["status_Time"] = new StructField("status", "Current Status Time", "time", null);
         }
         public static void InsertFieldCheckboxes()
         {
@@ -191,7 +199,7 @@ namespace FacebookScript
                         BindingOptions bindingOptions = new BindingOptions();
                         bindingOptions.ID = TableBinding;
                         jQuery.Select("#friend").Show();
-                        //jQuery.Select("#insert").Hide();
+                        jQuery.Select("#insert").Hide();
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
@@ -202,20 +210,23 @@ namespace FacebookScript
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.StartRow = args.StartRow;
-            options.StartColumn = 0;
-            options.RowCount = 1;
-            options.ColumnCount = 1;
-            options.CoercionType = CoercionType.Table;
-            Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
+            if (args.StartRow > 1) // do nothing when the header column is selected
             {
-                if (result.Status == AsyncResultStatus.Succeeded)
+                GetDataAsyncOptions options = new GetDataAsyncOptions();
+                options.StartRow = args.StartRow;
+                options.StartColumn = 0;
+                options.RowCount = 1;
+                options.ColumnCount = 1;
+                options.CoercionType = CoercionType.Table;
+                Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
                 {
-                    FriendID = (string)result.TableValue.Rows[0][0];
-                    ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + FriendID + "/picture";
-                }
-            });
+                    if (result.Status == AsyncResultStatus.Succeeded)
+                    {
+                        FriendID = (string)result.TableValue.Rows[0][0];
+                        ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + FriendID + "/picture";
+                    }
+                });
+            }
         }
         public static void HandleSelectAllCheckBox(jQueryEvent eventArgs)
         {
@@ -258,9 +269,9 @@ namespace FacebookScript
                 UIOptions uiOptions = new UIOptions();
                 uiOptions.Display = "popup";
                 uiOptions.Method = "send";
-                uiOptions.To = friendsArray.Join(",");
+                uiOptions.ToArray = friendsArray;
                 uiOptions.From = UserID;
-                uiOptions.Link = "";
+                uiOptions.Link = "http://google.com";
                 Facebook.ui(uiOptions, delegate(UIResponse UIResp)
                 {
                     Script.Literal("document.write({0});", UIResp.Post_id);
