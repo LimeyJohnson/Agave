@@ -36,22 +36,14 @@ namespace FacebookScript
                 jQuery.Select("#SelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
                 jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
-                jQuery.Select("#SetDataAgain").Click(new jQueryEventHandler(SetDataAgain));
+                jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
+                Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
-                    if (loginResponse.status == "connected")
+                    HandleFacebookAuthEvent(loginResponse);
+                    if (loginResponse.status != "connected")
                     {
-                        UserID = loginResponse.authResponse.userID;
-                        AccessToken = loginResponse.authResponse.accessToken;
-                    }
-                    else
-                    {
-                        LoginOptions LoginOptions = new LoginOptions();
-                        LoginOptions.scope = "email,publish_actions,create_event,user_likes,friends_education_history, friends_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
-                        Facebook.login(delegate(LoginResponse response)
-                        {
-                            UserID = response.authResponse.userID;
-                        }, LoginOptions);
+                        LogIntoFacebook(null);
                     }
                 });
             };
@@ -72,6 +64,31 @@ namespace FacebookScript
             }
 
         }
+        public static void HandleFacebookAuthEvent(LoginResponse response)
+        {
+            if (response.status == "connected")
+            {
+                jQuery.Select("#logon").Hide();
+                jQuery.Select("#insert").Show();
+                jQuery.Select("#friend").Show();
+                UserID = response.authResponse.userID;
+                AccessToken = response.authResponse.accessToken;
+            }
+            else
+            {
+                UserID = null;
+                AccessToken = null;
+                jQuery.Select("#insert").Hide();
+                jQuery.Select("#friend").Hide();
+                jQuery.Select("#logon").Show();
+            }
+        }
+        public static void LogIntoFacebook(jQueryEvent eventArgs)
+        {
+            LoginOptions LoginOptions = new LoginOptions();
+            LoginOptions.scope = "email,publish_actions,create_event,user_likes,friends_education_history, friends_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
+            Facebook.login(delegate(LoginResponse response) {}, LoginOptions);
+        }
         public static void InitFields()
         {
             fields = new Dictionary<string, Field>();
@@ -87,8 +104,8 @@ namespace FacebookScript
             fields["religion"] = new Field("religion", "Religion");
             fields["wall_count"] = new Field("wall_count", "Wall Count");
             fields["friend_count"] = new Field("friend_count", "Friend Count");
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name",0);
-            fields["work_Position"] = new StructField("work", "Position", "position", "name",0);
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", 0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name", 0);
             fields["current_location_City"] = new StructField("current_location", "Current City", "city", null);
             fields["current_location_State"] = new StructField("current_location", "Current State", "state", null);
             fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null);
@@ -101,46 +118,22 @@ namespace FacebookScript
         public static void InsertFieldCheckboxes()
         {
             jQueryObject comboBoxLocation = jQuery.Select("#FieldChoices");
-            jQuery.Each(fields, delegate(string s, object f) 
+            jQuery.Each(fields, delegate(string s, object f)
             {
-                string html = ((Field) f).Html;
-                if(html != null && html != "")
+                string html = ((Field)f).Html;
+                if (html != null && html != "")
                 {
-                  comboBoxLocation.Append(html);
+                    comboBoxLocation.Append(html);
                 }
             });
-            
-            //foreach (DictionaryEntry field in Dictionary.GetDictionary(fields))
-            //{
-            //    comboBoxLocation.Append(((FacebookField)field.Value).Html);
-            //}
+                     
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
             Facebook.logout(delegate()
             {
-                UserID = null;
-                AccessToken = null;
+               
             });
-        }
-        public static void SetDataAgain(jQueryEvent eventArgs)
-        {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Table;
-            object[][] newRows = new object[1][];
-            newRows[0] = new object[3];
-            newRows[0][0] = "This";
-            newRows[0][1] = "new";
-            newRows[0][2] = "row";
-            DeleteMedata.Rows = newRows;
-
-            Office.Select("bindings#" + TableBinding).SetDataAsync(DeleteMedata, options, delegate(ASyncResult setResult)
-            {
-                if (setResult.Status == AsyncResultStatus.Succeeded)
-                {
-                }
-            });
-
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
@@ -148,29 +141,29 @@ namespace FacebookScript
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
             td.HeadersDouble[0] = new Array();
-            
+
             Dictionary<string, Field> dict = new Dictionary<string, Field>();
             jQuery.Each(fields, delegate(string name, object value)
             {
                 Field ff = (Field)value;
-                if(ff.Checked)
+                if (ff.Checked)
                 {
                     dict[name] = ff;
                     td.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
                     fieldNames[fieldNames.Length] = ff.FieldName;
                 }
             });
-            
+
             //remove duplicates from field name
             fieldNames = fieldNames.Filter(delegate(object o, int i, Array a)
             {
                 return fieldNames.IndexOf(o) == i;
             });
             string fieldList = fieldNames.Join(",");
-            string query = "SELECT " +fieldList+ " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
+            string query = "SELECT " + fieldList + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-            
+
             Facebook.api("fql", queryOptions, delegate(ApiResponse response)
             {
                 td.Rows = new string[response.data.Length][];
