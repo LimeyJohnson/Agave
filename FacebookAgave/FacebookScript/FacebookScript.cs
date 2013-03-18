@@ -43,6 +43,7 @@ namespace FacebookScript
                     HandleFacebookAuthEvent(loginResponse);
                     if (loginResponse.status != "connected")
                     {
+                        
                         LogIntoFacebook(null);
                     }
                 });
@@ -68,6 +69,7 @@ namespace FacebookScript
         {
             if (response.status == "connected")
             {
+              
                 jQuery.Select("#logon").Hide();
                 jQuery.Select("#insert").Show();
                 jQuery.Select("#friend").Show();
@@ -137,6 +139,8 @@ namespace FacebookScript
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
+            jQuery.Select("#modal").Show();
+            jQuery.Select("#insert").Hide();
             TableData td = new TableData();
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
@@ -191,12 +195,14 @@ namespace FacebookScript
                     {
                         BindingOptions bindingOptions = new BindingOptions();
                         bindingOptions.ID = TableBinding;
-                        jQuery.Select("#friend").Show();
-                        jQuery.Select("#insert").Hide();
+                        
+                        
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                         });
+                        jQuery.Select("#modal").Hide();
+                        jQuery.Select("#friend").Show();
                     }
                 });
             });
