@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\App.css" />
+    <Content Include="Content\FhHRx.gif" />
     <Content Include="Content\Office.css" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />

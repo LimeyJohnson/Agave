@@ -5,18 +5,27 @@ using jQueryApi;
 using FreindsLibrary;
 using AgaveApi;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace FacebookScript
 {
-    public class FacebookField
+    public class Field
     {
         private string m_displayText;
         private string m_fieldName;
+        private bool m_defaultOff;
         private static string checkBoxPrefix = "fieldscb";
-        public FacebookField(string fieldName, string displayName)
+        [AlternateSignature]
+        public extern Field(string fieldName, string displayName);
+        public Field(string fieldName, string displayName, bool defaultOff)
         {
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
+            m_defaultOff = defaultOff;
+        }
+        public virtual string ParseResult(Dictionary row)
+        {
+            return (string)row[FieldName] ?? "null";
         }
         public string DisplayText
         {
@@ -32,22 +41,19 @@ namespace FacebookScript
                 return this.m_fieldName;
             }
         }
-        public CheckBoxElement CheckBox
+        public virtual string Html
         {
             get
             {
-                CheckBoxElement cb = (CheckBoxElement)Document.CreateElement("input");
-                cb.Type = "checkbox";
-                cb.ID = ID;
-                cb.Checked = true;
-                return cb;
+                string template = @"<input id='{0}' type='checkbox' "+((m_defaultOff!=null && m_defaultOff == true)? "": "checked='checked'")+" />{1}<br />";
+                return string.Format(template, ID, DisplayText);
             }
         }
-        public bool Checked
+        public virtual bool Checked
         {
             get
             {
-                return jQuery.Select(ID).Is(":checked");
+                return jQuery.Select("#"+ID).Is(":checked");
             }
         }
         private string ID
@@ -57,5 +63,6 @@ namespace FacebookScript
                 return checkBoxPrefix + FieldName;
             }
         }
+        
     }
 }
