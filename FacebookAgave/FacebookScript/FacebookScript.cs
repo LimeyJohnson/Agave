@@ -137,10 +137,24 @@ namespace FacebookScript
                
             });
         }
+        public static void Hide(string ID)
+        {
+            Script.SetInterval(delegate()
+            {
+                jQuery.Select("#" + ID).Hide();
+            }, 0);
+        }
+        public static void Show(string ID)
+        {
+            Script.SetInterval(delegate()
+            {
+                jQuery.Select("#" + ID).Show();
+            }, 0);
+        }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            jQuery.Select("#modal").Show();
-            jQuery.Select("#insert").Hide();
+            Show("modal");
+            Hide("insert");
             TableData td = new TableData();
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
@@ -201,8 +215,8 @@ namespace FacebookScript
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                         });
-                        jQuery.Select("#modal").Hide();
-                        jQuery.Select("#friend").Show();
+                        Hide("modal");
+                        Show("friend");
                     }
                 });
             });
