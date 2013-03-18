@@ -100,7 +100,7 @@ namespace FacebookScript
             fields["birthday_date"] = new Field("birthday_date", "Birthday");
             fields["sex"] = new Field("sex", "Sex");
             fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends");
-            fields["quotes"] = new Field("quotes", "Quotes");
+            fields["quotes"] = new Field("quotes", "Quotes", true);
             fields["political"] = new Field("political", "Political");
             fields["relationship_status"] = new Field("relationship_status", "Relationship Status");
             fields["religion"] = new Field("religion", "Religion");
@@ -155,6 +155,7 @@ namespace FacebookScript
         {
             Show("modal");
             Hide("insert");
+            Hide("friend");
             TableData td = new TableData();
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
