@@ -17,8 +17,11 @@ namespace FacebookScript
         public static string AccessToken;
         public static string TableBinding = "TableBinding";
         public static string FriendID;
-        public static TableData DeleteMedata;
         public static Dictionary<string, Field> fields;
+        private static jQueryObject Logon;
+        private static jQueryObject Insert;
+        private static jQueryObject Friend;
+        private static jQueryObject Modal;
         static FacebookScript()
         {
 
@@ -31,25 +34,30 @@ namespace FacebookScript
                 options.status = true;
                 options.cookie = false;
                 Facebook.init(options);
-                jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
-                jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
-                jQuery.Select("#SelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
-                jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
-                jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
-                jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
+
                 Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
                 Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
                 {
                     HandleFacebookAuthEvent(loginResponse);
                     if (loginResponse.status != "connected")
                     {
-                        
+
                         LogIntoFacebook(null);
                     }
                 });
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
+                jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
+                jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
+                jQuery.Select("#SelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
+                jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
+                jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
+                jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
+                Friend = jQuery.Select("#friend");
+                Logon = jQuery.Select("#logon");
+                Insert = jQuery.Select("#insert");
+                Modal = jQuery.Select("#modal");
                 InitFields();
                 InsertFieldCheckboxes();
             };
@@ -69,10 +77,10 @@ namespace FacebookScript
         {
             if (response.status == "connected")
             {
-              
-                jQuery.Select("#logon").Hide();
-                jQuery.Select("#insert").Show();
-                jQuery.Select("#friend").Show();
+
+                Hide(Logon);
+                Show(Insert);
+                Show(Friend);
                 UserID = response.authResponse.userID;
                 AccessToken = response.authResponse.accessToken;
             }
@@ -80,16 +88,16 @@ namespace FacebookScript
             {
                 UserID = null;
                 AccessToken = null;
-                jQuery.Select("#insert").Hide();
-                jQuery.Select("#friend").Hide();
-                jQuery.Select("#logon").Show();
+                Hide(Insert);
+                Hide(Friend);
+                Show(Logon);
             }
         }
         public static void LogIntoFacebook(jQueryEvent eventArgs)
         {
             LoginOptions LoginOptions = new LoginOptions();
             LoginOptions.scope = "email,publish_actions,create_event,user_likes,friends_education_history, friends_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
-            Facebook.login(delegate(LoginResponse response) {}, LoginOptions);
+            Facebook.login(delegate(LoginResponse response) { }, LoginOptions);
         }
         public static void InitFields()
         {
@@ -128,34 +136,34 @@ namespace FacebookScript
                     comboBoxLocation.Append(html);
                 }
             });
-                     
+
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
             Facebook.logout(delegate()
             {
-               
+
             });
         }
-        public static void Hide(string ID)
+        public static void Hide(jQueryObject element)
         {
             Script.SetInterval(delegate()
             {
-                jQuery.Select("#" + ID).Hide();
+                element.Hide();
             }, 0);
         }
-        public static void Show(string ID)
+        public static void Show(jQueryObject element)
         {
             Script.SetInterval(delegate()
             {
-                jQuery.Select("#" + ID).Show();
+                element.Show();
             }, 0);
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            Show("modal");
-            Hide("insert");
-            Hide("friend");
+            Show(Modal);
+            Hide(Insert);
+            Hide(Friend);
             TableData td = new TableData();
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
@@ -199,7 +207,6 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                DeleteMedata = td;
                 Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
                     if (result.Status == AsyncResultStatus.Failed)
@@ -210,14 +217,14 @@ namespace FacebookScript
                     {
                         BindingOptions bindingOptions = new BindingOptions();
                         bindingOptions.ID = TableBinding;
-                        
-                        
+
+
                         Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                         });
-                        Hide("modal");
-                        Show("friend");
+                        Hide(Modal);
+                        Show(Friend);
                     }
                 });
             });
