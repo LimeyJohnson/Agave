@@ -2,6 +2,7 @@
 bin
 obj
 pkgobj
+pkg
 *.suo
 FacebookScript.debug.js
 FacebookScript.js
