@@ -13,7 +13,7 @@ namespace FacebookScript
     public class ArrayField:Field
     {
         public string SubField;
-        public ArrayField(string fieldName, string displayText, string subField): base(fieldName, displayText)
+        public ArrayField(string fieldName, string displayText, string subField, string containerName): base(fieldName, displayText, containerName)
         {
             this.SubField = subField;
         }

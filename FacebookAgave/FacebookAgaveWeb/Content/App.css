@@ -8,6 +8,10 @@
 #insert, #friend, #logon {
     display:none;
 }
+#logon {
+    margin: 0 auto;
+    width: 50em;
+}
 #modal {
     display:    none;
     position:   fixed;

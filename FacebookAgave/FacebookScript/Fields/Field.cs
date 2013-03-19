@@ -13,14 +13,16 @@ namespace FacebookScript
     {
         private string m_displayText;
         private string m_fieldName;
+        private string m_containerName;
         private bool m_defaultOff;
         private static string checkBoxPrefix = "fieldscb";
         [AlternateSignature]
-        public extern Field(string fieldName, string displayName);
-        public Field(string fieldName, string displayName, bool defaultOff)
+        public extern Field(string fieldName, string displayName, string containerName);
+        public Field(string fieldName, string displayName, string containerName, bool defaultOff)
         {
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
+            this.m_containerName = containerName;
             m_defaultOff = defaultOff;
         }
         public virtual string ParseResult(Dictionary row)
@@ -34,6 +36,13 @@ namespace FacebookScript
                 return this.m_displayText;
             }
         }
+        public string ContainerName
+        {
+            get
+            {
+                return m_containerName;
+            }
+        }
         public string FieldName
         {
             get
@@ -45,7 +54,7 @@ namespace FacebookScript
         {
             get
             {
-                string template = @"<input id='{0}' type='checkbox' "+((m_defaultOff!=null && m_defaultOff == true)? "": "checked='checked'")+" />{1}<br />";
+                string template = @"<input id='{0}' type='checkbox' "+((m_defaultOff!=null && m_defaultOff == true)? "": "checked='checked'")+" />{1}";
                 return string.Format(template, ID, DisplayText);
             }
         }

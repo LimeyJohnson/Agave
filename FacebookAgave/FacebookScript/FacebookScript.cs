@@ -59,7 +59,7 @@ namespace FacebookScript
                 Insert = jQuery.Select("#insert");
                 Modal = jQuery.Select("#modal");
                 InitFields();
-                InsertFieldCheckboxes();
+                InsertAccordions();
             };
             Element reference = Document.GetElementsByTagName("script")[0];
             string JSID = "facebook-jssdk";
@@ -103,40 +103,47 @@ namespace FacebookScript
         {
             fields = new Dictionary<string, Field>();
             fields["uid"] = new RequiredField("uid", "ID");
-            fields["first_name"] = new Field("first_name", "First Name");
-            fields["last_name"] = new Field("last_name", "Last Name");
-            fields["birthday_date"] = new Field("birthday_date", "Birthday");
-            fields["sex"] = new Field("sex", "Sex");
-            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends");
-            fields["quotes"] = new Field("quotes", "Quotes", true);
-            fields["political"] = new Field("political", "Political");
-            fields["relationship_status"] = new Field("relationship_status", "Relationship Status");
-            fields["religion"] = new Field("religion", "Religion");
-            fields["wall_count"] = new Field("wall_count", "Wall Count");
-            fields["friend_count"] = new Field("friend_count", "Friend Count");
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", 0);
-            fields["work_Position"] = new StructField("work", "Position", "position", "name", 0);
-            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null);
-            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null);
-            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null);
-            fields["interests"] = new Field("interests", "Interests");
-            fields["profile_url"] = new Field("profile_url", "Profile URL");
-            fields["sports"] = new ArrayField("sports", "Sports", "name");
-            fields["status_Message"] = new StructField("status", "Current Status", "message", null);
-            fields["status_Time"] = new StructField("status", "Current Status Time", "time", null);
+            fields["first_name"] = new Field("first_name", "First Name", "basic");
+            fields["last_name"] = new Field("last_name", "Last Name", "basic");
+            fields["birthday_date"] = new Field("birthday_date", "Birthday", "basic");
+            fields["sex"] = new Field("sex", "Sex", "basic");
+            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "basic");
+            fields["quotes"] = new Field("quotes", "Quotes", "basic", true);
+            fields["political"] = new Field("political", "Political", "basic");
+            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "basic");
+            fields["religion"] = new Field("religion", "Religion", "basic");
+            fields["wall_count"] = new Field("wall_count", "Wall Count", "basic");
+            fields["friend_count"] = new Field("friend_count", "Friend Count", "basic");
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", 0, "basic");
+            fields["work_Position"] = new StructField("work", "Position", "position", "name", 0, "basic");
+            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "basic");
+            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "basic");
+            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "basic");
+            fields["interests"] = new Field("interests", "Interests", "basic");
+            fields["profile_url"] = new Field("profile_url", "Profile URL", "basic");
+            fields["sports"] = new ArrayField("sports", "Sports", "name", "basic");
+            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "basic");
+            fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "basic");
         }
-        public static void InsertFieldCheckboxes()
+        public static void InsertAccordions()
         {
             jQueryObject comboBoxLocation = jQuery.Select("#FieldChoices");
-            jQuery.Each(fields, delegate(string s, object f)
+            Dictionary<string, Array> accordions = new Dictionary<string, Array>();
+            jQuery.Each(fields, delegate(string s, object o)
             {
-                string html = ((Field)f).Html;
-                if (html != null && html != "")
+                Field f = (Field) o;
+                if (f.ContainerName != null)
                 {
-                    comboBoxLocation.Append(html);
-                }
+                    if (accordions[f.ContainerName] == null) accordions[f.ContainerName] = new Array();
+                    accordions[f.ContainerName][accordions[f.ContainerName].Length] = f.Html;
+                }                
             });
-
+            jQuery.Each(accordions, delegate(string s, object o)
+           {
+               string template = "<div class='group'><h3>{0}</h3><div>{1}</div></div>";
+               comboBoxLocation.Append(string.Format(template, s, ((Array) o).Join("<br/>")));
+           });
+            Script.Literal("$('#FieldChoices').accordion({header: '> div > h3'})");
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {

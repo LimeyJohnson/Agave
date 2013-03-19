@@ -16,9 +16,9 @@ namespace FacebookScript
         string SubDictField;
         int? ArrayIndex;
         [AlternateSignature]
-        public extern StructField(string fieldName, string displayName, string dictField, string subDictField);
-        public StructField(string fieldName, string displayName, string dictField, string subDictField, int? arrayIndex)
-            : base(fieldName, displayName)
+        public extern StructField(string fieldName, string displayName, string dictField, string subDictField, string containerName);
+        public StructField(string fieldName, string displayName, string dictField, string subDictField, int? arrayIndex, string containerName)
+            : base(fieldName, displayName, containerName)
         {
             this.DictField = dictField;
             this.SubDictField = subDictField;

@@ -73,6 +73,9 @@
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.ui.accordion.js" />
+    <Content Include="Scripts\jquery.ui.widget.js" />
     <Content Include="Scripts\mscorlib.debug.js" />
     <Content Include="Scripts\mscorlib.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.debug.js" />
