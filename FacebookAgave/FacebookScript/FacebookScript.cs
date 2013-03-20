@@ -10,7 +10,12 @@ using AgaveApi;
 using System.Collections;
 namespace FacebookScript
 {
-
+    enum AppState
+    {
+        LoggedOut = 1,
+        FieldSelection = 2,
+        Results = 3
+    };
     public static class FacebookScript
     {
         public static string UserID;
@@ -22,6 +27,8 @@ namespace FacebookScript
         private static jQueryObject Insert;
         private static jQueryObject Friend;
         private static jQueryObject Modal;
+        private static AppState CurrentAppState = AppState.LoggedOut;
+       
         static FacebookScript()
         {
 
@@ -73,25 +80,37 @@ namespace FacebookScript
             }
 
         }
+        public static void UpdateView()
+        {
+            switch (CurrentAppState)
+            {
+                case AppState.LoggedOut:
+                    Show(Logon);
+                    Hide(Insert);
+                Hide(Friend);
+                    break;
+                case AppState.FieldSelection:
+                    Show(Insert);
+                    Hide(Logon);
+                Hide(Friend);
+                    break;
+            }
+        }
         public static void HandleFacebookAuthEvent(LoginResponse response)
         {
             if (response.status == "connected")
             {
-
-                Hide(Logon);
-                Show(Insert);
-                Show(Friend);
                 UserID = response.authResponse.userID;
                 AccessToken = response.authResponse.accessToken;
+                CurrentAppState = AppState.FieldSelection;
             }
             else
             {
                 UserID = null;
                 AccessToken = null;
-                Hide(Insert);
-                Hide(Friend);
-                Show(Logon);
+                CurrentAppState = AppState.LoggedOut;
             }
+            UpdateView();
         }
         public static void LogIntoFacebook(jQueryEvent eventArgs)
         {
@@ -103,27 +122,27 @@ namespace FacebookScript
         {
             fields = new Dictionary<string, Field>();
             fields["uid"] = new RequiredField("uid", "ID");
-            fields["first_name"] = new Field("first_name", "First Name", "basic");
-            fields["last_name"] = new Field("last_name", "Last Name", "basic");
-            fields["birthday_date"] = new Field("birthday_date", "Birthday", "basic");
-            fields["sex"] = new Field("sex", "Sex", "basic");
-            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "basic");
-            fields["quotes"] = new Field("quotes", "Quotes", "basic", true);
-            fields["political"] = new Field("political", "Political", "basic");
-            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "basic");
-            fields["religion"] = new Field("religion", "Religion", "basic");
-            fields["wall_count"] = new Field("wall_count", "Wall Count", "basic");
-            fields["friend_count"] = new Field("friend_count", "Friend Count", "basic");
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", 0, "basic");
-            fields["work_Position"] = new StructField("work", "Position", "position", "name", 0, "basic");
-            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "basic");
-            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "basic");
-            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "basic");
-            fields["interests"] = new Field("interests", "Interests", "basic");
-            fields["profile_url"] = new Field("profile_url", "Profile URL", "basic");
-            fields["sports"] = new ArrayField("sports", "Sports", "name", "basic");
-            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "basic");
-            fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "basic");
+            fields["first_name"] = new Field("first_name", "First Name", "Basic");
+            fields["last_name"] = new Field("last_name", "Last Name", "Basic");
+            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic");
+            fields["sex"] = new Field("sex", "Sex", "Basic");
+            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts");
+            fields["quotes"] = new Field("quotes", "Quotes", "Extended", false);
+            fields["political"] = new Field("political", "Political", "Extended");
+            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "Extended");
+            fields["religion"] = new Field("religion", "Religion", "Extended");
+            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts");
+            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts");
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment",0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name",  "Employment",0);
+            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location");
+            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location");
+            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location");
+            fields["interests"] = new Field("interests", "Interests", "Extended");
+            fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended");
+            fields["sports"] = new ArrayField("sports", "Sports", "name", "Basic");
+            fields["status_Message"] = new StructField("status", "Current Extended", "message", null, "Status");
+            fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "Status");
         }
         public static void InsertAccordions()
         {
@@ -143,7 +162,7 @@ namespace FacebookScript
                string template = "<div class='group'><h3>{0}</h3><div>{1}</div></div>";
                comboBoxLocation.Append(string.Format(template, s, ((Array) o).Join("<br/>")));
            });
-            Script.Literal("$('#FieldChoices').accordion({header: '> div > h3'})");
+            Script.Literal("$('#FieldChoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
@@ -154,17 +173,20 @@ namespace FacebookScript
         }
         public static void Hide(jQueryObject element)
         {
-            Script.SetInterval(delegate()
-            {
-                element.Hide();
-            }, 0);
+            
+                Script.SetInterval(delegate()
+                {
+                    element.Hide();
+                }, 0);
+           
         }
         public static void Show(jQueryObject element)
         {
-            Script.SetInterval(delegate()
-            {
-                element.Show();
-            }, 0);
+                Script.SetInterval(delegate()
+                {
+                    element.Show();
+                }, 0);
+            
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
