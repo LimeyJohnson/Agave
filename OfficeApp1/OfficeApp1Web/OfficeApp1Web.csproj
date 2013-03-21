@@ -61,6 +61,8 @@
     <Content Include="Content\Office.css" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\ddf.pubxml" />
+    <None Include="Properties\PublishProfiles\OfficeTestApp - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\OfficeTestApp - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\OfficeApp1.html" />
     <Content Include="Scripts\AgaveScript.debug.js" />

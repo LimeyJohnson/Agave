@@ -1,7 +1,11 @@
-/* Office JavaScript OM library */
-/* Version: 15.0.4431.1000 */
+/* Office JavaScript API library */
+/* Version: 16.0.1405.3012 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
+*/
+
+/*
+	Your use of this file is governed by the Microsoft Services Agreement http://go.microsoft.com/fwlink/?LinkId=266419.
 */
 
 (function(window) {
@@ -395,7 +399,8 @@ OSF.AppName={
 	ExcelWebApp: 16,
 	WordWebApp: 32,
 	OutlookWebApp: 64,
-	Project: 128
+	Project: 128,
+	AccessWebApp: 256
 };
 OSF.OsfControlType={
 	DocumentLevel: 0,
@@ -3084,7 +3089,8 @@ OSF.DDA.EventDispId={
 				"8-15" : "outlook-15.debug.js",
 				"16-15" : "excelwebapp-15.debug.js",
 				"64-15" : "outlookwebapp-15.debug.js",
-				"128-15": "project-15.debug.js"
+				"128-15": "project-15.debug.js",
+				"256-15": "accesswebapp-15.debug.js"
 			};
 			var _context;
 			var _settings;
@@ -3261,7 +3267,7 @@ OSF.DDA.EventDispId={
 						}
 					};
 					var postLoadLocaleStringInitialization=function OSF__OfficeAppFactory_initialize$postLoadLocaleStringInitialization() {
-						var scriptPath=basePath+_appToScriptTable[appContext.get_appName()+"-"+appContext.get_appVersion()];
+						var scriptPath=basePath+_appToScriptTable[appContext.get_appName()+"-"+"15"];
 						var stringNS=Strings.OfficeOM;
 						var errorMgr=OSF.DDA.ErrorCodeManager;
 						var errorCodes=errorMgr.errorCodes;
@@ -3362,6 +3368,13 @@ OSF.DDA.EventDispId={
 								appReady();
 							};
 							OSF.OUtil.loadScript(scriptPath, projScriptLoaded);
+						} else if(appContext.get_appName()==OSF.AppName.AccessWebApp) {
+							var accessWebAppScriptLoaded=function() {
+								initializeSettings(true );
+								doc=new OSF.DDA.ExcelWebAppDocument(appContext, _settings);
+								appReady();
+							};
+							OSF.OUtil.loadScript(scriptPath, accessWebAppScriptLoaded);
 						} else {
 							throw OSF.OUtil.formatString(stringNS.L_AppNotExistInitializeNotCalled, appContext.get_appName());
 						}

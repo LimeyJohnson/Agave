@@ -74,9 +74,9 @@ namespace OfficeApp1Script
             options.CoercionType = type;
             return options;
         }
-        private static NameItemAsyncOptions CreateOptions(string ID)
+        private static BindingOptions CreateOptions(string ID)
         {
-            NameItemAsyncOptions options = new NameItemAsyncOptions();
+            BindingOptions options = new BindingOptions();
             options.ID = ID;
             return options;
         }

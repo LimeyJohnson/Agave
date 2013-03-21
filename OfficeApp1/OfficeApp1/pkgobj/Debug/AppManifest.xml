@@ -1,15 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
-     Name="OfficeApplication"
-     ProductID="{5f1b9e71-b634-4f54-a5cf-24767e4e893a}"
-     Version="1.0.0.0"
-     SharePointMinVersion="15.0.0.0"
->
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Published:a2ba41A2-b704-4a9d-a9ed-aecacc1d43ed-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest" Name="OfficeApplication" ProductID="{cb72f64c-bc5b-435f-832e-50b295907c15}" Version="1.0.0.0" SharePointMinVersion="15.0.0.0">
   <Properties>
     <Title>OfficeApplication</Title>
     <StartPage>http://www.example.com</StartPage>
   </Properties>
-
   <AppPrincipal>
     <Internal />
   </AppPrincipal>

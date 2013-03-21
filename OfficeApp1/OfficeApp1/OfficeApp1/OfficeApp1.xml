@@ -8,10 +8,10 @@
   <DisplayName DefaultValue="OfficeApp1" />
   <Description DefaultValue="OfficeApp1 Description"/>
   <Capabilities>
-    <Capability Name="Workbook" />
+    <Capability Name="Database" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="~remoteAppUrl/Pages/OfficeApp1.html" />
+    <SourceLocation DefaultValue="http://officetestapp.azurewebsites.net/" />
     <RequestedWidth>850</RequestedWidth>
     <RequestedHeight>400</RequestedHeight>
   </DefaultSettings>
