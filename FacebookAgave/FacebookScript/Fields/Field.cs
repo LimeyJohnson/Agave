@@ -64,6 +64,10 @@ namespace FacebookScript
             {
                 return jQuery.Select("#"+ID).Is(":checked");
             }
+            set
+            {
+                ((CheckBoxElement)jQuery.Select("#" + ID)[0]).Checked = value;
+            }
         }
         private string ID
         {
