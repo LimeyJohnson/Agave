@@ -18,12 +18,12 @@ namespace FacebookScript
         private static string checkBoxPrefix = "fieldscb";
         [AlternateSignature]
         public extern Field(string fieldName, string displayName, string containerName);
-        public Field(string fieldName, string displayName, string containerName, bool defaultChecked)
+        public Field(string fieldName, string displayName, string containerName, bool? defaultChecked)
         {
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
             this.m_containerName = containerName;
-            m_defaultChecked = defaultChecked;
+            m_defaultChecked = defaultChecked ?? true;
         }
         public virtual string ParseResult(Dictionary row)
         {
