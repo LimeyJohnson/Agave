@@ -159,10 +159,23 @@ namespace FacebookScript
             });
             jQuery.Each(accordions, delegate(string s, object o)
            {
-               string template = "<div class='group'><h3>{0}</h3><div>{1}</div></div>";
+               string template = "<div class='group'><h3><input id='ah{0}' type='checkbox' />{0}</h3><div>{1}</div></div>";
                comboBoxLocation.Append(string.Format(template, s, ((Array) o).Join("<br/>")));
+     //6          jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
             Script.Literal("$('#FieldChoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
+        }
+        public static void  HandleAccordionSelectAll(jQueryEvent eventArgs)
+        {
+            string accordian = eventArgs.Target.ID.Substr(2);
+            bool isChecked = jQuery.Select("#"+eventArgs.Target.ID).Is(":checked");
+            jQuery.Each(fields, delegate(string s, object o)
+           {
+               Field f = (Field)o;
+               if (f.ContainerName == accordian) f.Checked = isChecked;
+           });
+            //For some reason we need to also set the actual check box checked
+            jQuery.Select("#" + eventArgs.Target.ID).Attribute("checked", "checked");
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {

@@ -17,6 +17,10 @@ namespace FacebookScript
             {
                 return true;
             }
+            set
+            {
+                
+            }
         }
         public override string Html
         {
