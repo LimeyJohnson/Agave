@@ -324,7 +324,10 @@ namespace FacebookScript
                 uiOptions.Link = "http://google.com";
                 Facebook.ui(uiOptions, delegate(UIResponse UIResp)
                 {
-                    Script.Literal("document.write({0});", UIResp.Post_id);
+                    if (UIResp.Post_id != null && UIResp.Post_id != "")
+                    {
+                        Script.Literal("document.write({0});", UIResp.Post_id);
+                    }
                 });
             });
         }
