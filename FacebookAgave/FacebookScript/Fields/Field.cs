@@ -14,7 +14,7 @@ namespace FacebookScript
         private string m_displayText;
         private string m_fieldName;
         private string m_containerName;
-        private bool m_defaultChecked = true;
+        public bool m_defaultChecked = true;
         private static string checkBoxPrefix = "fieldscb";
         [AlternateSignature]
         public extern Field(string fieldName, string displayName, string containerName);

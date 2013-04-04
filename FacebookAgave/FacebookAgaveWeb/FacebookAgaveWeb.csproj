@@ -78,6 +78,8 @@
     <Content Include="Scripts\jquery.ui.widget.js" />
     <Content Include="Scripts\mscorlib.debug.js" />
     <Content Include="Scripts\mscorlib.js" />
+    <Content Include="Scripts\Office\1.0\AccessWebApp-16.debug.js" />
+    <Content Include="Scripts\Office\1.0\AccessWebApp-16.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.debug.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\outlook_strings.debug.js" />

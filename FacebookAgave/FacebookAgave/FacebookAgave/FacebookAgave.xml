@@ -11,7 +11,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://facebookagave.azurewebsites.net/" />
+    <SourceLocation DefaultValue="http://localhost:62587/pages/facebookagave.html" />
     <RequestedWidth>400</RequestedWidth>
     <RequestedHeight>800</RequestedHeight>
   </DefaultSettings>

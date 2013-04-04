@@ -8,7 +8,7 @@
   <DisplayName DefaultValue="OfficeApp1" />
   <Description DefaultValue="OfficeApp1 Description"/>
   <Capabilities>
-    <Capability Name="Database" />
+    <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
     <SourceLocation DefaultValue="http://officetestapp.azurewebsites.net/" />

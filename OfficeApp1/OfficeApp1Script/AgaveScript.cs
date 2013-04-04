@@ -20,19 +20,54 @@ namespace OfficeApp1Script
         {
             Office.Initialize = delegate(InitializationEnum reason)
             {
+                jQuery.Select("#Button3").Click(new jQueryEventHandler(SetInitialData));
+                jQuery.Select("#Button4").Click(new jQueryEventHandler(SetSecondData));
                 SetBinding(RowBinding, BindingType.Matrix);
                 SetBinding(TableBinding, BindingType.Table);
                 PopulateRowCombo();
-                GetRowValues();
+               // GetRowValues();
                 Office.Context.Document.AddHandlerAsync(EventType.DocumentSelectionChanged, delegate(DocumentSelectionChangedEventArgs args)
                 {
                     jQuery.Select("#eventResults").Append("Event fired: " + args.Document.Mode.ToString() + " Type: " + args.Type.ToString() + "<br/>");
-                    GetRowValues();
+                   // GetRowValues();
                 });
-
-
             };
 
+        }
+
+        public static void SetInitialData(jQueryEvent eventArgs)
+        {
+            TableData td = new TableData();
+            td.Rows = new string[][] {new string[] {"Andrew", "Johnson"}, new string[] { "John","Morrison"}};
+            td.Headers = new string[][] {new string[] {"FirstName","LastName"}};
+
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Table;
+
+            Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
+                {
+                    if (result.Status == AsyncResultStatus.Failed)
+                    {
+                        Script.Literal("write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                    }
+                    BindingOptions bindingOptions = new BindingOptions();
+                    bindingOptions.ID = TableBinding;
+                    Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
+                    {
+                        
+                    });
+                });
+        }
+        public static void SetSecondData(jQueryEvent eventArgs)
+        {
+            TableData td = new TableData();
+            td.Rows = new string[][] { new string[] { "Johnson", "Matthew" }};
+            td.Headers = new string[][] { new string[] { "LastName", "FirstName"} };
+
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Table;
+
+            Office.Select("bindings#" + TableBinding).SetDataAsync(td, options);
         }
         public static void Logon()
         {
@@ -111,28 +146,28 @@ namespace OfficeApp1Script
             }
 
         }
-        public static void GetRowValues()
-        {
-            Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
-            {
-                if (result.Status == AsyncResultStatus.Succeeded)
-                {
-                    jQueryObject combo = jQuery.Select("#row");
-                    combo.Html("");
-                    Array fields = (Array)result.MatrixValue[1];
-                    jQuery.Each(fields, delegate(int i, object o)
-                    {
-                        string[] fieldNames = (string[])result.MatrixValue[0][0];
-                        string appendText = fieldNames[i].ToString() + " : " + (o != null ? o.ToString() : "JSNULL") + "<br/>";
-                        combo.Append(appendText);
-                    });
-                }
-                else
-                {
-                    SetError("GetDataAsync in GetRowValues() failed");
-                }
-            });
-        }
+        //public static void GetRowValues()
+        //{
+        //    Select(RowBinding).GetDataAsync(delegate(ASyncResult result)
+        //    {
+        //        if (result.Status == AsyncResultStatus.Succeeded)
+        //        {
+        //            jQueryObject combo = jQuery.Select("#row");
+        //            combo.Html("");
+        //            Array fields = (Array)result.MatrixValue[1];
+        //            jQuery.Each(fields, delegate(int i, object o)
+        //            {
+        //                string[] fieldNames = (string[])result.MatrixValue[0][0];
+        //                string appendText = fieldNames[i].ToString() + " : " + (o != null ? o.ToString() : "JSNULL") + "<br/>";
+        //                combo.Append(appendText);
+        //            });
+        //        }
+        //        else
+        //        {
+        //            SetError("GetDataAsync in GetRowValues() failed");
+        //        }
+        //    });
+        //}
         public static void GetTableBinding()
         {
             Select(TableBinding).GetDataAsync(delegate(ASyncResult result)

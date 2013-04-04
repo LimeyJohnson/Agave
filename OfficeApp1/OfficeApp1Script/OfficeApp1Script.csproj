@@ -33,10 +33,11 @@
     <DocumentationFile>bin\Release\AgaveScript.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\FxCop.ruleset" />
     <None Include="Properties\Script.template" />
-    <Compile Include="Etsy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AgaveScript.cs" />
   </ItemGroup>
@@ -52,6 +53,8 @@
     <ProjectReference Include="..\..\AgaveApi\AgaveApi.csproj">
       <Project>{e5ecd11a-e323-40cc-92a8-db58484a7fd4}</Project>
       <Name>AgaveApi</Name>
+      <Private>False</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
