@@ -25,44 +25,38 @@ namespace OfficeApp1Script
                 SetBinding(RowBinding, BindingType.Matrix);
                 SetBinding(TableBinding, BindingType.Table);
                 PopulateRowCombo();
-               // GetRowValues();
-                Office.Context.Document.AddHandlerAsync(EventType.DocumentSelectionChanged, delegate(DocumentSelectionChangedEventArgs args)
-                {
-                    jQuery.Select("#eventResults").Append("Event fired: " + args.Document.Mode.ToString() + " Type: " + args.Type.ToString() + "<br/>");
-                   // GetRowValues();
-                });
+                // GetRowValues();
+                BindingOptions options = new BindingOptions();
+                options.ID = TableBinding;
+                Office.Context.Document.Bindings.AddFromNamedItemAsync("Names", BindingType.Table, options);
             };
 
         }
 
         public static void SetInitialData(jQueryEvent eventArgs)
         {
-            TableData td = new TableData();
-            td.Rows = new string[][] {new string[] {"Andrew", "Johnson"}, new string[] { "John","Morrison"}};
-            td.Headers = new string[][] {new string[] {"FirstName","LastName"}};
+
+            object[][] data = new object[][] { new object[] { "Andrew", "Johnson", 4 }, new object[] { "John", "Morrison", 4 } };
 
             GetDataAsyncOptions options = new GetDataAsyncOptions();
             options.CoercionType = CoercionType.Table;
 
-            Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
+            SelectObject obj = Office.Select("bindings#" + TableBinding);
+            obj.SetDataAsync(data, options , delegate(ASyncResult result)
+            //Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
+            {
+                if (result.Status == AsyncResultStatus.Failed)
                 {
-                    if (result.Status == AsyncResultStatus.Failed)
-                    {
-                        Script.Literal("write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
-                    }
-                    BindingOptions bindingOptions = new BindingOptions();
-                    bindingOptions.ID = TableBinding;
-                    Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
-                    {
-                        
-                    });
-                });
+                    Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                }
+
+            });
         }
         public static void SetSecondData(jQueryEvent eventArgs)
         {
             TableData td = new TableData();
-            td.Rows = new string[][] { new string[] { "Johnson", "Matthew" }};
-            td.Headers = new string[][] { new string[] { "LastName", "FirstName"} };
+            td.Rows = new string[][] { new string[] { "Johnson", "Matthew" } };
+            td.Headers = new string[][] { new string[] { "LastName", "FirstName" } };
 
             GetDataAsyncOptions options = new GetDataAsyncOptions();
             options.CoercionType = CoercionType.Table;

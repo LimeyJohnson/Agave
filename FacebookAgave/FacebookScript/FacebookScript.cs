@@ -35,6 +35,26 @@ namespace FacebookScript
 
             FacebookWindow.AsyncInit = delegate()
             {
+                TableData tableData = new TableData();
+                tableData.Headers = new string[]{"FirstName", "LastName"};
+                tableData.Rows = new string[][] {new string[]{"James","Johnson"}, new string[]{"Andrew","Johnson"}};
+                
+                GetDataAsyncOptions sdo = new GetDataAsyncOptions();
+                sdo.CoercionType = CoercionType.Table;
+                Office.Context.Document.SetSelectedDataAsync(tableData, sdo, delegate(ASyncResult result) 
+                {
+                    BindingOptions bOptions = new BindingOptions();
+                    bOptions.ID = "TestTable";
+                    Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bOptions, delegate(ASyncResult newResult)
+                    {
+                        GetDataAsyncOptions gOptions = new GetDataAsyncOptions();
+                        gOptions.CoercionType = CoercionType.Matrix;
+                        Office.Select("Bindings#TestTable").GetDataAsync(gOptions, delegate(ASyncResult newResults)
+                        {
+                            Document.CreateElement("myEvent");
+                        });
+                    });
+                });
                 InitOptions options = new InitOptions();
                 options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
                 options.appId = "263395420459543";

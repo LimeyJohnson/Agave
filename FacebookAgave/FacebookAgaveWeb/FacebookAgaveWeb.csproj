@@ -69,6 +69,7 @@
     <Content Include="Scripts\FacebookAgave.js" />
     <Content Include="Scripts\FacebookScript.debug.js" />
     <Content Include="Scripts\FacebookScript.js" />
+    <Content Include="Scripts\JavaScript1.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
