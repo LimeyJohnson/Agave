@@ -45,6 +45,9 @@
     <Reference Include="Script.jQuery">
       <HintPath>..\packages\ScriptSharp.Lib.jQuery.0.7.5.0\lib\Script.jQuery.dll</HintPath>
     </Reference>
+    <Reference Include="Script.jQuery.UI">
+      <HintPath>..\..\..\scriptsharp\bin\Debug\Script.jQuery.UI.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web">
       <HintPath>..\packages\ScriptSharp.Lib.HTML.0.7.5.0\lib\Script.Web.dll</HintPath>
     </Reference>
@@ -53,8 +56,6 @@
     <ProjectReference Include="..\..\AgaveApi\AgaveApi.csproj">
       <Project>{e5ecd11a-e323-40cc-92a8-db58484a7fd4}</Project>
       <Name>AgaveApi</Name>
-      <Private>False</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
