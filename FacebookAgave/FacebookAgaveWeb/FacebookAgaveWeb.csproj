@@ -69,6 +69,7 @@
     <Content Include="Scripts\FacebookAgave.js" />
     <Content Include="Scripts\FacebookScript.debug.js" />
     <Content Include="Scripts\FacebookScript.js" />
+    <Content Include="Scripts\JavaScript1.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
@@ -78,6 +79,8 @@
     <Content Include="Scripts\jquery.ui.widget.js" />
     <Content Include="Scripts\mscorlib.debug.js" />
     <Content Include="Scripts\mscorlib.js" />
+    <Content Include="Scripts\Office\1.0\AccessWebApp-16.debug.js" />
+    <Content Include="Scripts\Office\1.0\AccessWebApp-16.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.debug.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\outlook_strings.debug.js" />

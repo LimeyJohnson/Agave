@@ -27,6 +27,7 @@ namespace FacebookScript
         private static jQueryObject Insert;
         private static jQueryObject Friend;
         private static jQueryObject Modal;
+        private static bool FacebookInited = false;
         private static AppState CurrentAppState = AppState.LoggedOut;
        
         static FacebookScript()
@@ -34,30 +35,29 @@ namespace FacebookScript
 
             FacebookWindow.AsyncInit = delegate()
             {
+                //InitOptions options = new InitOptions();
+                //options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
+                //options.appId = "263395420459543";
+                //options.status = true;
+                //options.cookie = false;
+                //Facebook.init(options);
 
-                InitOptions options = new InitOptions();
-                options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
-                options.appId = "263395420459543";
-                options.status = true;
-                options.cookie = false;
-                Facebook.init(options);
+                //Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
+                //Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
+                //{
+                //    HandleFacebookAuthEvent(loginResponse);
+                //    if (loginResponse.status != "connected")
+                //    {
 
-                Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
-                Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
-                {
-                    HandleFacebookAuthEvent(loginResponse);
-                    if (loginResponse.status != "connected")
-                    {
-
-                        LogIntoFacebook(null);
-                    }
-                });
+                //        LogIntoFacebook(null);
+                //    }
+                //});
+                //FacebookInited = true;
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
-                jQuery.Select("#SelectAll").Click(new jQueryEventHandler(HandleSelectAllCheckBox));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
                 jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
@@ -67,6 +67,13 @@ namespace FacebookScript
                 Modal = jQuery.Select("#modal");
                 InitFields();
                 InsertAccordions();
+                BindingOptions options = new BindingOptions();
+                options.ID = TableBinding;
+                Office.Context.Document.Bindings.AddFromNamedItemAsync("Names", BindingType.Table, options);
+                Script.SetTimeout(delegate()
+                {
+                    if (!FacebookInited) Script.Literal("window.fbAsyncInit()");
+                }, 2000);
             };
             Element reference = Document.GetElementsByTagName("script")[0];
             string JSID = "facebook-jssdk";
@@ -78,7 +85,6 @@ namespace FacebookScript
                 js.Src = "//connect.facebook.net/en_US/all.js";
                 reference.ParentNode.InsertBefore(js, reference);
             }
-
         }
         public static void UpdateView()
         {
@@ -121,7 +127,7 @@ namespace FacebookScript
         public static void InitFields()
         {
             fields = new Dictionary<string, Field>();
-            fields["uid"] = new RequiredField("uid", "ID");
+            fields["uid"] = new RequiredField("uid", "FBID");
             fields["first_name"] = new Field("first_name", "First Name", "Basic");
             fields["last_name"] = new Field("last_name", "Last Name", "Basic");
             fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic");
@@ -143,6 +149,13 @@ namespace FacebookScript
             fields["sports"] = new ArrayField("sports", "Sports", "name", "Basic");
             fields["status_Message"] = new StructField("status", "Current Extended", "message", null, "Status");
             fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "Status");
+            
+            //temporary work around to disable all of the fields
+            jQuery.Each(fields, delegate(string s, object o)
+            {
+                Field f = (Field)o;
+                f.m_defaultChecked = false;
+            });
         }
         public static void InsertAccordions()
         {
@@ -164,6 +177,7 @@ namespace FacebookScript
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
             Script.Literal("$('#FieldChoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
+            
         }
         public static void  HandleAccordionSelectAll(jQueryEvent eventArgs)
         {
@@ -186,7 +200,7 @@ namespace FacebookScript
         public static void Hide(jQueryObject element)
         {
             
-                Script.SetInterval(delegate()
+                Script.SetTimeout(delegate()
                 {
                     element.Hide();
                 }, 0);
@@ -194,7 +208,7 @@ namespace FacebookScript
         }
         public static void Show(jQueryObject element)
         {
-                Script.SetInterval(delegate()
+                Script.SetTimeout(delegate()
                 {
                     element.Show();
                 }, 0);
@@ -248,11 +262,13 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
+                SelectObject obj = Office.Select("bindings#" + TableBinding);
+                obj.SetDataAsync(td,options, delegate(ASyncResult result)
+                //Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
                     if (result.Status == AsyncResultStatus.Failed)
                     {
-                        Script.Literal("write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                        Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
                     }
                     if (result.Status == AsyncResultStatus.Succeeded)
                     {
@@ -289,15 +305,6 @@ namespace FacebookScript
                     }
                 });
             }
-        }
-        public static void HandleSelectAllCheckBox(jQueryEvent eventArgs)
-        {
-            bool convertToChecked = jQuery.Select("#ckbSelectAll").Is(":checked");
-
-            jQuery.Select("#FieldChoices input").Each(delegate(int i, Element e)
-            {
-                ((CheckBoxElement)e).Checked = convertToChecked;
-            });
         }
         public static void PostFriendStatus(jQueryEvent eventArgs)
         {
@@ -336,7 +343,10 @@ namespace FacebookScript
                 uiOptions.Link = "http://google.com";
                 Facebook.ui(uiOptions, delegate(UIResponse UIResp)
                 {
-                    Script.Literal("document.write({0});", UIResp.Post_id);
+                    if (UIResp.Post_id != null && UIResp.Post_id != "")
+                    {
+                        Script.Literal("document.write({0});", UIResp.Post_id);
+                    }
                 });
             });
         }

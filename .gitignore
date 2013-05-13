@@ -6,5 +6,7 @@ pkg
 *.suo
 FacebookScript.debug.js
 FacebookScript.js
+AgaveScript.js
+AgaveScript.debug.js
 # mstest test results
 TestResults
