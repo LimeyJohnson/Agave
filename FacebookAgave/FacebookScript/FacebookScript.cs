@@ -35,24 +35,24 @@ namespace FacebookScript
 
             FacebookWindow.AsyncInit = delegate()
             {
-                //InitOptions options = new InitOptions();
-                //options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
-                //options.appId = "263395420459543";
-                //options.status = true;
-                //options.cookie = false;
-                //Facebook.init(options);
+                InitOptions options = new InitOptions();
+                options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
+                options.appId = "263395420459543";
+                options.status = true;
+                options.cookie = false;
+                Facebook.init(options);
 
-                //Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
-                //Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
-                //{
-                //    HandleFacebookAuthEvent(loginResponse);
-                //    if (loginResponse.status != "connected")
-                //    {
+                Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
+                Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
+                {
+                    HandleFacebookAuthEvent(loginResponse);
+                    if (loginResponse.status != "connected")
+                    {
 
-                //        LogIntoFacebook(null);
-                //    }
-                //});
-                //FacebookInited = true;
+                        LogIntoFacebook(null);
+                    }
+                });
+                FacebookInited = true;
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
@@ -74,17 +74,18 @@ namespace FacebookScript
                 {
                     if (!FacebookInited) Script.Literal("window.fbAsyncInit()");
                 }, 2000);
+                Element reference = Document.GetElementsByTagName("script")[0];
+                string JSID = "facebook-jssdk";
+                if (reference.ID != JSID)
+                {
+                    ScriptElement js = (ScriptElement)Document.CreateElement("script");
+                    js.ID = JSID;
+                    js.SetAttribute("async", true);
+                    js.Src = "//connect.facebook.net/en_US/all.js";
+                    reference.ParentNode.InsertBefore(js, reference);
+                }
             };
-            Element reference = Document.GetElementsByTagName("script")[0];
-            string JSID = "facebook-jssdk";
-            if (reference.ID != JSID)
-            {
-                ScriptElement js = (ScriptElement)Document.CreateElement("script");
-                js.ID = JSID;
-                js.SetAttribute("async", true);
-                js.Src = "//connect.facebook.net/en_US/all.js";
-                reference.ParentNode.InsertBefore(js, reference);
-            }
+           
         }
         public static void UpdateView()
         {
@@ -172,7 +173,7 @@ namespace FacebookScript
             });
             jQuery.Each(accordions, delegate(string s, object o)
            {
-               string template = "<div class='group' id='group{0}'><h3><input id='ah{0}' type='checkbox' />{0}</h3><div>{1}</div></div>";
+               string template = "<div class='group' id='group{0}'><h3><a><input id='ah{0}' type='checkbox' />{0}</a></h3><div>{1}</div></div>";
                comboBoxLocation.Append(string.Format(template, s, ((Array) o).Join("<br/>")));
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
