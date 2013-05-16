@@ -173,7 +173,8 @@ namespace FacebookScript
             });
             jQuery.Each(accordions, delegate(string s, object o)
            {
-               string template = "<div class='group' id='group{0}'><h3><a><input id='ah{0}' type='checkbox' />{0}</a></h3><div>{1}</div></div>";
+               string template = "<div class='group' id='group{0}'><h3>{0}</h3><div><input id='ah{0}' type='checkbox' />Select All<br/>{1}</div></div>";
+               
                comboBoxLocation.Append(string.Format(template, s, ((Array) o).Join("<br/>")));
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
@@ -263,9 +264,9 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                SelectObject obj = Office.Select("bindings#" + TableBinding);
-                obj.SetDataAsync(td,options, delegate(ASyncResult result)
-                //Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
+              //  SelectObject obj = Office.Select("bindings#" + TableBinding);
+                //obj.SetDataAsync(td,options, delegate(ASyncResult result)
+                Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
                     if (result.Status == AsyncResultStatus.Failed)
                     {
