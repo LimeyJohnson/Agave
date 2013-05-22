@@ -50,7 +50,7 @@ namespace FacebookScript
             catch
             {
             }
-            return retVal ?? "null";
+            return retVal ?? nullToken;
         }
     }
 }

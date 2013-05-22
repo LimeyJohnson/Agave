@@ -16,6 +16,7 @@ namespace FacebookScript
         private string m_containerName;
         public bool m_defaultChecked = true;
         private static string checkBoxPrefix = "fieldscb";
+        protected const string nullToken = "unknown";
         [AlternateSignature]
         public extern Field(string fieldName, string displayName, string containerName);
         public Field(string fieldName, string displayName, string containerName, bool? defaultChecked)
@@ -27,7 +28,7 @@ namespace FacebookScript
         }
         public virtual string ParseResult(Dictionary row)
         {
-            return (string)row[FieldName] ?? "null";
+            return (string)row[FieldName] ?? nullToken;
         }
         public string DisplayText
         {

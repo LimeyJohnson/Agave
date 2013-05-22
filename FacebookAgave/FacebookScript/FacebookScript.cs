@@ -290,7 +290,7 @@ namespace FacebookScript
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
-            if (args.StartRow > 1) // do nothing when the header column is selected
+            if (args.StartRow > 0) // do nothing when the header column is selected
             {
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.StartRow = args.StartRow;

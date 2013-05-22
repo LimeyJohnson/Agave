@@ -32,7 +32,7 @@ namespace FacebookScript
                 join = b.Join(",");
             }
             catch { }
-            return join ?? "null";
+            return join ?? nullToken;
         }
     }
 }
