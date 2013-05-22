@@ -29,7 +29,7 @@ namespace FacebookScript
         private static jQueryObject Modal;
         private static bool FacebookInited = false;
         private static AppState CurrentAppState = AppState.LoggedOut;
-       
+
         static FacebookScript()
         {
 
@@ -61,6 +61,7 @@ namespace FacebookScript
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
                 jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
+                jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
                 Friend = jQuery.Select("#friend");
                 Logon = jQuery.Select("#logon");
                 Insert = jQuery.Select("#insert");
@@ -85,7 +86,7 @@ namespace FacebookScript
                     reference.ParentNode.InsertBefore(js, reference);
                 }
             };
-           
+
         }
         public static void UpdateView()
         {
@@ -94,12 +95,12 @@ namespace FacebookScript
                 case AppState.LoggedOut:
                     Show(Logon);
                     Hide(Insert);
-                Hide(Friend);
+                    Hide(Friend);
                     break;
                 case AppState.FieldSelection:
                     Show(Insert);
                     Hide(Logon);
-                Hide(Friend);
+                    Hide(Friend);
                     break;
             }
         }
@@ -140,8 +141,8 @@ namespace FacebookScript
             fields["religion"] = new Field("religion", "Religion", "Extended");
             fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts");
             fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts");
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment",0);
-            fields["work_Position"] = new StructField("work", "Position", "position", "name",  "Employment",0);
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment", 0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment", 0);
             fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location");
             fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location");
             fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location");
@@ -150,7 +151,7 @@ namespace FacebookScript
             fields["sports"] = new ArrayField("sports", "Sports", "name", "Basic");
             fields["status_Message"] = new StructField("status", "Current Extended", "message", null, "Status");
             fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "Status");
-            
+
             //temporary work around to disable all of the fields
             jQuery.Each(fields, delegate(string s, object o)
             {
@@ -164,33 +165,42 @@ namespace FacebookScript
             Dictionary<string, Array> accordions = new Dictionary<string, Array>();
             jQuery.Each(fields, delegate(string s, object o)
             {
-                Field f = (Field) o;
+                Field f = (Field)o;
                 if (f.ContainerName != null)
                 {
                     if (accordions[f.ContainerName] == null) accordions[f.ContainerName] = new Array();
                     accordions[f.ContainerName][accordions[f.ContainerName].Length] = f.Html;
-                }                
+                }
             });
             jQuery.Each(accordions, delegate(string s, object o)
            {
                string template = "<div class='group' id='group{0}'><h3>{0}</h3><div><input id='ah{0}' type='checkbox' />Select All<br/>{1}</div></div>";
-               
-               comboBoxLocation.Append(string.Format(template, s, ((Array) o).Join("<br/>")));
+
+               comboBoxLocation.Append(string.Format(template, s, ((Array)o).Join("<br/>")));
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
             Script.Literal("$('#FieldChoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
-            
+
         }
-        public static void  HandleAccordionSelectAll(jQueryEvent eventArgs)
+        public static void HandleSelectAll(jQueryEvent eventArgs)
+        {
+            bool isChecked = jQuery.Select("#" + eventArgs.Target.ID).Is(":checked");
+            jQuery.Select("div[id^='group'] input[type='checkbox']").Each(delegate(int x, Element e)
+                {
+                    ((CheckBoxElement)e).Checked = isChecked;
+                });
+
+        }
+        public static void HandleAccordionSelectAll(jQueryEvent eventArgs)
         {
             string accordian = eventArgs.Target.ID.Substr(2);
-            bool isChecked = jQuery.Select("#"+eventArgs.Target.ID).Is(":checked");
-            jQuery.Select("#group"+accordian+" input").Each(delegate(int i, Element e)
+            bool isChecked = jQuery.Select("#" + eventArgs.Target.ID).Is(":checked");
+            jQuery.Select("#group" + accordian + " input[type='checkbox']").Each(delegate(int i, Element e)
            {
                ((CheckBoxElement)e).Checked = isChecked;
            });
             //For some reason we need to also set the actual check box checked
-           // jQuery.Select("#" + eventArgs.Target.ID).Attribute("checked", "checked");
+            // jQuery.Select("#" + eventArgs.Target.ID).Attribute("checked", "checked");
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
@@ -201,20 +211,20 @@ namespace FacebookScript
         }
         public static void Hide(jQueryObject element)
         {
-            
-                Script.SetTimeout(delegate()
-                {
-                    element.Hide();
-                }, 0);
-           
+
+            Script.SetTimeout(delegate()
+            {
+                element.Hide();
+            }, 0);
+
         }
         public static void Show(jQueryObject element)
         {
-                Script.SetTimeout(delegate()
-                {
-                    element.Show();
-                }, 0);
-            
+            Script.SetTimeout(delegate()
+            {
+                element.Show();
+            }, 0);
+
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
@@ -264,7 +274,7 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-              //  SelectObject obj = Office.Select("bindings#" + TableBinding);
+                //  SelectObject obj = Office.Select("bindings#" + TableBinding);
                 //obj.SetDataAsync(td,options, delegate(ASyncResult result)
                 Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
