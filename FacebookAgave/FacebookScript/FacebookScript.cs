@@ -14,7 +14,8 @@ namespace FacebookScript
     {
         LoggedOut = 1,
         FieldSelection = 2,
-        Results = 3
+        Results = 3,
+        Main = 4
     };
     public static class FacebookScript
     {
@@ -27,6 +28,7 @@ namespace FacebookScript
         private static jQueryObject Insert;
         private static jQueryObject Friend;
         private static jQueryObject Modal;
+        private static jQueryObject Main;
         private static bool FacebookInited = false;
         private static AppState CurrentAppState = AppState.LoggedOut;
 
@@ -62,10 +64,14 @@ namespace FacebookScript
                 jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
                 jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
+               //    jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
+                //Sync up goto main buttons they are all insert tags ending in main
+                jQuery.Select("input[id$='main']").Click(new jQueryEventHandler(GotoMain));
                 Friend = jQuery.Select("#friend");
                 Logon = jQuery.Select("#logon");
                 Insert = jQuery.Select("#insert");
                 Modal = jQuery.Select("#modal");
+                Main = jQuery.Select("#main");
                 InitFields();
                 InsertAccordions();
                 BindingOptions options = new BindingOptions();
@@ -88,6 +94,12 @@ namespace FacebookScript
             };
 
         }
+        public static void GotoMain(jQueryEvent eventArgs)
+        {
+            CurrentAppState = AppState.Main;
+            UpdateView();
+        }
+
         public static void UpdateView()
         {
             switch (CurrentAppState)
@@ -96,11 +108,19 @@ namespace FacebookScript
                     Show(Logon);
                     Hide(Insert);
                     Hide(Friend);
+                    Hide(Main);
                     break;
                 case AppState.FieldSelection:
                     Show(Insert);
                     Hide(Logon);
                     Hide(Friend);
+                    Hide(Main);
+                    break;
+                case AppState.Main:
+                    Show(Main);
+                    Hide(Logon);
+                    Hide(Friend);
+                    Hide(Insert);
                     break;
             }
         }

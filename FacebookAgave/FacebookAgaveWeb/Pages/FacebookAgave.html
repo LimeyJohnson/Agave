@@ -28,23 +28,31 @@
 <body>
     <div id="fb-root"></div>
     <!-- Replace the following with your content -->
-    <div id="insert" >
+    <div id="main">
+        This is main
+        <input type="button" value="Insert Friends" id="insertfreinds" />
+        <input type="button" value="Settings" id="settings" />
+
+        <input type="button" value="Log Out" id="LogOut" />
+    </div>
+    <div id="insert">
         <div id="buttons">
-            <input type="button" value="Log Out" id="LogOut" />
             <input type="button" value="Insert Friends Table" id="GetFriends" />
         </div>
         <div id="FieldChoices">
             <input id="selectallcheckbox" type="checkbox" />Select All
             <!-- Combo boxes of field choices-->
         </div>
+        <input type="button" value="Main" id="insertmain" />
     </div>
     <div id="friend">
         <img id="profilepic" alt="Profile Pic" />
-       <input id="postfriendstatus" type="button" value="Post Status" />
+        <input id="postfriendstatus" type="button" value="Post Status" />
         <input id="posttoallfriends" type="button" value="Post To All" />
+        <input type="button" id="friendmain" value="main" />
     </div>
     <div id="logon">
-         <input type="button" value="Log In" id="btnlogon" />
+        <input type="button" value="Log In" id="btnlogon" />
     </div>
     <div id="modal"></div>
 </body>
