@@ -39,6 +39,7 @@ namespace AgaveApi
         public extern void AddFromSelectionAsync(BindingType bindingType, BindingOptions options, ASyncResultCallBack callback);
         public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options);
         public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options, ASyncResultCallBack callback);
+        public extern void GetByIdAsync(string id, ASyncResultCallBack callback);
     }
     [Imported, IgnoreNamespace]
     public class DocumentObject
@@ -50,7 +51,7 @@ namespace AgaveApi
         public BindingsObject Bindings;
         public DocumentMode Mode;
     }
-    public sealed class SelectObject
+    public sealed class  SelectObject
     {
         public extern void GetDataAsync(ASyncResultCallBack callback);
         public extern void GetDataAsync(GetDataAsyncOptions options, ASyncResultCallBack callback);
@@ -75,6 +76,7 @@ namespace AgaveApi
         public object[][] MatrixValue;
         [ScriptName("value")]
         public TableData TableValue;
+        public Object Value;
     }
     [Imported, IgnoreNamespace]
     public sealed class Error

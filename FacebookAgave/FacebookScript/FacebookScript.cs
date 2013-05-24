@@ -284,30 +284,55 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
+                Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
                 {
-                    if (result.Status == AsyncResultStatus.Failed)
+                    if (result.Error == null)
                     {
-                        Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
-                    }
-                    if (result.Status == AsyncResultStatus.Succeeded)
-                    {
-                        BindingOptions bindingOptions = new BindingOptions();
-                        bindingOptions.ID = TableBinding;
-
-
-                        Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
+                        //The binding already exists... use it
+                        SelectObject binding = (SelectObject)result.Value;
+                        binding.SetDataAsync(td, options, delegate(ASyncResult callResult)
                         {
-                            Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                            if (result.Status == AsyncResultStatus.Failed)
+                            {
+                                Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                            }
                         });
-                        SetView(Friend);
+                    }
+                    else
+                    {
+                        //the binding does not exots, insert data and set binding
+
+                        Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult setresult)
+                        {
+                            if (setresult.Status == AsyncResultStatus.Failed)
+                            {
+                                Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                            }
+                            if (setresult.Status == AsyncResultStatus.Succeeded)
+                            {
+                                BindingOptions bindingOptions = new BindingOptions();
+                                bindingOptions.ID = TableBinding;
+
+
+                                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
+                                {
+                                    Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                                });
+                            }
+                        });
                     }
                 });
+                SetView(Friend);
+
             });
         }
         public static void SetTableData(TableData td, ASyncResultCallBack callback)
         {
-            //This method should determine if the table already exists or if a new one needs to be created;
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Table;
+
+
+
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
