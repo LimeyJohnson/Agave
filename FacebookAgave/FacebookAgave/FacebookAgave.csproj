@@ -45,6 +45,7 @@
     </None>
     <Content Include="FacebookAgave\FacebookAgave.xml">
       <OpcRelationship>manifest-oemanifest</OpcRelationship>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
