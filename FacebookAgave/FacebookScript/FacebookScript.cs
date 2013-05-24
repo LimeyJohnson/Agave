@@ -50,11 +50,16 @@ namespace FacebookScript
                     HandleFacebookAuthEvent(loginResponse);
                     if (loginResponse.status != "connected")
                     {
-
-                        LogIntoFacebook(null);
+                        CurrentAppState = AppState.LoggedOut;
                     }
+                    else
+                    {
+                        CurrentAppState = AppState.Main;
+                    }
+                    UpdateView();
                 });
                 FacebookInited = true;
+                Hide(Modal);
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
@@ -67,6 +72,7 @@ namespace FacebookScript
                 jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
                 //Sync up goto main buttons they are all insert tags ending in main
                 jQuery.Select("input[id$='main']").Click(new jQueryEventHandler(GotoMain));
+                jQuery.Select("#settings").Click(delegate(jQueryEvent eventargs){CurrentAppState = AppState.FieldSelection; UpdateView();});
                 Friend = jQuery.Select("#friend");
                 Logon = jQuery.Select("#logon");
                 Insert = jQuery.Select("#insert");
