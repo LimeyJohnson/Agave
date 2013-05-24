@@ -24,7 +24,7 @@ namespace FacebookScript
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
             this.m_containerName = containerName;
-            m_defaultChecked = defaultChecked ?? true;
+            m_defaultChecked = defaultChecked ?? false;
         }
         public virtual string ParseResult(Dictionary row)
         {

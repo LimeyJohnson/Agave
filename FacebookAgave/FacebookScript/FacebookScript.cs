@@ -150,10 +150,10 @@ namespace FacebookScript
         {
             fields = new Dictionary<string, Field>();
             fields["uid"] = new RequiredField("uid", "FBID");
-            fields["first_name"] = new Field("first_name", "First Name", "Basic");
-            fields["last_name"] = new Field("last_name", "Last Name", "Basic");
-            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic");
-            fields["sex"] = new Field("sex", "Sex", "Basic");
+            fields["first_name"] = new Field("first_name", "First Name", "Basic", true);
+            fields["last_name"] = new Field("last_name", "Last Name", "Basic", true);
+            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic", true);
+            fields["sex"] = new Field("sex", "Sex", "Basic", true);
             fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts");
             fields["quotes"] = new Field("quotes", "Quotes", "Extended", false);
             fields["political"] = new Field("political", "Political", "Extended");
@@ -168,16 +168,9 @@ namespace FacebookScript
             fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location");
             fields["interests"] = new Field("interests", "Interests", "Extended");
             fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended");
-            fields["sports"] = new ArrayField("sports", "Sports", "name", "Basic");
+            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended");
             fields["status_Message"] = new StructField("status", "Current Extended", "message", null, "Status");
             fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "Status");
-
-            //temporary work around to disable all of the fields
-            jQuery.Each(fields, delegate(string s, object o)
-            {
-                Field f = (Field)o;
-                f.m_defaultChecked = false;
-            });
         }
         public static void InsertAccordions()
         {
@@ -189,14 +182,24 @@ namespace FacebookScript
                 if (f.ContainerName != null)
                 {
                     if (accordions[f.ContainerName] == null) accordions[f.ContainerName] = new Array();
-                    accordions[f.ContainerName][accordions[f.ContainerName].Length] = f.Html;
+                    accordions[f.ContainerName][accordions[f.ContainerName].Length] = f;
                 }
             });
             jQuery.Each(accordions, delegate(string s, object o)
            {
-               string template = "<div class='group' id='group{0}'><h3>{0}</h3><div><input id='ah{0}' type='checkbox' />Select All<br/>{1}</div></div>";
+               Array checkBoxHtml = new Array();
+               bool selectAllCheckboxSelected = true;
+               jQuery.Each((Array)o, delegate(int i, object field)
+               {
+                   if (!((Field)field).m_defaultChecked)
+                   {
+                       selectAllCheckboxSelected = false;
+                   }
+                   checkBoxHtml[checkBoxHtml.Length] = ((Field)field).Html;
+               });
+               string template = "<div class='group' id='group{0}'><h3>{0}</h3><div><input id='ah{0}' {1} type='checkbox'  />Select All<br/>{2}</div></div>";
 
-               comboBoxLocation.Append(string.Format(template, s, ((Array)o).Join("<br/>")));
+               comboBoxLocation.Append(string.Format(template, s, selectAllCheckboxSelected ? "checked='checked'" : "", checkBoxHtml.Join("<br/>")));
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
             Script.Literal("$('#FieldChoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
