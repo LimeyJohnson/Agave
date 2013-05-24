@@ -10,13 +10,6 @@ using AgaveApi;
 using System.Collections;
 namespace FacebookScript
 {
-    enum AppState
-    {
-        LoggedOut = 1,
-        FieldSelection = 2,
-        Results = 3,
-        Main = 4
-    };
     public static class FacebookScript
     {
         public static string UserID;
@@ -29,8 +22,8 @@ namespace FacebookScript
         private static jQueryObject Friend;
         private static jQueryObject Modal;
         private static jQueryObject Main;
+        private static Array Views = new Array();
         private static bool FacebookInited = false;
-        private static AppState CurrentAppState = AppState.LoggedOut;
 
         static FacebookScript()
         {
@@ -50,13 +43,12 @@ namespace FacebookScript
                     HandleFacebookAuthEvent(loginResponse);
                     if (loginResponse.status != "connected")
                     {
-                        CurrentAppState = AppState.LoggedOut;
+                        SetView(Logon);
                     }
                     else
                     {
-                        CurrentAppState = AppState.Main;
+                        SetView(Main);
                     }
-                    UpdateView();
                 });
                 FacebookInited = true;
                 Hide(Modal);
@@ -71,13 +63,20 @@ namespace FacebookScript
                 jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
                 jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
                 //Sync up goto main buttons they are all insert tags ending in main
-                jQuery.Select("input[id$='main']").Click(new jQueryEventHandler(GotoMain));
-                jQuery.Select("#settings").Click(delegate(jQueryEvent eventargs){CurrentAppState = AppState.FieldSelection; UpdateView();});
+                jQuery.Select("input[id$='main']").Click(delegate(jQueryEvent e) { SetView(Main); });
+                jQuery.Select("#settings").Click(delegate(jQueryEvent eventargs) { SetView(Insert); });
+
                 Friend = jQuery.Select("#friend");
+                Views[Views.Length] = Friend;
                 Logon = jQuery.Select("#logon");
+                Views[Views.Length] = Logon;
                 Insert = jQuery.Select("#insert");
+                Views[Views.Length] = Insert;
                 Modal = jQuery.Select("#modal");
+                Views[Views.Length] = Modal;
                 Main = jQuery.Select("#main");
+                Views[Views.Length] = Main;
+
                 InitFields();
                 InsertAccordions();
                 BindingOptions options = new BindingOptions();
@@ -100,35 +99,19 @@ namespace FacebookScript
             };
 
         }
-        public static void GotoMain(jQueryEvent eventArgs)
+        public static void SetView(jQueryObject view)
         {
-            CurrentAppState = AppState.Main;
-            UpdateView();
-        }
-
-        public static void UpdateView()
-        {
-            switch (CurrentAppState)
+            jQuery.Each(Views, delegate(int i, object o)
             {
-                case AppState.LoggedOut:
-                    Show(Logon);
-                    Hide(Insert);
-                    Hide(Friend);
-                    Hide(Main);
-                    break;
-                case AppState.FieldSelection:
-                    Show(Insert);
-                    Hide(Logon);
-                    Hide(Friend);
-                    Hide(Main);
-                    break;
-                case AppState.Main:
-                    Show(Main);
-                    Hide(Logon);
-                    Hide(Friend);
-                    Hide(Insert);
-                    break;
-            }
+                if (o == view)
+                {
+                    Show((jQueryObject)o);
+                }
+                else
+                {
+                    Hide((jQueryObject)o);
+                }
+            });
         }
         public static void HandleFacebookAuthEvent(LoginResponse response)
         {
@@ -136,15 +119,15 @@ namespace FacebookScript
             {
                 UserID = response.authResponse.userID;
                 AccessToken = response.authResponse.accessToken;
-                CurrentAppState = AppState.FieldSelection;
+                SetView(Insert);
             }
             else
             {
                 UserID = null;
                 AccessToken = null;
-                CurrentAppState = AppState.LoggedOut;
+                SetView(Logon);
             }
-            UpdateView();
+
         }
         public static void LogIntoFacebook(jQueryEvent eventArgs)
         {
@@ -257,9 +240,7 @@ namespace FacebookScript
         }
         public static void InsertFriends(jQueryEvent eventArgs)
         {
-            Show(Modal);
-            Hide(Insert);
-            Hide(Friend);
+            SetView(Modal);
             TableData td = new TableData();
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
@@ -303,8 +284,6 @@ namespace FacebookScript
                 ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                //  SelectObject obj = Office.Select("bindings#" + TableBinding);
-                //obj.SetDataAsync(td,options, delegate(ASyncResult result)
                 Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult result)
                 {
                     if (result.Status == AsyncResultStatus.Failed)
@@ -321,11 +300,14 @@ namespace FacebookScript
                         {
                             Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                         });
-                        Hide(Modal);
-                        Show(Friend);
+                        SetView(Friend);
                     }
                 });
             });
+        }
+        public static void SetTableData(TableData td, ASyncResultCallBack callback)
+        {
+            //This method should determine if the table already exists or if a new one needs to be created;
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
