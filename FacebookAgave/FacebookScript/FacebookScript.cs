@@ -64,7 +64,7 @@ namespace FacebookScript
                 jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
                 jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
-               //    jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
+                jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
                 //Sync up goto main buttons they are all insert tags ending in main
                 jQuery.Select("input[id$='main']").Click(new jQueryEventHandler(GotoMain));
                 Friend = jQuery.Select("#friend");
