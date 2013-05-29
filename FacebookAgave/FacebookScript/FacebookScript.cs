@@ -99,6 +99,7 @@ namespace FacebookScript
             };
 
         }
+
         public static void SetView(jQueryObject view)
         {
             jQuery.Each(Views, delegate(int i, object o)
@@ -289,19 +290,47 @@ namespace FacebookScript
                     if (result.Error == null)
                     {
                         //The binding already exists... use it
-                        SelectObject binding = (SelectObject)result.Value;
-                        binding.SetDataAsync(td, options, delegate(ASyncResult callResult)
+                        BindingObject binding = (BindingObject)result.Value;
+                        // Now we have to do a getData to see if we need to add any columns
+                        binding.GetDataAsync(options, delegate(ASyncResult getDataResult)
                         {
-                            if (result.Status == AsyncResultStatus.Failed)
+                            int columnDiff = td.HeadersDouble[0].Length - getDataResult.TableValue.HeadersDouble[0].Length;
+                            if (columnDiff > 0)
                             {
-                                Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                TableData addColumnTable = GenerateTableData(columnDiff, getDataResult.TableValue.Rows.Length);
+                                binding.AddColumnsAsync(addColumnTable, delegate(ASyncResult addColumnResult)
+                                {
+                                    Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult newBindResult)
+                                     {
+                                         BindingObject newBinding = (BindingObject)newBindResult.Value;
+                                         GetDataAsyncOptions setoptions = new GetDataAsyncOptions();
+                                         setoptions.CoercionType = CoercionType.Table;
+                                         newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
+                                         {
+                                             if (result.Status == AsyncResultStatus.Failed)
+                                             {
+                                                 Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                             }
+                                         });
+                                     });
+                                });
                             }
+                            else
+                            {
+                                binding.SetDataAsync(td, options, delegate(ASyncResult callResult)
+                                {
+                                    if (result.Status == AsyncResultStatus.Failed)
+                                    {
+                                        Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                    }
+                                });
+                            }
+
                         });
                     }
                     else
                     {
-                        //the binding does not exots, insert data and set binding
-
+                        //the binding does not exist, insert data and set binding
                         Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult setresult)
                         {
                             if (setresult.Status == AsyncResultStatus.Failed)
@@ -312,8 +341,6 @@ namespace FacebookScript
                             {
                                 BindingOptions bindingOptions = new BindingOptions();
                                 bindingOptions.ID = TableBinding;
-
-
                                 Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                                 {
                                     Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
@@ -323,8 +350,27 @@ namespace FacebookScript
                     }
                 });
                 SetView(Friend);
-
             });
+        }
+        public static TableData GenerateTableData(int size, int length)
+        {
+            TableData td = new TableData();
+            td.HeadersDouble = new Array[1];
+            td.HeadersDouble[0] = new Array();
+            td.Rows = new string[length][];
+            for (int x = 0; x < size; x++)
+            {
+                td.HeadersDouble[0][td.HeadersDouble[0].Length] = "Column" + x;
+            }
+            for (int y = 0; y < length; y++)
+            {
+                td.Rows[y] = new string[size];
+                for (int z = 0; z < size; z++)
+                {
+                    td.Rows[y][z] = "Data" + y + z;
+                }
+            }
+            return td;
         }
         public static void SetTableData(TableData td, ASyncResultCallBack callback)
         {

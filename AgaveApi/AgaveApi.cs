@@ -20,7 +20,7 @@ namespace AgaveApi
     public static class Office
     {
         public static ContextObject Context;
-        public static extern SelectObject Select(string binding);
+        public static extern BindingObject Select(string binding);
         [IntrinsicProperty]
         public static extern InitReason Initialize { get; set; }
     }
@@ -51,7 +51,7 @@ namespace AgaveApi
         public BindingsObject Bindings;
         public DocumentMode Mode;
     }
-    public sealed class  SelectObject
+    public sealed class BindingObject
     {
         public extern void GetDataAsync(ASyncResultCallBack callback);
         public extern void GetDataAsync(GetDataAsyncOptions options, ASyncResultCallBack callback);
@@ -62,6 +62,8 @@ namespace AgaveApi
         public extern void SetDataAsync(TableData data, GetDataAsyncOptions options);
         public extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
         public extern void AddHandlerAsync(EventType eventType, BindingSelectionChanged handler);
+        public extern void DeleteAllDataValuesAsync(ASyncResultCallBack callback);
+        public extern void AddColumnsAsync(TableData data, ASyncResultCallBack callback);
         public string Id;
         public EventType Type;
     }
@@ -119,7 +121,7 @@ namespace AgaveApi
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public sealed class BindingDataChangedEventArgs
     {
-        public SelectObject Binding;
+        public BindingObject Binding;
         public EventType Type;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
