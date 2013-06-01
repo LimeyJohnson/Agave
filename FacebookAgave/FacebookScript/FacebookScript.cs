@@ -282,7 +282,6 @@ namespace FacebookScript
                         td.Rows[i][y] = f.ParseResult(response.data[i]);
                     }
                 }
-                ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
                 Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
@@ -349,6 +348,7 @@ namespace FacebookScript
                         });
                     }
                 });
+                SetProfilePic((string)td.Rows[0][0]);
                 SetView(Friend);
             });
         }
@@ -380,6 +380,10 @@ namespace FacebookScript
 
 
         }
+        public static void SetProfilePic(string FriendID)
+        {
+            jQuery.Select("#profilepic").CSS("background", "url(http://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center"); 
+        }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
             if (args.StartRow > 0) // do nothing when the header column is selected
@@ -394,11 +398,11 @@ namespace FacebookScript
                 {
                     if (result.Status == AsyncResultStatus.Succeeded)
                     {
-                        FriendID = (string)result.TableValue.Rows[0][0];
-                        ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + FriendID + "/picture";
+                        SetProfilePic((string)result.TableValue.Rows[0][0]);
                     }
                 });
             }
+            SetView(Friend);
         }
         public static void PostFriendStatus(jQueryEvent eventArgs)
         {
