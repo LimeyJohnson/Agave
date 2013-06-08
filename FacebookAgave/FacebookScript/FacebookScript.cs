@@ -52,13 +52,14 @@ namespace FacebookScript
                 });
                 FacebookInited = true;
                 Hide(Modal);
+                jQuery.Select("body").Height(jQuery.Window.GetHeight());
+                jQuery.Select("body").Width(jQuery.Window.GetWidth()-25);
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
-                jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
                 jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
                 jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
@@ -372,14 +373,6 @@ namespace FacebookScript
             }
             return td;
         }
-        public static void SetTableData(TableData td, ASyncResultCallBack callback)
-        {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Table;
-
-
-
-        }
         public static void SetProfilePic(string FriendID)
         {
             jQuery.Select("#profilepic").CSS("background", "url(http://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center"); 
@@ -398,7 +391,25 @@ namespace FacebookScript
                 {
                     if (result.Status == AsyncResultStatus.Succeeded)
                     {
-                        SetProfilePic((string)result.TableValue.Rows[0][0]);
+                        Array friendsNames = new Array();
+                        string friendID = ((string)result.TableValue.Rows[0][0]);
+                        SetProfilePic(friendID);
+                        Facebook.api(@"/"+friendID+"?fields=name", delegate(ApiResponse response)
+                        {
+                            jQuery.Select("#friendname").Html(response.name);
+                        });
+
+                        string graphCall = UserID+@"/mutualfriends/"+friendID;
+                        Facebook.api(graphCall, delegate (ApiResponse response) 
+                            {
+                                for (int i = 0; i < response.data.Length; i++)
+                                {
+                                    friendsNames[friendsNames.Length] = response.data[i]["name"];
+                                }
+                                friendsNames.Sort();
+                                jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
+                            }
+                        );
                     }
                 });
             }
@@ -418,58 +429,6 @@ namespace FacebookScript
                     Script.Literal("document.write({0});", response.Post_id);
                 });
             }
-        }
-        public static void PostToAllFreinds(jQueryEvent eventArgs)
-        {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.FilterType = FilterType.OnlyVisible;
-            options.StartColumn = 0;
-            options.ColumnCount = 1;
-            options.CoercionType = CoercionType.Table;
-            Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
-            {
-                Array friendsArray = new Array();
-                for (int x = 0; x < result.TableValue.Rows.Length; x++)
-                {
-                    friendsArray[friendsArray.Length] = result.TableValue.Rows[x][0];
-                }
-                UIOptions uiOptions = new UIOptions();
-                uiOptions.Display = "popup";
-                uiOptions.Method = "send";
-                uiOptions.ToArray = friendsArray;
-                uiOptions.From = UserID;
-                uiOptions.Link = "http://google.com";
-                Facebook.ui(uiOptions, delegate(UIResponse UIResp)
-                {
-                    if (UIResp.Post_id != null && UIResp.Post_id != "")
-                    {
-                        Script.Literal("document.write({0});", UIResp.Post_id);
-                    }
-                });
-            });
-        }
-        public static void setBinding()
-        {
-            BindingOptions options = new BindingOptions();
-            options.ID = "TextBinding";
-            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Text, options, delegate(ASyncResult result)
-            {
-                Office.Select("bindings#TextBinding").AddHandlerAsync(EventType.BindingDataChanged, new BindingSelectionChanged(DataChanged));
-            });
-
-        }
-        public static void DataChanged(BindingSelectionChangedEventArgs args)
-        {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Text;
-            Office.Select("bindings#TextBinding").GetDataAsync(options, delegate(ASyncResult result)
-            {
-                if (result.Status == AsyncResultStatus.Succeeded)
-                {
-                    jQuery.Select("#selectedDataTxt").Value(result.TextValue);
-                }
-            });
-
         }
     }
 }

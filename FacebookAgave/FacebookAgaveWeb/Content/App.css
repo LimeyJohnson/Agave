@@ -7,7 +7,7 @@
 }
 #insert, #friend, #logon #main{
     display:none;
-}
+ }
 #logon {
     margin: 0 auto;
     width: 50em;
@@ -28,4 +28,7 @@
 #profilepic {
     height:200px;
     width:200px;
+}
+body {
+overflow:auto;
 }
