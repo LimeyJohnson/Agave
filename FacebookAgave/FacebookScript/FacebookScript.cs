@@ -52,13 +52,14 @@ namespace FacebookScript
                 });
                 FacebookInited = true;
                 Hide(Modal);
+                jQuery.Select("body").Height(jQuery.Window.GetHeight());
+                jQuery.Select("body").Width(jQuery.Window.GetWidth()-25);
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
-                jQuery.Select("#posttoallfriends").Click(new jQueryEventHandler(PostToAllFreinds));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
                 jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
                 jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
@@ -99,6 +100,7 @@ namespace FacebookScript
             };
 
         }
+
         public static void SetView(jQueryObject view)
         {
             jQuery.Each(Views, delegate(int i, object o)
@@ -281,7 +283,6 @@ namespace FacebookScript
                         td.Rows[i][y] = f.ParseResult(response.data[i]);
                     }
                 }
-                ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + td.Rows[0][0] + "/picture";
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
                 Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
@@ -289,19 +290,47 @@ namespace FacebookScript
                     if (result.Error == null)
                     {
                         //The binding already exists... use it
-                        SelectObject binding = (SelectObject)result.Value;
-                        binding.SetDataAsync(td, options, delegate(ASyncResult callResult)
+                        BindingObject binding = (BindingObject)result.Value;
+                        // Now we have to do a getData to see if we need to add any columns
+                        binding.GetDataAsync(options, delegate(ASyncResult getDataResult)
                         {
-                            if (result.Status == AsyncResultStatus.Failed)
+                            int columnDiff = td.HeadersDouble[0].Length - getDataResult.TableValue.HeadersDouble[0].Length;
+                            if (columnDiff > 0)
                             {
-                                Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                TableData addColumnTable = GenerateTableData(columnDiff, getDataResult.TableValue.Rows.Length);
+                                binding.AddColumnsAsync(addColumnTable, delegate(ASyncResult addColumnResult)
+                                {
+                                    Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult newBindResult)
+                                     {
+                                         BindingObject newBinding = (BindingObject)newBindResult.Value;
+                                         GetDataAsyncOptions setoptions = new GetDataAsyncOptions();
+                                         setoptions.CoercionType = CoercionType.Table;
+                                         newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
+                                         {
+                                             if (result.Status == AsyncResultStatus.Failed)
+                                             {
+                                                 Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                             }
+                                         });
+                                     });
+                                });
                             }
+                            else
+                            {
+                                binding.SetDataAsync(td, options, delegate(ASyncResult callResult)
+                                {
+                                    if (result.Status == AsyncResultStatus.Failed)
+                                    {
+                                        Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                    }
+                                });
+                            }
+
                         });
                     }
                     else
                     {
-                        //the binding does not exots, insert data and set binding
-
+                        //the binding does not exist, insert data and set binding
                         Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult setresult)
                         {
                             if (setresult.Status == AsyncResultStatus.Failed)
@@ -312,8 +341,6 @@ namespace FacebookScript
                             {
                                 BindingOptions bindingOptions = new BindingOptions();
                                 bindingOptions.ID = TableBinding;
-
-
                                 Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                                 {
                                     Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
@@ -322,17 +349,33 @@ namespace FacebookScript
                         });
                     }
                 });
+                SetProfilePic((string)td.Rows[0][0]);
                 SetView(Friend);
-
             });
         }
-        public static void SetTableData(TableData td, ASyncResultCallBack callback)
+        public static TableData GenerateTableData(int size, int length)
         {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Table;
-
-
-
+            TableData td = new TableData();
+            td.HeadersDouble = new Array[1];
+            td.HeadersDouble[0] = new Array();
+            td.Rows = new string[length][];
+            for (int x = 0; x < size; x++)
+            {
+                td.HeadersDouble[0][td.HeadersDouble[0].Length] = "Column" + x;
+            }
+            for (int y = 0; y < length; y++)
+            {
+                td.Rows[y] = new string[size];
+                for (int z = 0; z < size; z++)
+                {
+                    td.Rows[y][z] = "Data" + y + z;
+                }
+            }
+            return td;
+        }
+        public static void SetProfilePic(string FriendID)
+        {
+            jQuery.Select("#profilepic").CSS("background", "url(http://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center"); 
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
@@ -348,11 +391,29 @@ namespace FacebookScript
                 {
                     if (result.Status == AsyncResultStatus.Succeeded)
                     {
-                        FriendID = (string)result.TableValue.Rows[0][0];
-                        ((ImageElement)Document.GetElementById("profilepic")).Src = "http://graph.facebook.com/" + FriendID + "/picture";
+                        Array friendsNames = new Array();
+                        string friendID = ((string)result.TableValue.Rows[0][0]);
+                        SetProfilePic(friendID);
+                        Facebook.api(@"/"+friendID+"?fields=name", delegate(ApiResponse response)
+                        {
+                            jQuery.Select("#friendname").Html(response.name);
+                        });
+
+                        string graphCall = UserID+@"/mutualfriends/"+friendID;
+                        Facebook.api(graphCall, delegate (ApiResponse response) 
+                            {
+                                for (int i = 0; i < response.data.Length; i++)
+                                {
+                                    friendsNames[friendsNames.Length] = response.data[i]["name"];
+                                }
+                                friendsNames.Sort();
+                                jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
+                            }
+                        );
                     }
                 });
             }
+            SetView(Friend);
         }
         public static void PostFriendStatus(jQueryEvent eventArgs)
         {
@@ -368,58 +429,6 @@ namespace FacebookScript
                     Script.Literal("document.write({0});", response.Post_id);
                 });
             }
-        }
-        public static void PostToAllFreinds(jQueryEvent eventArgs)
-        {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.FilterType = FilterType.OnlyVisible;
-            options.StartColumn = 0;
-            options.ColumnCount = 1;
-            options.CoercionType = CoercionType.Table;
-            Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
-            {
-                Array friendsArray = new Array();
-                for (int x = 0; x < result.TableValue.Rows.Length; x++)
-                {
-                    friendsArray[friendsArray.Length] = result.TableValue.Rows[x][0];
-                }
-                UIOptions uiOptions = new UIOptions();
-                uiOptions.Display = "popup";
-                uiOptions.Method = "send";
-                uiOptions.ToArray = friendsArray;
-                uiOptions.From = UserID;
-                uiOptions.Link = "http://google.com";
-                Facebook.ui(uiOptions, delegate(UIResponse UIResp)
-                {
-                    if (UIResp.Post_id != null && UIResp.Post_id != "")
-                    {
-                        Script.Literal("document.write({0});", UIResp.Post_id);
-                    }
-                });
-            });
-        }
-        public static void setBinding()
-        {
-            BindingOptions options = new BindingOptions();
-            options.ID = "TextBinding";
-            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Text, options, delegate(ASyncResult result)
-            {
-                Office.Select("bindings#TextBinding").AddHandlerAsync(EventType.BindingDataChanged, new BindingSelectionChanged(DataChanged));
-            });
-
-        }
-        public static void DataChanged(BindingSelectionChangedEventArgs args)
-        {
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Text;
-            Office.Select("bindings#TextBinding").GetDataAsync(options, delegate(ASyncResult result)
-            {
-                if (result.Status == AsyncResultStatus.Succeeded)
-                {
-                    jQuery.Select("#selectedDataTxt").Value(result.TextValue);
-                }
-            });
-
         }
     }
 }
