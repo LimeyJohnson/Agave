@@ -53,7 +53,7 @@ namespace FacebookScript
                 FacebookInited = true;
                 Hide(Modal);
                 jQuery.Select("body").Height(jQuery.Window.GetHeight());
-                jQuery.Select("body").Width(jQuery.Window.GetWidth()-25);
+                jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
@@ -349,7 +349,7 @@ namespace FacebookScript
                         });
                     }
                 });
-                SetProfilePic((string)td.Rows[0][0]);
+                UpdateFriendView((string)td.Rows[0][0]);
                 SetView(Friend);
             });
         }
@@ -375,7 +375,7 @@ namespace FacebookScript
         }
         public static void SetProfilePic(string FriendID)
         {
-            jQuery.Select("#profilepic").CSS("background", "url(http://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center"); 
+            jQuery.Select("#profilepic").CSS("background", "url(http://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center");
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
@@ -391,29 +391,31 @@ namespace FacebookScript
                 {
                     if (result.Status == AsyncResultStatus.Succeeded)
                     {
-                        Array friendsNames = new Array();
-                        string friendID = ((string)result.TableValue.Rows[0][0]);
-                        SetProfilePic(friendID);
-                        Facebook.api(@"/"+friendID+"?fields=name", delegate(ApiResponse response)
-                        {
-                            jQuery.Select("#friendname").Html(response.name);
-                        });
-
-                        string graphCall = UserID+@"/mutualfriends/"+friendID;
-                        Facebook.api(graphCall, delegate (ApiResponse response) 
-                            {
-                                for (int i = 0; i < response.data.Length; i++)
-                                {
-                                    friendsNames[friendsNames.Length] = response.data[i]["name"];
-                                }
-                                friendsNames.Sort();
-                                jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
-                            }
-                        );
+                        UpdateFriendView(((string)result.TableValue.Rows[0][0]));
                     }
                 });
             }
             SetView(Friend);
+        }
+        public static void UpdateFriendView(string friendID)
+        {
+            Array friendsNames = new Array();
+            SetProfilePic(friendID);
+            Facebook.api(@"/" + friendID + "?fields=name", delegate(ApiResponse response)
+            {
+                jQuery.Select("#friendname").Html(response.name);
+            });
+
+            string graphCall = UserID + @"/mutualfriends/" + friendID;
+            Facebook.api(graphCall, delegate(ApiResponse response)
+            {
+                for (int i = 0; i < response.data.Length; i++)
+                {
+                    friendsNames[friendsNames.Length] = response.data[i]["name"];
+                }
+                friendsNames.Sort();
+                jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
+            });
         }
         public static void PostFriendStatus(jQueryEvent eventArgs)
         {
