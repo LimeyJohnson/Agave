@@ -52,8 +52,8 @@ namespace FacebookScript
                 });
                 FacebookInited = true;
                 Hide(Modal);
-                jQuery.Select("body").Height(jQuery.Window.GetHeight());
-                jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
+                jQuery.Window.Resize(SetBodyToWindowWidth);
+                SetBodyToWindowWidth(null); 
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
@@ -100,7 +100,11 @@ namespace FacebookScript
             };
 
         }
-
+        public static void SetBodyToWindowWidth(jQueryEvent eventArgs)
+        {
+            jQuery.Select("body").Height(jQuery.Window.GetHeight());
+            jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
+        }
         public static void SetView(jQueryObject view)
         {
             jQuery.Each(Views, delegate(int i, object o)
