@@ -5,8 +5,8 @@
   <Version>1.0</Version>
   <ProviderName>andrewjo</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="FacebookAgave" />
-  <Description DefaultValue="FacebookAgave Description"/>
+  <DisplayName DefaultValue="Friends For Office" />
+  <Description DefaultValue="Import and interact with you facebook friends in office"/>
   <Capabilities>
     <Capability Name="Workbook" />
   </Capabilities>
