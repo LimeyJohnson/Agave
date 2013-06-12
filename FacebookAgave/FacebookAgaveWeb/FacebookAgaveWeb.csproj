@@ -59,8 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\App.css" />
-    <Content Include="Content\back.png" />
+    <Content Include="Content\FBLogo.png" />
     <Content Include="Content\FhHRx.gif" />
+    <Content Include="Content\back.png" />
     <Content Include="Content\Office.css" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />

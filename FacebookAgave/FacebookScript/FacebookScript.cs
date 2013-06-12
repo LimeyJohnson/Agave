@@ -52,8 +52,8 @@ namespace FacebookScript
                 });
                 FacebookInited = true;
                 Hide(Modal);
-                jQuery.Window.Resize(SetBodyToWindowWidth);
-                SetBodyToWindowWidth(null); 
+                jQuery.Select("body").Height(jQuery.Window.GetHeight());
+                jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
             };
             Office.Initialize = delegate(InitializationEnum initReason)
             {
@@ -100,11 +100,7 @@ namespace FacebookScript
             };
 
         }
-        public static void SetBodyToWindowWidth(jQueryEvent eventArgs)
-        {
-            jQuery.Select("body").Height(jQuery.Window.GetHeight());
-            jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
-        }
+
         public static void SetView(jQueryObject view)
         {
             jQuery.Each(Views, delegate(int i, object o)
@@ -164,12 +160,12 @@ namespace FacebookScript
             fields["interests"] = new Field("interests", "Interests", "Extended");
             fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended");
             fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended");
-            fields["status_Message"] = new StructField("status", "Current Extended", "message", null, "Status");
-            fields["status_Time"] = new StructField("status", "Current Status Time", "time", null, "Status");
+            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended");
+            
         }
         public static void InsertAccordions()
         {
-            jQueryObject comboBoxLocation = jQuery.Select("#FieldChoices");
+            jQueryObject comboBoxLocation = jQuery.Select("#fieldchoices");
             Dictionary<string, Array> accordions = new Dictionary<string, Array>();
             jQuery.Each(fields, delegate(string s, object o)
             {
@@ -197,7 +193,7 @@ namespace FacebookScript
                comboBoxLocation.Append(string.Format(template, s, selectAllCheckboxSelected ? "checked='checked'" : "", checkBoxHtml.Join("<br/>")));
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
-            Script.Literal("$('#FieldChoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
+            Script.Literal("$('#fieldchoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
 
         }
         public static void HandleSelectAll(jQueryEvent eventArgs)
@@ -321,7 +317,9 @@ namespace FacebookScript
                             }
                             else
                             {
-                                binding.SetDataAsync(td, options, delegate(ASyncResult callResult)
+                                GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
+                                newOptions.CoercionType = CoercionType.Table;
+                                binding.SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
                                 {
                                     if (result.Status == AsyncResultStatus.Failed)
                                     {
