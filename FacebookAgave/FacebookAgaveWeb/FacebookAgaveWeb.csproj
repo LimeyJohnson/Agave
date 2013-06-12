@@ -71,6 +71,7 @@
     <None Include="Properties\PublishProfiles\FacebookAgave - Web Deploy %283%29.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\FacebookAgave.html" />
+    <Content Include="Pages\FriendsHelp.html" />
     <Content Include="Scripts\FacebookAgave.js" />
     <Content Include="Scripts\FacebookScript.debug.js" />
     <Content Include="Scripts\FacebookScript.js" />
