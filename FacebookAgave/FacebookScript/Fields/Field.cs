@@ -14,8 +14,8 @@ namespace FacebookScript
         private string m_displayText;
         private string m_fieldName;
         private string m_containerName;
-        public bool m_defaultChecked = true;
-        private static string checkBoxPrefix = "fieldscb";
+        public bool m_checked = true;
+        public static string checkBoxPrefix = "fieldscb";
         protected const string nullToken = "Unknown";
         [AlternateSignature]
         public extern Field(string fieldName, string displayName, string containerName);
@@ -24,7 +24,16 @@ namespace FacebookScript
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
             this.m_containerName = containerName;
-            m_defaultChecked = defaultChecked ?? false;
+            bool savedChecked;
+            if ((savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)) != null)
+            {
+                this.m_checked = savedChecked;
+            }
+            else
+            {
+                m_checked = defaultChecked ?? false;
+                Office.Context.Document.Settings.Set(this.ID, this.m_checked);
+            }
         }
         public virtual string ParseResult(Dictionary row)
         {
@@ -55,7 +64,7 @@ namespace FacebookScript
         {
             get
             {
-                string template = @"<input id='{0}' type='checkbox' "+((m_defaultChecked)? "checked='checked'":"")+" />{1}";
+                string template = @"<input id='{0}' type='checkbox' "+((m_checked)? "checked='checked'":"")+" />{1}";
                 return string.Format(template, ID, DisplayText);
             }
         }
@@ -70,12 +79,16 @@ namespace FacebookScript
                 ((CheckBoxElement)jQuery.Select("#" + ID)[0]).Checked = value;
             }
         }
-        private string ID
+        public string ID
         {
             get
             {
                 return checkBoxPrefix + FieldName;
             }
+        }
+        public void UpdateChecked(bool value)
+        {
+            Office.Context.Document.Settings.Set(this.ID, value);
         }
         
     }

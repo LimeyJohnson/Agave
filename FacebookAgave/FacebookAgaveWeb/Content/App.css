@@ -6,13 +6,8 @@
     height: 100px;
 }
 
-#insert, #friend, #logon #main {
+#insert, #friend, #logon, #main {
     display: none;
-}
-
-#logon {
-    margin: 0 auto;
-    width: 50em;
 }
 
 #modal {

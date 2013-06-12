@@ -50,6 +50,15 @@ namespace AgaveApi
         public extern void SetSelectedDataAsync(TableData td, GetDataAsyncOptions options, ASyncResultCallBack callback);
         public BindingsObject Bindings;
         public DocumentMode Mode;
+        public SettingsObject Settings;
+    }
+    [Imported, IgnoreNamespace]
+    public class SettingsObject
+    {
+        public extern void Set(string name, object value);
+        public extern void SaveAsync(ASyncResultCallBack callback);
+      //  public extern void RefreshAsync (ASyncResultCallBack callback);
+        public extern object Get(string name);
     }
     public sealed class BindingObject
     {

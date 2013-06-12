@@ -12,7 +12,7 @@ namespace FreindsLibrary
         public delegate void QueryDelgate(QueryResponse[] response);
         public delegate void LoginDelegate(LoginResponse response);
         public delegate void UIDelegate(UIResponse response);
-        public delegate void LogoutDelegate();
+        
         
         public static void init(InitOptions options) { }
         public static void api(string apiCall, ApiDelegate response) { }
@@ -21,7 +21,7 @@ namespace FreindsLibrary
         public static void api(ApiOptions options, QueryDelgate response) { }
         public static void login(LoginDelegate d) { }
         public static void login(LoginDelegate d, LoginOptions options) { }
-        public static void logout(LogoutDelegate d) { }
+        public static void logout(LoginDelegate d) { }
         public static void getLoginStatus(LoginDelegate response) { }
         public static void ui(UIOptions options, UIDelegate response) { }
         [ScriptName("Event")]

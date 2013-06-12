@@ -37,21 +37,11 @@ namespace FacebookScript
                 options.cookie = false;
                 Facebook.init(options);
 
-                Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
-                Facebook.getLoginStatus(delegate(LoginResponse loginResponse)
-                {
-                    HandleFacebookAuthEvent(loginResponse);
-                    if (loginResponse.status != "connected")
-                    {
-                        SetView(Logon);
-                    }
-                    else
-                    {
-                        SetView(Main);
-                    }
-                });
+                //Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
+                Facebook.getLoginStatus(HandleFacebookAuthEvent);
+                
+                    
                 FacebookInited = true;
-                Hide(Modal);
                 jQuery.Select("body").Height(jQuery.Window.GetHeight());
                 jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
             };
@@ -61,12 +51,11 @@ namespace FacebookScript
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
                 jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
-                jQuery.Select("#selectallcheckbox").Change(new jQueryEventHandler(HandleSelectAll));
                 jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
                 //Sync up goto main buttons they are all insert tags ending in main
                 jQuery.Select("img[id$='main']").Click(delegate(jQueryEvent e) { SetView(Main); });
                 jQuery.Select("#settings").Click(delegate(jQueryEvent eventargs) { SetView(Insert); });
-
+                //Office.Context.Document.Settings.RefreshAsync(delegate(ASyncResult result) { });
                 Friend = jQuery.Select("#friend");
                 Views[Views.Length] = Friend;
                 Logon = jQuery.Select("#logon");
@@ -97,6 +86,13 @@ namespace FacebookScript
                     js.Src = "//connect.facebook.net/en_US/all.js";
                     reference.ParentNode.InsertBefore(js, reference);
                 }
+                Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
+               {
+                   if (result.Error == null)
+                   {
+                       Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                   }
+               });
             };
 
         }
@@ -121,7 +117,7 @@ namespace FacebookScript
             {
                 UserID = response.authResponse.userID;
                 AccessToken = response.authResponse.accessToken;
-                SetView(Insert);
+                SetView(Main);
             }
             else
             {
@@ -135,7 +131,7 @@ namespace FacebookScript
         {
             LoginOptions LoginOptions = new LoginOptions();
             LoginOptions.scope = "email,publish_actions,create_event,user_likes,friends_education_history, friends_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
-            Facebook.login(delegate(LoginResponse response) { }, LoginOptions);
+            Facebook.login(HandleFacebookAuthEvent, LoginOptions);
         }
         public static void InitFields()
         {
@@ -182,7 +178,7 @@ namespace FacebookScript
                bool selectAllCheckboxSelected = true;
                jQuery.Each((Array)o, delegate(int i, object field)
                {
-                   if (!((Field)field).m_defaultChecked)
+                   if (!((Field)field).m_checked)
                    {
                        selectAllCheckboxSelected = false;
                    }
@@ -194,16 +190,27 @@ namespace FacebookScript
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
             Script.Literal("$('#fieldchoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
-
+            jQuery.Select("input[id^='" + Field.checkBoxPrefix + "']").Change(HandleFieldChange);
+            Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
         }
-        public static void HandleSelectAll(jQueryEvent eventArgs)
+        public static void UpdateFieldChecked(string ID, bool isChecked)
+        {
+           
+            jQuery.Each(fields, delegate(string s, object o)
+            {
+                Field f = (Field)o;
+                if (f.ID == ID)
+                {
+                    f.UpdateChecked(isChecked);
+                    Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
+                }
+            });
+        }
+        public static void HandleFieldChange(jQueryEvent eventArgs)
         {
             bool isChecked = jQuery.Select("#" + eventArgs.Target.ID).Is(":checked");
-            jQuery.Select("div[id^='group'] input[type='checkbox']").Each(delegate(int x, Element e)
-                {
-                    ((CheckBoxElement)e).Checked = isChecked;
-                });
-
+            UpdateFieldChecked(eventArgs.Target.ID, isChecked);
+            
         }
         public static void HandleAccordionSelectAll(jQueryEvent eventArgs)
         {
@@ -212,16 +219,14 @@ namespace FacebookScript
             jQuery.Select("#group" + accordian + " input[type='checkbox']").Each(delegate(int i, Element e)
            {
                ((CheckBoxElement)e).Checked = isChecked;
+               UpdateFieldChecked(e.ID, isChecked);
            });
             //For some reason we need to also set the actual check box checked
             // jQuery.Select("#" + eventArgs.Target.ID).Attribute("checked", "checked");
         }
         public static void LogOutOfFacebook(jQueryEvent eventArgs)
         {
-            Facebook.logout(delegate()
-            {
-
-            });
+            Facebook.logout(HandleFacebookAuthEvent);
         }
         public static void Hide(jQueryObject element)
         {
