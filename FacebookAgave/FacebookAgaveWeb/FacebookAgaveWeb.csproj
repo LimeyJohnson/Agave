@@ -62,6 +62,7 @@
     <Content Include="Content\FBLogo.png" />
     <Content Include="Content\FhHRx.gif" />
     <Content Include="Content\back.png" />
+    <Content Include="Content\jquery-ui-smoothness.css" />
     <Content Include="Content\Office.css" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />

@@ -31,7 +31,7 @@ namespace FacebookScript
             FacebookWindow.AsyncInit = delegate()
             {
                 InitOptions options = new InitOptions();
-                options.channelUrl = "http://facebookagave.azurewebsites.net/pages/channel.ashx";
+                options.channelUrl = "https://friendsinoffice.com/pages/channel.ashx";
                 options.appId = "263395420459543";
                 options.status = true;
                 options.cookie = false;
