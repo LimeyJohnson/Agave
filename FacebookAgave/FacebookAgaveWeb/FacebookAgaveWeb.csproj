@@ -60,10 +60,14 @@
   <ItemGroup>
     <Content Include="Content\App.css" />
     <Content Include="Content\FBLogo.png" />
+    <Content Include="Content\ffosmall.png" />
     <Content Include="Content\FhHRx.gif" />
     <Content Include="Content\back.png" />
+    <Content Include="Content\friends-for-office.png" />
     <Content Include="Content\jquery-ui-smoothness.css" />
     <Content Include="Content\Office.css" />
+    <Content Include="Images\ffosmall.png" />
+    <Content Include="Images\friends-for-office.png" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />
     <None Include="Properties\PublishProfiles\FacebookAgave - FTP %282%29.pubxml" />

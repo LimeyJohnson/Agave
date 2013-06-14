@@ -7,6 +7,8 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Friends For Office" />
   <Description DefaultValue="Import and interact with you facebook friends in office"/>
+<IconUrl DefaultValue="https://friendsinoffice.com/content/ffosmall.png" />
+  <SupportUrl DefaultValue="https://friendsinoffice.com/pages/friendshelp.html"></SupportUrl>
   <Capabilities>
     <Capability Name="Workbook" />
   </Capabilities>
