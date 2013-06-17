@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\App.css" />
-    <Content Include="App\App.js" />
+    <Content Include="Content\App.js" />
     <Content Include="App\Visualization.js" />
     <Content Include="Content\Office.css" />
     <Content Include="App\Graph.html" />
@@ -93,6 +93,8 @@
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\GraphScript.debug.js" />
+    <Content Include="Scripts\GraphScript.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.debug.js" />
