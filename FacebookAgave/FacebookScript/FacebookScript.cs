@@ -130,7 +130,7 @@ namespace FacebookScript
         public static void LogIntoFacebook(jQueryEvent eventArgs)
         {
             LoginOptions LoginOptions = new LoginOptions();
-            LoginOptions.scope = "email,publish_actions,create_event,user_likes,friends_education_history, friends_likes,publish_stream,user_about_me,friends_about_me,user_activities,friends_activities,user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_subscriptions,friends_subscriptions,user_videos,friends_videos,user_website,user_work_history,friends_work_history";
+            LoginOptions.scope = "email,friends_education_history, friends_likes,user_activities,friends_activities,user_birthday,friends_birthday,user_education_history,friends_education_history,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_website,user_work_history,friends_work_history";
             Facebook.login(HandleFacebookAuthEvent, LoginOptions);
         }
         public static void InitFields()
