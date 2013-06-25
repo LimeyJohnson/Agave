@@ -12,6 +12,8 @@ GraphScript.GraphScript = function GraphScript_GraphScript() {
 }
 GraphScript.GraphScript.drawChart = function GraphScript_GraphScript$drawChart() {
     var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Toppings');
+    data.addColumn('number', 'Slices');
     data.addRows([ [ 'Mushrooms', 1 ], [ 'Onions', 1 ], [ 'Olives', 1 ], [ 'Zucchini', 1 ], [ 'Pepperoni', 2 ] ]);
     var options = {};
     options.title = 'How Much Pizza I Ate Last Night';
