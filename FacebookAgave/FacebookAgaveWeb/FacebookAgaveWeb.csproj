@@ -70,13 +70,25 @@
     <Content Include="Images\friends-for-office.png" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />
+    <Content Include="Pages\instructions_files\themedata.thmx" />
     <None Include="Properties\PublishProfiles\FacebookAgave - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\FacebookAgave - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\FacebookAgave - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\FacebookAgave - Web Deploy %283%29.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\FacebookAgave.html" />
-    <Content Include="Pages\FriendsHelp.html" />
+    <Content Include="Pages\instructions.html" />
+    <Content Include="Pages\instructions_files\colorschememapping.xml" />
+    <Content Include="Pages\instructions_files\filelist.xml" />
+    <Content Include="Pages\instructions_files\image001.png" />
+    <Content Include="Pages\instructions_files\image002.png" />
+    <Content Include="Pages\instructions_files\image003.png" />
+    <Content Include="Pages\instructions_files\image004.png" />
+    <Content Include="Pages\instructions_files\image005.png" />
+    <Content Include="Pages\instructions_files\image006.png" />
+    <Content Include="Pages\instructions_files\image007.png" />
+    <Content Include="Pages\instructions_files\image008.png" />
+    <Content Include="Pages\privacy.aspx" />
     <Content Include="Scripts\FacebookAgave.js" />
     <Content Include="Scripts\FacebookScript.debug.js" />
     <Content Include="Scripts\FacebookScript.js" />
@@ -276,6 +288,13 @@
   <ItemGroup>
     <Compile Include="Pages\channel.ashx.cs">
       <DependentUpon>channel.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\privacy.aspx.cs">
+      <DependentUpon>privacy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\privacy.aspx.designer.cs">
+      <DependentUpon>privacy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
