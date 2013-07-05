@@ -94,6 +94,7 @@ namespace AgaveApi
     {
         public string Name;
         public string Message;
+        public int Code;
     }
     [Imported, IgnoreNamespace, ScriptName("Office.TableData")]
     public sealed class TableData

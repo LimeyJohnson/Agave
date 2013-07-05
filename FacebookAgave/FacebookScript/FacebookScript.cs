@@ -22,6 +22,7 @@ namespace FacebookScript
         private static jQueryObject Friend;
         private static jQueryObject Modal;
         private static jQueryObject Main;
+        private static jQueryObject ErrorDiv;
         private static Array Views = new Array();
         private static bool FacebookInited = false;
 
@@ -72,6 +73,8 @@ namespace FacebookScript
                 Views[Views.Length] = Modal;
                 Main = jQuery.Select("#main");
                 Views[Views.Length] = Main;
+                ErrorDiv = jQuery.Select("#error");
+                Views[Views.Length] = ErrorDiv;
 
                 InitFields();
                 InsertAccordions();
@@ -102,7 +105,11 @@ namespace FacebookScript
             };
 
         }
-
+        public static void SetError(string ErrorText)
+        {
+            ErrorDiv.Find("#errorText").Text(ErrorText);
+            SetView(ErrorDiv);
+        }
         public static void SetView(jQueryObject view)
         {
             jQuery.Each(Views, delegate(int i, object o)
@@ -318,10 +325,7 @@ namespace FacebookScript
                                          setoptions.CoercionType = CoercionType.Table;
                                          newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
                                          {
-                                             if (result.Status == AsyncResultStatus.Failed)
-                                             {
-                                                 Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
-                                             }
+                                             SetError("An error has occurred please try again");
                                          });
                                      });
                                 });
@@ -334,7 +338,7 @@ namespace FacebookScript
                                 {
                                     if (result.Status == AsyncResultStatus.Failed)
                                     {
-                                        Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                        SetError("An error has occurred please try again");
                                     }
                                 });
                             }
@@ -348,7 +352,14 @@ namespace FacebookScript
                         {
                             if (setresult.Status == AsyncResultStatus.Failed)
                             {
-                                Script.Literal("document.write({0} + ' : '+{1})", result.Error.Name, result.Error.Message);
+                                if (setresult.Error.Code == 2003) // this is the not enough size exception
+                                {
+                                    SetError("Setting the friends list here would overwrite data in the spread sheet. Please select another area");
+                                }
+                                else
+                                {
+                                    SetError("An error has occurred please try again");
+                                }
                             }
                             if (setresult.Status == AsyncResultStatus.Succeeded)
                             {
