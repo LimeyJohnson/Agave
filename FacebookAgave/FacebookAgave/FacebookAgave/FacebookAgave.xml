@@ -13,7 +13,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://friendsinoffice.com/" />
+    <SourceLocation DefaultValue="http://localhost:62587/pages/facebookagave.html" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>

@@ -31,8 +31,14 @@ namespace FacebookScript
             FacebookWindow.AsyncInit = delegate()
             {
                 InitOptions options = new InitOptions();
+#if DEBUG
+                options.appId = "143445839182832";
+                options.channelUrl = "http://localhost:62587/pages/channel.ashx";
+#else
+
                 options.channelUrl = "https://friendsinoffice.com/pages/channel.ashx";
                 options.appId = "263395420459543";
+#endif
                 options.status = true;
                 options.cookie = false;
                 Facebook.init(options);
@@ -386,43 +392,50 @@ namespace FacebookScript
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
-            if (args.StartRow > 0) // do nothing when the header column is selected
+            if (UserID != null)
             {
-                GetDataAsyncOptions options = new GetDataAsyncOptions();
-                options.StartRow = args.StartRow;
-                options.StartColumn = 0;
-                options.RowCount = 1;
-                options.ColumnCount = 1;
-                options.CoercionType = CoercionType.Table;
-                Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
+                if (args.StartRow > 0) // do nothing when the header column is selected
                 {
-                    if (result.Status == AsyncResultStatus.Succeeded)
+                    GetDataAsyncOptions options = new GetDataAsyncOptions();
+                    options.StartRow = args.StartRow;
+                    options.StartColumn = 0;
+                    options.RowCount = 1;
+                    options.ColumnCount = 1;
+                    options.CoercionType = CoercionType.Table;
+                    Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
                     {
-                        UpdateFriendView(((string)result.TableValue.Rows[0][0]));
-                    }
-                });
+                        if (result.Status == AsyncResultStatus.Succeeded)
+                        {
+                            UpdateFriendView(((string)result.TableValue.Rows[0][0]));
+                        }
+                    });
+                }
+                SetView(Friend);
             }
-            SetView(Friend);
         }
         public static void UpdateFriendView(string friendID)
         {
             Array friendsNames = new Array();
             SetProfilePic(friendID);
-            Facebook.api(@"/" + friendID + "?fields=name", delegate(ApiResponse response)
+            if (UserID != null)
             {
-                jQuery.Select("#friendname").Html(response.name);
-            });
-
-            string graphCall = UserID + @"/mutualfriends/" + friendID;
-            Facebook.api(graphCall, delegate(ApiResponse response)
-            {
-                for (int i = 0; i < response.data.Length; i++)
+                Facebook.api(@"/" + friendID + "?fields=name", delegate(ApiResponse response)
                 {
-                    friendsNames[friendsNames.Length] = response.data[i]["name"];
-                }
-                friendsNames.Sort();
-                jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
-            });
+                    jQuery.Select("#friendname").Html(response.name);
+                });
+
+                string graphCall = UserID + @"/mutualfriends/" + friendID;
+                Facebook.api(graphCall, delegate(ApiResponse response)
+                {
+                    for (int i = 0; i < response.data.Length; i++)
+                    {
+                        friendsNames[friendsNames.Length] = response.data[i]["name"];
+                    }
+                    friendsNames.Sort();
+                    jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
+                });
+                
+            }
         }
         public static void PostFriendStatus(jQueryEvent eventArgs)
         {
