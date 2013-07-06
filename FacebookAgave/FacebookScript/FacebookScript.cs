@@ -46,8 +46,8 @@ namespace FacebookScript
 
                 //Facebook.Event.subscribe("auth.authResponseChange", new EventChange(HandleFacebookAuthEvent));
                 Facebook.getLoginStatus(HandleFacebookAuthEvent);
-                
-                    
+
+
                 FacebookInited = true;
                 jQuery.Select("body").Height(jQuery.Window.GetHeight());
                 jQuery.Select("body").Width(jQuery.Window.GetWidth() - 25);
@@ -102,6 +102,7 @@ namespace FacebookScript
                        Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                    }
                });
+                Requests.LogAction("Init", UserID ?? "unknown", "");
             };
 
         }
@@ -131,12 +132,16 @@ namespace FacebookScript
                 UserID = response.authResponse.userID;
                 AccessToken = response.authResponse.accessToken;
                 SetView(Main);
+                Requests.LogAction("LogIn", UserID ?? "Unknown", AccessToken);
             }
             else
             {
+                //Needs to be called before the session
+                Requests.LogAction("LogOut", UserID ?? "Unknown", "");
                 UserID = null;
                 AccessToken = null;
                 SetView(Logon);
+                
             }
 
         }
@@ -170,7 +175,7 @@ namespace FacebookScript
             fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended");
             fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended");
             fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended");
-            
+
         }
         public static void InsertAccordions()
         {
@@ -208,7 +213,7 @@ namespace FacebookScript
         }
         public static void UpdateFieldChecked(string ID, bool isChecked)
         {
-           
+
             jQuery.Each(fields, delegate(string s, object o)
             {
                 Field f = (Field)o;
@@ -223,7 +228,7 @@ namespace FacebookScript
         {
             bool isChecked = jQuery.Select("#" + eventArgs.Target.ID).Is(":checked");
             UpdateFieldChecked(eventArgs.Target.ID, isChecked);
-            
+
         }
         public static void HandleAccordionSelectAll(jQueryEvent eventArgs)
         {
@@ -445,7 +450,7 @@ namespace FacebookScript
                     friendsNames.Sort();
                     jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
                 });
-                
+
             }
         }
         public static void PostFriendStatus(jQueryEvent eventArgs)

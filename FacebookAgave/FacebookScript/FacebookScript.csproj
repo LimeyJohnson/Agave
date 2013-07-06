@@ -33,6 +33,7 @@
     <DocumentationFile>bin\Release\FacebookScript.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Requests.cs" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
