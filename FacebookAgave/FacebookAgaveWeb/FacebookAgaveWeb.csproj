@@ -82,6 +82,7 @@
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Pages\FacebookAgave.html" />
     <Content Include="Pages\FriendsHelp.html" />
+    <Content Include="Pages\privacy.aspx" />
     <Content Include="Scripts\FacebookScript.debug.js" />
     <Content Include="Scripts\FacebookScript.js" />
     <Content Include="Scripts\JavaScript1.js" />
@@ -286,6 +287,12 @@
     </Compile>
     <Compile Include="Pages\channel.ashx.cs">
       <DependentUpon>channel.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\privacy.aspx.cs">
+      <DependentUpon>privacy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\privacy.aspx.designer.cs">
+      <DependentUpon>privacy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
