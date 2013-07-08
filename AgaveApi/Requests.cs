@@ -10,6 +10,6 @@ namespace FriendsRequests
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public class LogEntry
     {
-        public string Action, UserID, Environment, Error;
+        public string Action, UserID, Environment, Error, Message;
     }
 }

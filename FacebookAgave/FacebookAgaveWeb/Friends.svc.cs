@@ -23,9 +23,9 @@ namespace FacebookAgaveWeb
         //         WebOperationContext.Current.OutgoingResponse.ContentType = "text/xml";
         [OperationContract]
         [WebGet]
-        public void LogAction(string Action, string UserID, string Environment, string Error)
+        public void LogAction(string Action, string UserID, string Environment, string Error, string Message)
         {
-            DataAccess.Instance.LogAction(UserID, Action, Error, Environment);
+            DataAccess.Instance.LogAction(UserID, Action, Error, Environment, Message);
         }
 
         // Add more operations here and mark them with [OperationContract]

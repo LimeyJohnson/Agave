@@ -102,7 +102,7 @@ namespace FacebookScript
                        Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                    }
                });
-                Requests.LogAction("Init", UserID ?? "unknown", "");
+                Requests.LogAction("Init", UserID ?? "unknown", "", "");
             };
 
         }
@@ -132,16 +132,16 @@ namespace FacebookScript
                 UserID = response.authResponse.userID;
                 AccessToken = response.authResponse.accessToken;
                 SetView(Main);
-                Requests.LogAction("LogIn", UserID ?? "Unknown", AccessToken);
+                Requests.LogAction("LogIn", UserID ?? "Unknown", "", AccessToken);
             }
             else
             {
                 //Needs to be called before the session
-                Requests.LogAction("LogOut", UserID ?? "Unknown", "");
+                Requests.LogAction("LogOut", UserID ?? "Unknown", "", AccessToken);
                 UserID = null;
                 AccessToken = null;
                 SetView(Logon);
-                
+
             }
 
         }
@@ -330,7 +330,16 @@ namespace FacebookScript
                                          setoptions.CoercionType = CoercionType.Table;
                                          newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
                                          {
-                                             SetError("An error has occurred please try again");
+                                             Requests.LogAction("Insert Data", UserID, "", "Existing Table Resize");
+                                             if (callResult.Status == AsyncResultStatus.Failed)
+                                             {
+                                                 SetError("An error has occurred please try again");
+                                                 Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table Resize");
+                                             }
+                                             else
+                                             {
+                                                 Requests.LogAction("Insert Data", UserID, "", "Existing Table");
+                                             }
                                          });
                                      });
                                 });
@@ -344,6 +353,11 @@ namespace FacebookScript
                                     if (result.Status == AsyncResultStatus.Failed)
                                     {
                                         SetError("An error has occurred please try again");
+                                        Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table");
+                                    }
+                                    else
+                                    {
+                                        Requests.LogAction("Insert Data", UserID, "", "Existing Table");
                                     }
                                 });
                             }
@@ -357,6 +371,7 @@ namespace FacebookScript
                         {
                             if (setresult.Status == AsyncResultStatus.Failed)
                             {
+                                Requests.LogAction("Insert Data", UserID, "Message: " + setresult.Error.Message + " Code: " + setresult.Error.Code, "New Table");
                                 if (setresult.Error.Code == 2003) // this is the not enough size exception
                                 {
                                     SetError("Setting the friends list here would overwrite data in the spread sheet. Please select another area");
@@ -374,6 +389,7 @@ namespace FacebookScript
                                 {
                                     Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
                                 });
+                                Requests.LogAction("Insert Data", UserID, "", "New Table");
                             }
                         });
                     }
