@@ -31,15 +31,16 @@ namespace FacebookAgaveWeb
             string whereClause = "WHERE " + string.Join(" AND ", clauses);
             return whereClause;
         }
-        public void LogAction(string UserID, string ActionText, string Error, string Environment, string Message)
+        public void LogAction(string UserID, string ActionText, string Error, string Environment, string Message, string Address )
         {
             SqlCommand cmd = MyConnection.CreateCommand();
-            cmd.CommandText = "INSERT INTO [ActionLog](Action, UserID, Error, Environment, Message) VALUES (@Action, @UserID, @Error, @Environment, @Message)";
+            cmd.CommandText = "INSERT INTO [ActionLog](Action, UserID, Error, Environment, Message,IPAddress) VALUES (@Action, @UserID, @Error, @Environment, @Message, @IPAddress)";
             cmd.Parameters.AddWithValue("@Action", ActionText);
             cmd.Parameters.AddWithValue("@UserID", UserID);
             cmd.Parameters.AddWithValue("@Error", Error);
             cmd.Parameters.AddWithValue("@Environment", Environment);
             cmd.Parameters.AddWithValue("@Message", Message);
+            cmd.Parameters.AddWithValue("@IPAddress", Address);
 
             MyConnection.Open();
             cmd.ExecuteNonQuery();

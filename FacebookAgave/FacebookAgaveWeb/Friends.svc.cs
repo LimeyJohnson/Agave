@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
 using System.Text;
 
@@ -25,7 +26,9 @@ namespace FacebookAgaveWeb
         [WebGet]
         public void LogAction(string Action, string UserID, string Environment, string Error, string Message)
         {
-            DataAccess.Instance.LogAction(UserID, Action, Error, Environment, Message);
+            string IPAddress = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            DataAccess.Instance.LogAction(UserID, Action, Error, Environment, Message, IPAddress);
+            
         }
 
         // Add more operations here and mark them with [OperationContract]
