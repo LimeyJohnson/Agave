@@ -12,18 +12,21 @@ namespace FacebookScript
     public class Field
     {
         private string m_displayText;
+        private string m_permission;
         private string m_fieldName;
         private string m_containerName;
         public bool m_checked = true;
         public static string checkBoxPrefix = "fieldscb";
         protected const string nullToken = "Unknown";
+
         [AlternateSignature]
-        public extern Field(string fieldName, string displayName, string containerName);
-        public Field(string fieldName, string displayName, string containerName, bool? defaultChecked)
+        public extern Field(string fieldName, string displayName, string containerName, string permission);
+        public Field(string fieldName, string displayName, string containerName, string permission, bool? defaultChecked)
         {
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
             this.m_containerName = containerName;
+            this.m_permission = permission;
             bool savedChecked;
             if ((savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)) != null)
             {
@@ -64,7 +67,7 @@ namespace FacebookScript
         {
             get
             {
-                string template = @"<input id='{0}' type='checkbox' "+((m_checked)? "checked='checked'":"")+" />{1}";
+                string template = @"<input id='{0}' type='checkbox' " + ((m_checked) ? "checked='checked'" : "") + " />{1}";
                 return string.Format(template, ID, DisplayText);
             }
         }
@@ -72,7 +75,7 @@ namespace FacebookScript
         {
             get
             {
-                return jQuery.Select("#"+ID).Is(":checked");
+                return jQuery.Select("#" + ID).Is(":checked");
             }
             set
             {
@@ -90,6 +93,6 @@ namespace FacebookScript
         {
             Office.Context.Document.Settings.Set(this.ID, value);
         }
-        
+
     }
 }

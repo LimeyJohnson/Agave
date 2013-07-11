@@ -148,33 +148,33 @@ namespace FacebookScript
         public static void LogIntoFacebook(jQueryEvent eventArgs)
         {
             LoginOptions LoginOptions = new LoginOptions();
-            LoginOptions.scope = "email,friends_education_history, friends_likes,user_activities,friends_activities,user_birthday,friends_birthday,user_education_history,friends_education_history,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,friends_status,user_website,user_work_history,friends_work_history";
+            LoginOptions.scope = "email,friends_education_history, ,user_activities,friends_activities,user_birthday,,user_education_history,friends_education_history,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,,user_status,friends_status,user_website,user_work_history,friends_work_history";
             Facebook.login(HandleFacebookAuthEvent, LoginOptions);
         }
         public static void InitFields()
         {
             fields = new Dictionary<string, Field>();
             fields["uid"] = new RequiredField("uid", "FBID");
-            fields["first_name"] = new Field("first_name", "First Name", "Basic", true);
-            fields["last_name"] = new Field("last_name", "Last Name", "Basic", true);
-            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic", true);
-            fields["sex"] = new Field("sex", "Sex", "Basic", true);
-            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts");
-            fields["quotes"] = new Field("quotes", "Quotes", "Extended", false);
-            fields["political"] = new Field("political", "Political", "Extended");
-            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "Extended");
-            fields["religion"] = new Field("religion", "Religion", "Extended");
-            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts");
-            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts");
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment", 0);
-            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment", 0);
-            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location");
-            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location");
-            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location");
-            fields["interests"] = new Field("interests", "Interests", "Extended");
-            fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended");
-            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended");
-            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended");
+            fields["first_name"] = new Field("first_name", "First Name", "Basic", null, true);
+            fields["last_name"] = new Field("last_name", "Last Name", "Basic",null, true);
+            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic","friends_birthday", true);
+            fields["sex"] = new Field("sex", "Sex", "Basic",null, true);
+            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts", null);
+            fields["quotes"] = new Field("quotes", "Quotes", "Extended", "friends_likes",false);
+            fields["political"] = new Field("political", "Political", "Extended","friends_religion_politics");
+            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "Extended", null);
+            fields["religion"] = new Field("religion", "Religion", "Extended", "friends_religion_politics");
+            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts",null);
+            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts",null);
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment","friends_work_history", 0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment","friends_work_history", 0);
+            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location", "friends_location");
+            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location", "friends_location");
+            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location", "friends_location");
+            fields["interests"] = new Field("interests", "Interests", "Extended","friends_interests");
+            fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended", null);
+            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended","friends_likes");
+            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended", null);
 
         }
         public static void InsertAccordions()

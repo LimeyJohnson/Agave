@@ -10,7 +10,7 @@ namespace FacebookScript
 {
     public class RequiredField: Field
     {
-        public RequiredField(string fieldName, string displayText) : base(fieldName, displayText, null) { }
+        public RequiredField(string fieldName, string displayText) : base(fieldName, displayText, null,null) { }
         public override bool Checked
         {
             get
