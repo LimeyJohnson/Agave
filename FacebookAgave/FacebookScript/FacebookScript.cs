@@ -57,7 +57,7 @@ namespace FacebookScript
                 jQuery.Select("#GetFriends").Click(new jQueryEventHandler(InsertFriends));
                 jQuery.Select("#LogOut").Click(new jQueryEventHandler(LogOutOfFacebook));
                 jQuery.Select("#postfriendstatus").Click(new jQueryEventHandler(PostFriendStatus));
-                jQuery.Select("#btnlogon").Click(new jQueryEventHandler(LogIntoFacebook));
+                jQuery.Select("#btnlogon").Click(new jQueryEventHandler(HandleFacebookLogon));
                 jQuery.Select("#insertfreinds").Click(new jQueryEventHandler(InsertFriends));
                 //Sync up goto main buttons they are all insert tags ending in main
                 jQuery.Select("img[id$='main']").Click(delegate(jQueryEvent e) { SetView(Main); });
@@ -145,35 +145,39 @@ namespace FacebookScript
             }
 
         }
-        public static void LogIntoFacebook(jQueryEvent eventArgs)
+        public static void HandleFacebookLogon(jQueryEvent eventArgs)
+        {
+            LogonToFacebook("email", HandleFacebookAuthEvent);
+        }
+        public static void LogonToFacebook(string scope, Action<LoginResponse> callback)
         {
             LoginOptions LoginOptions = new LoginOptions();
-            LoginOptions.scope = "email,friends_education_history, ,user_activities,friends_activities,user_birthday,,user_education_history,friends_education_history,user_hometown,friends_hometown,user_interests,friends_interests,user_location,friends_location,user_relationships,friends_relationships,user_relationship_details,friends_relationship_details,user_religion_politics,,user_status,friends_status,user_website,user_work_history,friends_work_history";
-            Facebook.login(HandleFacebookAuthEvent, LoginOptions);
+            LoginOptions.scope = scope;
+            Facebook.login(callback, LoginOptions);
         }
         public static void InitFields()
         {
             fields = new Dictionary<string, Field>();
             fields["uid"] = new RequiredField("uid", "FBID");
             fields["first_name"] = new Field("first_name", "First Name", "Basic", null, true);
-            fields["last_name"] = new Field("last_name", "Last Name", "Basic",null, true);
-            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic","friends_birthday", true);
-            fields["sex"] = new Field("sex", "Sex", "Basic",null, true);
+            fields["last_name"] = new Field("last_name", "Last Name", "Basic", null, true);
+            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic", "friends_birthday", true);
+            fields["sex"] = new Field("sex", "Sex", "Basic", null, true);
             fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts", null);
-            fields["quotes"] = new Field("quotes", "Quotes", "Extended", "friends_likes",false);
-            fields["political"] = new Field("political", "Political", "Extended","friends_religion_politics");
-            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "Extended", null);
+            fields["quotes"] = new Field("quotes", "Quotes", "Extended", "friends_likes", false);
+            fields["political"] = new Field("political", "Political", "Extended", "friends_religion_politics");
+            fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "Extended", "friends_relationships", null);
             fields["religion"] = new Field("religion", "Religion", "Extended", "friends_religion_politics");
-            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts",null);
-            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts",null);
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment","friends_work_history", 0);
-            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment","friends_work_history", 0);
+            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts", null);
+            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts", null);
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment", "friends_work_history", 0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment", "friends_work_history", 0);
             fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location", "friends_location");
             fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location", "friends_location");
             fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location", "friends_location");
-            fields["interests"] = new Field("interests", "Interests", "Extended","friends_interests");
+            fields["interests"] = new Field("interests", "Interests", "Extended", "friends_interests");
             fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended", null);
-            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended","friends_likes");
+            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended", "friends_likes");
             fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended", null);
 
         }
@@ -270,7 +274,7 @@ namespace FacebookScript
             Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
             td.HeadersDouble[0] = new Array();
-
+            Array permissions = new Array();
             Dictionary<string, Field> dict = new Dictionary<string, Field>();
             jQuery.Each(fields, delegate(string name, object value)
             {
@@ -280,6 +284,7 @@ namespace FacebookScript
                     dict[name] = ff;
                     td.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
                     fieldNames[fieldNames.Length] = ff.FieldName;
+                    if (ff.Permission != null && permissions.IndexOf(ff.Permission) < 0) permissions[permissions.Length] = ff.Permission;
                 }
             });
 
@@ -292,111 +297,132 @@ namespace FacebookScript
             string query = "SELECT " + fieldList + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-
-            Facebook.api("fql", queryOptions, delegate(ApiResponse response)
+            LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
             {
-                td.Rows = new string[response.data.Length][];
-                for (int i = 0; i < response.data.Length; i++)
+                if (logonResponse.status == "connected")
                 {
-                    td.Rows[i] = new string[td.HeadersDouble[0].Length];
-                    for (int y = 0; y < td.HeadersDouble[0].Length; y++)
+                    Facebook.api("fql", queryOptions, delegate(ApiResponse response)
                     {
-                        string fn = dict.Keys[y];
-                        Field f = fields[fn];
-                        td.Rows[i][y] = f.ParseResult(response.data[i]);
-                    }
+                        if (Script.Boolean(response.error))
+                        {
+                            Requests.LogAction("GetDataFromFacebook", UserID, response.error, "Could not get data from facebook");
+                        }
+                        else
+                        {
+                            InsertFreindsIntoExcel(response.data, td, dict);
+                        }
+                    });
                 }
-                GetDataAsyncOptions options = new GetDataAsyncOptions();
-                options.CoercionType = CoercionType.Table;
-                Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
+                else
                 {
-                    if (result.Error == null)
+                    HandleFacebookAuthEvent(logonResponse);
+                }
+            });
+        }
+        public static void InsertFreindsIntoExcel(Dictionary[] data, TableData td, Dictionary<string, Field> dict)
+        {
+            td.Rows = new string[data.Length][];
+            for (int i = 0; i < data.Length; i++)
+            {
+                td.Rows[i] = new string[td.HeadersDouble[0].Length];
+                for (int y = 0; y < td.HeadersDouble[0].Length; y++)
+                {
+                    string fn = dict.Keys[y];
+                    Field f = fields[fn];
+                    td.Rows[i][y] = f.ParseResult(data[i]);
+                }
+            }
+            GetDataAsyncOptions options = new GetDataAsyncOptions();
+            options.CoercionType = CoercionType.Table;
+            Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
+            {
+                if (result.Error == null)
+                {
+                    //The binding already exists... use it
+                    BindingObject binding = (BindingObject)result.Value;
+                    // Now we have to do a getData to see if we need to add any columns
+                    binding.GetDataAsync(options, delegate(ASyncResult getDataResult)
                     {
-                        //The binding already exists... use it
-                        BindingObject binding = (BindingObject)result.Value;
-                        // Now we have to do a getData to see if we need to add any columns
-                        binding.GetDataAsync(options, delegate(ASyncResult getDataResult)
+                        int columnDiff = td.HeadersDouble[0].Length - getDataResult.TableValue.HeadersDouble[0].Length;
+                        if (columnDiff > 0)
                         {
-                            int columnDiff = td.HeadersDouble[0].Length - getDataResult.TableValue.HeadersDouble[0].Length;
-                            if (columnDiff > 0)
+                            TableData addColumnTable = GenerateTableData(columnDiff, getDataResult.TableValue.Rows.Length);
+                            binding.AddColumnsAsync(addColumnTable, delegate(ASyncResult addColumnResult)
                             {
-                                TableData addColumnTable = GenerateTableData(columnDiff, getDataResult.TableValue.Rows.Length);
-                                binding.AddColumnsAsync(addColumnTable, delegate(ASyncResult addColumnResult)
-                                {
-                                    Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult newBindResult)
+                                Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult newBindResult)
+                                 {
+                                     BindingObject newBinding = (BindingObject)newBindResult.Value;
+                                     GetDataAsyncOptions setoptions = new GetDataAsyncOptions();
+                                     setoptions.CoercionType = CoercionType.Table;
+                                     newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
                                      {
-                                         BindingObject newBinding = (BindingObject)newBindResult.Value;
-                                         GetDataAsyncOptions setoptions = new GetDataAsyncOptions();
-                                         setoptions.CoercionType = CoercionType.Table;
-                                         newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
+                                         Requests.LogAction("Insert Data", UserID, "", "Existing Table Resize");
+                                         if (callResult.Status == AsyncResultStatus.Failed)
                                          {
-                                             Requests.LogAction("Insert Data", UserID, "", "Existing Table Resize");
-                                             if (callResult.Status == AsyncResultStatus.Failed)
-                                             {
-                                                 SetError("An error has occurred please try again");
-                                                 Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table Resize");
-                                             }
-                                             else
-                                             {
-                                                 Requests.LogAction("Insert Data", UserID, "", "Existing Table");
-                                             }
-                                         });
+                                             SetError("An error has occurred please try again");
+                                             Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table Resize");
+                                         }
+                                         else
+                                         {
+                                             Requests.LogAction("Insert Data", UserID, "", "Existing Table");
+                                         }
                                      });
-                                });
-                            }
-                            else
-                            {
-                                GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
-                                newOptions.CoercionType = CoercionType.Table;
-                                binding.SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
-                                {
-                                    if (result.Status == AsyncResultStatus.Failed)
-                                    {
-                                        SetError("An error has occurred please try again");
-                                        Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table");
-                                    }
-                                    else
-                                    {
-                                        Requests.LogAction("Insert Data", UserID, "", "Existing Table");
-                                    }
-                                });
-                            }
-
-                        });
-                    }
-                    else
-                    {
-                        //the binding does not exist, insert data and set binding
-                        Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult setresult)
+                                 });
+                            });
+                        }
+                        else
                         {
-                            if (setresult.Status == AsyncResultStatus.Failed)
+                            GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
+                            newOptions.CoercionType = CoercionType.Table;
+                            binding.SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
                             {
-                                Requests.LogAction("Insert Data", UserID, "Message: " + setresult.Error.Message + " Code: " + setresult.Error.Code, "New Table");
-                                if (setresult.Error.Code == 2003) // this is the not enough size exception
+                                if (result.Status == AsyncResultStatus.Failed)
                                 {
-                                    SetError("Setting the friends list here would overwrite data in the spread sheet. Please select another area");
+                                    SetError("An error has occurred please try again");
+                                    Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table");
                                 }
                                 else
                                 {
-                                    SetError("An error has occurred please try again");
+                                    Requests.LogAction("Insert Data", UserID, "", "Existing Table");
                                 }
-                            }
-                            if (setresult.Status == AsyncResultStatus.Succeeded)
+                            });
+                        }
+
+                    });
+                }
+                else
+                {
+                    //the binding does not exist, insert data and set binding
+                    Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult setresult)
+                    {
+                        if (setresult.Status == AsyncResultStatus.Failed)
+                        {
+                            Requests.LogAction("Insert Data", UserID, "Message: " + setresult.Error.Message + " Code: " + setresult.Error.Code, "New Table");
+                            if (setresult.Error.Code == 2003) // this is the not enough size exception
                             {
-                                BindingOptions bindingOptions = new BindingOptions();
-                                bindingOptions.ID = TableBinding;
-                                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
-                                {
-                                    Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-                                });
-                                Requests.LogAction("Insert Data", UserID, "", "New Table");
+                                SetError("Setting the friends list here would overwrite data in the spread sheet. Please select another area");
                             }
-                        });
-                    }
-                });
-                UpdateFriendView((string)td.Rows[0][0]);
-                SetView(Friend);
+                            else
+                            {
+                                SetError("An error has occurred please try again");
+                            }
+                        }
+                        if (setresult.Status == AsyncResultStatus.Succeeded)
+                        {
+                            BindingOptions bindingOptions = new BindingOptions();
+                            bindingOptions.ID = TableBinding;
+                            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
+                            {
+                                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                            });
+                            Requests.LogAction("Insert Data", UserID, "", "New Table");
+                        }
+                    });
+                }
             });
+            UpdateFriendView((string)td.Rows[0][0]);
+            SetView(Friend);
+
         }
         public static TableData GenerateTableData(int size, int length)
         {

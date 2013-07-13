@@ -49,6 +49,13 @@ namespace FacebookScript
                 return this.m_displayText;
             }
         }
+        public string Permission
+        {
+            get
+            {
+                return this.m_permission;
+            }
+        }
         public string ContainerName
         {
             get

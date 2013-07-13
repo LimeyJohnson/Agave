@@ -10,7 +10,7 @@ namespace FreindsLibrary
     {
         public delegate void ApiDelegate(ApiResponse response);
         public delegate void QueryDelgate(QueryResponse[] response);
-        public delegate void LoginDelegate(LoginResponse response);
+        //public delegate void LoginDelegate(LoginResponse response);
         public delegate void UIDelegate(UIResponse response);
         
         
@@ -19,10 +19,10 @@ namespace FreindsLibrary
         public static void api(string apiCall, ApiOptions options, ApiDelegate response) { }
         public static void api(string apiCall, string noun, ApiOptions options, ApiDelegate response) { }
         public static void api(ApiOptions options, QueryDelgate response) { }
-        public static void login(LoginDelegate d) { }
-        public static void login(LoginDelegate d, LoginOptions options) { }
-        public static void logout(LoginDelegate d) { }
-        public static void getLoginStatus(LoginDelegate response) { }
+        public static void login(Action<LoginResponse> d) { }
+        public static void login(Action<LoginResponse> d, LoginOptions options) { }
+        public static void logout(Action<LoginResponse> d) { }
+        public static void getLoginStatus(Action<LoginResponse> response) { }
         public static void ui(UIOptions options, UIDelegate response) { }
         [ScriptName("Event")]
         public static FBEvent Event;
