@@ -147,6 +147,7 @@ namespace FacebookScript
         }
         public static void HandleFacebookLogon(jQueryEvent eventArgs)
         {
+            Requests.LogAction("Login Button Pressed", UserID, "", "");
             LogonToFacebook("email", HandleFacebookAuthEvent);
         }
         public static void LogonToFacebook(string scope, Action<LoginResponse> callback)
