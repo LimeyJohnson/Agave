@@ -75,6 +75,8 @@
     <Content Include="Images\friends-for-office.png" />
     <Content Include="packages.config" />
     <Content Include="Pages\channel.ashx" />
+    <None Include="Properties\PublishProfiles\accessfriends - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\accessfriends - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FacebookAgave - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\FacebookAgave - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\FacebookAgave - Web Deploy %282%29.pubxml" />

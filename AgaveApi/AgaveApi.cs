@@ -71,6 +71,7 @@ namespace AgaveApi
         public extern void SetDataAsync(TableData data, GetDataAsyncOptions options);
         public extern void AddHandlerAsync(EventType eventType, BindingDataChanged handler);
         public extern void AddHandlerAsync(EventType eventType, BindingSelectionChanged handler);
+        public extern void AddHandlerAsync(EventType eventType, BindingSelectionChanged handler, ASyncResultCallBack callback);
         public extern void DeleteAllDataValuesAsync(ASyncResultCallBack callback);
         public extern void AddColumnsAsync(TableData data, ASyncResultCallBack callback);
         public string Id;
@@ -109,6 +110,7 @@ namespace AgaveApi
     {
         public string ID;
         public object AsyncContext;
+        public Array columnNames;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
    public sealed class PromptBindingOptions: BindingOptions
@@ -122,6 +124,7 @@ namespace AgaveApi
         public CoercionType CoercionType;
         public ValueFormat ValueFormat;
         public FilterType FilterType;
+        public ScopeType ScopeType;
         public int StartRow;
         public int StartColumn;
         public int RowCount;
@@ -176,6 +179,14 @@ namespace AgaveApi
         Formatted,
         [PreserveCase]
         UnFormatted,
+    }
+    [Imported, IgnoreNamespace, ScriptName("Office.ScopeType")]
+    public enum ScopeType
+    {
+        [PreserveCase]
+        SelectedRows,
+        [PreserveCase]
+        All
     }
     [Imported, IgnoreNamespace, ScriptName("Office.CoercionType")]
     public enum CoercionType

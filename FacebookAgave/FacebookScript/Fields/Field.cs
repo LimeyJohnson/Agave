@@ -27,16 +27,16 @@ namespace FacebookScript
             this.m_fieldName = fieldName;
             this.m_containerName = containerName;
             this.m_permission = permission;
-            bool savedChecked;
-            if ((savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)) != null)
-            {
-                this.m_checked = savedChecked;
-            }
-            else
-            {
+           // bool savedChecked;
+            //if ((savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)) != null)
+            //{
+            //    this.m_checked = savedChecked;
+            //}
+            //else
+            //{
                 m_checked = defaultChecked ?? false;
-                Office.Context.Document.Settings.Set(this.ID, this.m_checked);
-            }
+            //    Office.Context.Document.Settings.Set(this.ID, this.m_checked);
+            //}
         }
         public virtual string ParseResult(Dictionary row)
         {
@@ -98,7 +98,7 @@ namespace FacebookScript
         }
         public void UpdateChecked(bool value)
         {
-            Office.Context.Document.Settings.Set(this.ID, value);
+           // Office.Context.Document.Settings.Set(this.ID, value);
         }
 
     }

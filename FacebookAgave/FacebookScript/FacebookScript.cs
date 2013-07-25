@@ -34,7 +34,7 @@ namespace FacebookScript
                 InitOptions options = new InitOptions();
 #if DEBUG
                 options.appId = "143445839182832";
-                options.channelUrl = "http://localhost:62587/pages/channel.ashx";
+                //options.channelUrl = "http://localhost:62587/pages/channel.ashx";
 #else
 
                 options.channelUrl = "https://friendsinoffice.com/pages/channel.ashx";
@@ -78,9 +78,6 @@ namespace FacebookScript
 
                 InitFields();
                 InsertAccordions();
-                BindingOptions options = new BindingOptions();
-                options.ID = TableBinding;
-                Office.Context.Document.Bindings.AddFromNamedItemAsync("Names", BindingType.Table, options);
                 Script.SetTimeout(delegate()
                 {
                     if (!FacebookInited) Script.Literal("window.fbAsyncInit()");
@@ -95,13 +92,8 @@ namespace FacebookScript
                     js.Src = "//connect.facebook.net/en_US/all.js";
                     reference.ParentNode.InsertBefore(js, reference);
                 }
-                Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
-               {
-                   if (result.Error == null)
-                   {
-                       Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-                   }
-               });
+                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+               
                 Requests.LogAction("Init", UserID ?? "unknown", "", "");
             };
 
@@ -163,7 +155,7 @@ namespace FacebookScript
             fields["first_name"] = new Field("first_name", "First Name", "Basic", null, true);
             fields["last_name"] = new Field("last_name", "Last Name", "Basic", null, true);
             fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic", "friends_birthday", true);
-            fields["sex"] = new Field("sex", "Sex", "Basic", null, true);
+            fields["sex"] = new Field("sex", "Gender", "Basic", null, true);
             fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts", null);
             fields["quotes"] = new Field("quotes", "Quotes", "Extended", "friends_likes", false);
             fields["political"] = new Field("political", "Political", "Extended", "friends_religion_politics");
@@ -214,7 +206,7 @@ namespace FacebookScript
            });
             Script.Literal("$('#fieldchoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
             jQuery.Select("input[id^='" + Field.checkBoxPrefix + "']").Change(HandleFieldChange);
-            Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
+           // Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
         }
         public static void UpdateFieldChecked(string ID, bool isChecked)
         {
@@ -225,7 +217,7 @@ namespace FacebookScript
                 if (f.ID == ID)
                 {
                     f.UpdateChecked(isChecked);
-                    Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
+                    //Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
                 }
             });
         }
@@ -335,91 +327,30 @@ namespace FacebookScript
             }
             GetDataAsyncOptions options = new GetDataAsyncOptions();
             options.CoercionType = CoercionType.Table;
-            Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult result)
+            BindingOptions bo = new BindingOptions();
+            bo.columnNames = (Array)td.Headers[0];
+            bo.ID = TableBinding;
+            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult createBindingCallback)
             {
-                if (result.Error == null)
+                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, HandleTableSelection, delegate(ASyncResult addHandlerResult)
                 {
-                    //The binding already exists... use it
-                    BindingObject binding = (BindingObject)result.Value;
-                    // Now we have to do a getData to see if we need to add any columns
-                    binding.GetDataAsync(options, delegate(ASyncResult getDataResult)
-                    {
-                        int columnDiff = td.HeadersDouble[0].Length - getDataResult.TableValue.HeadersDouble[0].Length;
-                        if (columnDiff > 0)
-                        {
-                            TableData addColumnTable = GenerateTableData(columnDiff, getDataResult.TableValue.Rows.Length);
-                            binding.AddColumnsAsync(addColumnTable, delegate(ASyncResult addColumnResult)
-                            {
-                                Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult newBindResult)
-                                 {
-                                     BindingObject newBinding = (BindingObject)newBindResult.Value;
-                                     GetDataAsyncOptions setoptions = new GetDataAsyncOptions();
-                                     setoptions.CoercionType = CoercionType.Table;
-                                     newBinding.SetDataAsync(td, setoptions, delegate(ASyncResult callResult)
-                                     {
-                                         Requests.LogAction("Insert Data", UserID, "", "Existing Table Resize");
-                                         if (callResult.Status == AsyncResultStatus.Failed)
-                                         {
-                                             SetError("An error has occurred please try again");
-                                             Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table Resize");
-                                         }
-                                         else
-                                         {
-                                             Requests.LogAction("Insert Data", UserID, "", "Existing Table");
-                                         }
-                                     });
-                                 });
-                            });
-                        }
-                        else
-                        {
-                            GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
-                            newOptions.CoercionType = CoercionType.Table;
-                            binding.SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
-                            {
-                                if (result.Status == AsyncResultStatus.Failed)
-                                {
-                                    SetError("An error has occurred please try again");
-                                    Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table");
-                                }
-                                else
-                                {
-                                    Requests.LogAction("Insert Data", UserID, "", "Existing Table");
-                                }
-                            });
-                        }
-
-                    });
-                }
-                else
+                    Requests.LogAction("Something", "IO", "Error", "Message");
+                });
+                GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
+                newOptions.CoercionType = CoercionType.Table;
+                Office.Select("bindings#"+TableBinding).SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
                 {
-                    //the binding does not exist, insert data and set binding
-                    Office.Context.Document.SetSelectedDataAsync(td, options, delegate(ASyncResult setresult)
+                    if (callResult.Status == AsyncResultStatus.Failed)
                     {
-                        if (setresult.Status == AsyncResultStatus.Failed)
-                        {
-                            Requests.LogAction("Insert Data", UserID, "Message: " + setresult.Error.Message + " Code: " + setresult.Error.Code, "New Table");
-                            if (setresult.Error.Code == 2003) // this is the not enough size exception
-                            {
-                                SetError("Setting the friends list here would overwrite data in the spread sheet. Please select another area");
-                            }
-                            else
-                            {
-                                SetError("An error has occurred please try again");
-                            }
-                        }
-                        if (setresult.Status == AsyncResultStatus.Succeeded)
-                        {
-                            BindingOptions bindingOptions = new BindingOptions();
-                            bindingOptions.ID = TableBinding;
-                            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
-                            {
-                                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-                            });
-                            Requests.LogAction("Insert Data", UserID, "", "New Table");
-                        }
-                    });
-                }
+                        SetError("An error has occurred please try again");
+                        Requests.LogAction("Insert Data", UserID, "Message: " + callResult.Error.Message + " Code: " + callResult.Error.Code, "Existing Table");
+                    }
+                    else
+                    {
+                        
+                        Requests.LogAction("Insert Data", UserID, "", "Existing Table");
+                    }
+                });
             });
             UpdateFriendView((string)td.Rows[0][0]);
             SetView(Friend);
@@ -456,11 +387,8 @@ namespace FacebookScript
                 if (args.StartRow > 0) // do nothing when the header column is selected
                 {
                     GetDataAsyncOptions options = new GetDataAsyncOptions();
-                    options.StartRow = args.StartRow;
-                    options.StartColumn = 0;
-                    options.RowCount = 1;
-                    options.ColumnCount = 1;
                     options.CoercionType = CoercionType.Table;
+                    options.ScopeType = ScopeType.SelectedRows;
                     Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
                     {
                         if (result.Status == AsyncResultStatus.Succeeded)
