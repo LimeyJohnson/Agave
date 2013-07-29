@@ -104,6 +104,8 @@ namespace AgaveApi
         [ScriptName("headers")]
         public Array[] HeadersDouble;
         public object[][] Rows;
+        [ScriptName("rows")]
+        public object[] SingleRow;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public class BindingOptions

@@ -92,8 +92,13 @@ namespace FacebookScript
                     js.Src = "//connect.facebook.net/en_US/all.js";
                     reference.ParentNode.InsertBefore(js, reference);
                 }
-                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-               
+                BindingOptions bo = new BindingOptions();
+                bo.ID = TableBinding;
+                bo.columnNames = new string[] {"FBID","First Name","Last Name","Birthday","Gender"};
+                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult bindingResult)
+                {
+                    Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                });
                 Requests.LogAction("Init", UserID ?? "unknown", "", "");
             };
 
@@ -206,7 +211,7 @@ namespace FacebookScript
            });
             Script.Literal("$('#fieldchoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
             jQuery.Select("input[id^='" + Field.checkBoxPrefix + "']").Change(HandleFieldChange);
-           // Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
+            // Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
         }
         public static void UpdateFieldChecked(string ID, bool isChecked)
         {
@@ -338,7 +343,7 @@ namespace FacebookScript
                 });
                 GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
                 newOptions.CoercionType = CoercionType.Table;
-                Office.Select("bindings#"+TableBinding).SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
+                Office.Select("bindings#" + TableBinding).SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
                 {
                     if (callResult.Status == AsyncResultStatus.Failed)
                     {
@@ -347,13 +352,13 @@ namespace FacebookScript
                     }
                     else
                     {
-                        
+
                         Requests.LogAction("Insert Data", UserID, "", "Existing Table");
                     }
                 });
             });
-            UpdateFriendView((string)td.Rows[0][0]);
-            SetView(Friend);
+           // UpdateFriendView((string)td.Rows[0][0]);
+             SetView(Friend);
 
         }
         public static TableData GenerateTableData(int size, int length)
@@ -384,19 +389,16 @@ namespace FacebookScript
         {
             if (UserID != null)
             {
-                if (args.StartRow > 0) // do nothing when the header column is selected
+                GetDataAsyncOptions options = new GetDataAsyncOptions();
+                options.CoercionType = CoercionType.Table;
+                options.ScopeType = ScopeType.SelectedRows;
+                Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
                 {
-                    GetDataAsyncOptions options = new GetDataAsyncOptions();
-                    options.CoercionType = CoercionType.Table;
-                    options.ScopeType = ScopeType.SelectedRows;
-                    Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
+                    if (result.Status == AsyncResultStatus.Succeeded)
                     {
-                        if (result.Status == AsyncResultStatus.Succeeded)
-                        {
-                            UpdateFriendView(((string)result.TableValue.Rows[0][0]));
-                        }
-                    });
-                }
+                        UpdateFriendView(((string)result.TableValue.Rows[0][0]));
+                    }
+                });
                 SetView(Friend);
             }
         }
