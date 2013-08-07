@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ContentApp">
+  <Id>b719814c-112c-44c7-a63c-817d31a26ac7</Id>
+  <Version>1.0</Version>
+  <ProviderName>andrewjo</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="TestAgave" />
+  <Description DefaultValue="TestAgave Description"/>
+  <Capabilities>
+    <Capability Name="Workbook" />
+  </Capabilities>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="~remoteAppUrl/Pages/TestAgave.html" />
+    <RequestedWidth>800</RequestedWidth>
+    <RequestedHeight>800</RequestedHeight>
+  </DefaultSettings>
+  <Permissions>ReadWriteDocument</Permissions>
+</OfficeApp>
