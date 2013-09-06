@@ -8,7 +8,7 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{97A653F6-A793-4328-ACE2-898398A2D35A}</ProjectGuid>
+    <ProjectGuid>{B935772F-207F-42A2-85E9-D351CA4DC281}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>DropboxWeb</RootNamespace>
@@ -17,9 +17,9 @@
     <MyType>Custom</MyType>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44300</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <TargetOfficeVersion>15.0</TargetOfficeVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -94,12 +94,16 @@
     <Content Include="Content\Office.css" />
     <Content Include="Images\Close.png" />
     <Content Include="Images\Settings.png" />
+    <Content Include="JavaScript1.js" />
     <Content Include="packages.config" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\DropboxScript.debug.js" />
+    <Content Include="Scripts\DropboxScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\mscorlib.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.debug.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\office_strings.js" />
     <Content Include="Scripts\Office\1.0\ar-sa\outlook_strings.debug.js" />

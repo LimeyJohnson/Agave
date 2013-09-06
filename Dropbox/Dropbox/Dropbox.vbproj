@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1113B4E3-2C1E-42E7-AE53-C24BA3DCF9CE}</ProjectGuid>
+    <ProjectGuid>{08A8B28D-3649-4540-9A5A-C28F5F7F7480}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Dropbox</RootNamespace>
     <AssemblyName>Dropbox</AssemblyName>
@@ -18,11 +18,11 @@
     <OptionInfer>On</OptionInfer>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
-    <AppFeaturePartId>{f5f000d9-f8c3-4d55-83cf-215a0a26dd81}</AppFeaturePartId>
-    <WspPartId>{63db1d8c-1812-4c56-aee3-db0eada62f17}</WspPartId>
-    <WorkflowPartId>{5d82be46-2670-460d-a88c-f23e84301d6e}</WorkflowPartId>
-    <CspkgPartId>{76dbfc85-764a-473b-b4a5-7c3543766edf}</CspkgPartId>
-    <SqlPackagePartId>{a6844a57-b266-4b41-9e82-4b89812790ad}</SqlPackagePartId>
+    <AppFeaturePartId>{85b74e68-a0d1-4333-bea8-915145277e8b}</AppFeaturePartId>
+    <WspPartId>{e2a264a1-3083-410f-b863-6f4294d8b3f0}</WspPartId>
+    <WorkflowPartId>{b29d8d91-d578-4446-b529-016420054eea}</WorkflowPartId>
+    <CspkgPartId>{79339689-4399-4a0d-b1ba-3417add48691}</CspkgPartId>
+    <SqlPackagePartId>{75b95c3e-5be7-46f4-99b9-e0266b37c103}</SqlPackagePartId>
     <ProjectMode>OfficeApp</ProjectMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="DropboxManifest\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{6d642175-3e0f-4ab7-b5bc-8b724d0f0882}</SharePointProjectItemId>
+      <SharePointProjectItemId>{6bf350a0-1353-4c97-990b-c4b888ae9c68}</SharePointProjectItemId>
     </None>
     <Content Include="DropboxManifest\Dropbox.xml">
       <OpcRelationship>manifest-oemanifest</OpcRelationship>
@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DropboxWeb\DropboxWeb.vbproj">
-      <Project>{97A653F6-A793-4328-ACE2-898398A2D35A}</Project>
+      <Project>{B935772F-207F-42A2-85E9-D351CA4DC281}</Project>
       <Name>DropboxWeb</Name>
       <Private>True</Private>
       <RoleType>Web</RoleType>
