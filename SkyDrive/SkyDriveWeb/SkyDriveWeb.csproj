@@ -58,15 +58,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\App.css" />
-    <Content Include="App\App.js" />
-    <Content Include="App\DataBinding\DataBinding.css" />
-    <Content Include="App\DataBinding\DataBinding.html" />
-    <Content Include="App\DataBinding\DataBinding.js" />
-    <Content Include="App\Home\Home.css" />
-    <Content Include="App\Home\Home.html" />
-    <Content Include="App\Home\Home.js" />
-    <Content Include="App\Visualization.js" />
+    <Content Include="App\Home.html" />
     <Content Include="Content\Office.css" />
     <Content Include="Images\Close.png" />
     <Content Include="Images\Settings.png" />
