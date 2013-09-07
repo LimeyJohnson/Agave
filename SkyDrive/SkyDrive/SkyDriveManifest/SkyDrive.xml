@@ -11,7 +11,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="~remoteAppUrl/App/Home/Home.html" />
+    <SourceLocation DefaultValue="http://localhost/App/Home/Home.html" />
     <RequestedWidth>400</RequestedWidth>
     <RequestedHeight>400</RequestedHeight>
   </DefaultSettings>
