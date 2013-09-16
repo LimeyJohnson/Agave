@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ScriptInfo Include="Properties\ScriptInfo.txt" />
+    <Compile Include="LiveApi.cs" />
     <Compile Include="Requests.cs" />
     <Compile Include="GoogleCharts.cs" />
     <Compile Include="Facebook.cs" />
