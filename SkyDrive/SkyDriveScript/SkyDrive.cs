@@ -17,11 +17,12 @@ namespace SkyDriveScript
             Office.Initialize = delegate(InitializationEnum initReason)
             {
                 LiveApi.Event.subscribe("auth.login", OnLogon);
+                LiveApi.Event.subscribe("wl.log", OnLog);
                 InitOptions initOptions = new InitOptions();
                 initOptions.client_id = "000000004C100093";
-                initOptions.redirect_uri = "http://filesagave.azurewebsites.net/App/Home/callback.html";
-                initOptions.scope = "wl.signin";
-                initOptions.response_type = "token";
+                //initOptions.redirect_uri = "http://filesagave.azurewebsites.net/App/Home/callback.html";
+                //initOptions.scope = "wl.signin";
+                //initOptions.response_type = "token";
                 initOptions.logging = true;
                 LiveApi.Init(initOptions).Then(OnSuccess, OnFailure) ;
 
@@ -33,6 +34,10 @@ namespace SkyDriveScript
 
                 
             };
+        }
+        public static void OnLog(LoginResponse response)
+        {
+            jQuery.Select("#first_name").Text("Log");
         }
         public static void OnLogon(LoginResponse response)
         {
@@ -46,11 +51,11 @@ namespace SkyDriveScript
         }
         public static void OnFailure(LoginResponse failResponse)
         {
-            jQuery.Select("#first_name").Text(failResponse.ToString());
+            jQuery.Select("#first_name").Text("Fail");
         }
         public static void OnSuccess(LoginResponse successResponse)
         {
-            jQuery.Select("#first_name").Text(successResponse.ToString());
+            jQuery.Select("#first_name").Text("Pass");
         }
     }
 }

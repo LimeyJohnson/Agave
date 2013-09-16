@@ -46,6 +46,7 @@
     </None>
     <Content Include="SkyDriveManifest\SkyDrive.xml">
       <OpcRelationship>manifest-oemanifest</OpcRelationship>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
