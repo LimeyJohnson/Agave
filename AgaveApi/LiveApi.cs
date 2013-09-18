@@ -26,6 +26,8 @@ namespace Live
     {
         public string name;
         public string element;
+        public string brand;
+        public Action<LoginResponse> onloggedin;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public class InitOptions
@@ -60,7 +62,7 @@ namespace Live
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public class LoginResponse
     {
-
+        public string status;
     }
 
     [Imported, IgnoreNamespace, ScriptName("Object")]

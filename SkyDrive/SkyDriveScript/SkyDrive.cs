@@ -29,6 +29,8 @@ namespace SkyDriveScript
                 UiOptions uiOptions = new UiOptions();
                 uiOptions.name = "signin";
                 uiOptions.element = "signin";
+                uiOptions.brand = "skydrive";
+                uiOptions.onloggedin = new Action<LoginResponse>(GetName);
                 LiveApi.Ui(uiOptions);
                 
 
@@ -37,25 +39,26 @@ namespace SkyDriveScript
         }
         public static void OnLog(LoginResponse response)
         {
-            jQuery.Select("#first_name").Text("Log");
+            jQuery.Select("#first_name").Value("Log");
         }
         public static void OnLogon(LoginResponse response)
         {
-            LiveApi.Login(new Dictionary<string, string>("scope", new string[] { "wl.signin", "wl.basic", "wl.birthday", "wl.emails" })).Then(delegate(LoginResponse loginResponse)
-            {
-                LiveApi.Api(new Dictionary<string, string>("path", "me", "method", "GET")).Then(delegate(Dictionary<string, string> apiResponse)
-                {
-                    jQuery.Select("#first_name").Text(apiResponse["first_name"]);
-                });
-            });
+            jQuery.Select("#first_name").Value(response.status);
+        }
+        public static void GetName(LoginResponse response)
+        {
+            LiveApi.Api(new Dictionary<string, string>("path", "me", "method", "GET")).Then(delegate(Dictionary<string, string> apiResponse)
+                    {
+                        jQuery.Select("#first_name").Value(apiResponse["first_name"]);
+                    });
         }
         public static void OnFailure(LoginResponse failResponse)
         {
-            jQuery.Select("#first_name").Text("Fail");
+            jQuery.Select("#first_name").Value("Fail");
         }
         public static void OnSuccess(LoginResponse successResponse)
         {
-            jQuery.Select("#first_name").Text("Pass");
+            jQuery.Select("#first_name").Value("Pass");
         }
     }
 }
