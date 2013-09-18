@@ -64,7 +64,9 @@
     <Content Include="Images\Close.png" />
     <Content Include="Images\Settings.png" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FilesAgave - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\FilesAgave - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\FilesAgave - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\FilesAgave - Web Deploy.pubxml" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />

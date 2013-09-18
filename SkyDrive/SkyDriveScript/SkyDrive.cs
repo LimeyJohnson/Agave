@@ -16,16 +16,16 @@ namespace SkyDriveScript
         {
             Office.Initialize = delegate(InitializationEnum initReason)
             {
-                LiveApi.Event.subscribe("auth.login", OnLogon);
-                LiveApi.Event.subscribe("wl.log", OnLog);
+                
                 InitOptions initOptions = new InitOptions();
                 initOptions.client_id = "000000004C100093";
                 initOptions.redirect_uri = "http://filesagave.azurewebsites.net/App/callback.html";
-                //initOptions.scope = "wl.signin";
-                //initOptions.response_type = "token";
+                initOptions.scope = "wl.signin";
+                initOptions.response_type = "code";
                 initOptions.logging = true;
                 LiveApi.Init(initOptions).Then(OnSuccess, OnFailure) ;
-
+                LiveApi.Event.subscribe("auth.login", OnLogon);
+                LiveApi.Event.subscribe("wl.log", OnLog);
                 UiOptions uiOptions = new UiOptions();
                 uiOptions.name = "signin";
                 uiOptions.element = "signin";
