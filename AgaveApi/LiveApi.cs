@@ -18,6 +18,7 @@ namespace Live
         public extern static PromiseObject Api(Dictionary<string, string> args);
         public extern static PromiseObject Init(InitOptions options);
         public extern static PromiseObject Ui(UiOptions options);
+        public extern static PromiseObject FileDialog(FileDialogOptions options);
         [PreserveCase]
         public static EventObject Event;
     }
@@ -28,6 +29,11 @@ namespace Live
         public string element;
         public string brand;
         public Action<LoginResponse> onloggedin;
+    }
+    [Imported, IgnoreNamespace, ScriptName("Object")]
+    public class FileDialogOptions
+    {
+        public string mode;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
     public class InitOptions

@@ -251,6 +251,7 @@
     <Content Include="Scripts\Office\1.0\zh-tw\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1.0\zh-tw\outlook_strings.js" />
     <Content Include="Scripts\Office\MicrosoftAjax.js" />
+    <Content Include="Scripts\Skydrive.js" />
     <Content Include="Scripts\SkyDriveScript.debug.js" />
     <Content Include="Scripts\SkyDriveScript.js" />
     <Content Include="Scripts\_officeintellisense.js" />
