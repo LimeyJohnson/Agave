@@ -1,0 +1,1 @@
+﻿SELECT Count(UserID), Week, DateAdd(ww,Week - 1,DATEFROMPARTS(Agg.Year, 1, 1)) AS EndDate, DateAdd(ww,Week,DATEFROMPARTS(Agg.Year, 1, 1)) AS EndDate FROM (SELECT UserID, DatePart(ww,MIN(LogTime)) AS Week ,DatePart(yy, Min(LogTime)) AS Year FROM ActionLog WHERE UserID IS NOT null AND UserID <> 'unknown' AND UserID<>'null' Group By UserID) AS Agg GROUP By Agg.Week, Agg.Year
