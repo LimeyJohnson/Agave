@@ -15,13 +15,14 @@ namespace FacebookScript
         private string m_permission;
         private string m_fieldName;
         private string m_containerName;
+        private string m_sample;
         public bool m_checked = true;
         public static string checkBoxPrefix = "fieldscb";
         protected const string nullToken = "Unknown";
 
         [AlternateSignature]
-        public extern Field(string fieldName, string displayName, string containerName, string permission);
-        public Field(string fieldName, string displayName, string containerName, string permission, bool? defaultChecked)
+        public extern Field(string fieldName, string displayName, string containerName, string permission, string sample);
+        public Field(string fieldName, string displayName, string containerName, string permission, string sample, bool? defaultChecked)
         {
             this.m_displayText = displayName;
             this.m_fieldName = fieldName;
@@ -99,6 +100,13 @@ namespace FacebookScript
         public void UpdateChecked(bool value)
         {
            // Office.Context.Document.Settings.Set(this.ID, value);
+        }
+        public string Sample
+        {
+            get
+            {
+                return this.m_sample;
+            }
         }
 
     }

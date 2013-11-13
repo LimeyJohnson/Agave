@@ -57,7 +57,7 @@ namespace AgaveApi
     {
         public extern void Set(string name, object value);
         public extern void SaveAsync(ASyncResultCallBack callback);
-      //  public extern void RefreshAsync (ASyncResultCallBack callback);
+        //  public extern void RefreshAsync (ASyncResultCallBack callback);
         public extern object Get(string name);
     }
     public sealed class BindingObject
@@ -115,9 +115,10 @@ namespace AgaveApi
         public Array columnNames;
     }
     [Imported, IgnoreNamespace, ScriptName("Object")]
-   public sealed class PromptBindingOptions: BindingOptions
+    public sealed class PromptBindingOptions : BindingOptions
     {
-        string PromptText;
+        public string PromptText;
+        public TableData sampleData;
     }
 
     [Imported, IgnoreNamespace, ScriptName("Object")]

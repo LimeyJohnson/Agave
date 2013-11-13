@@ -6,6 +6,643 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASh1u3BPNVk6XR5uoo6wEkAAAAAACAAAAAAADZgAAwAAAABAAAAACY+BkGtYoTOswHYzqGuNhAAAAAASAAACgAAAAEAAAAJzUyc3Fdvi7bHAgD5vXx4qAAAAAdOF02XcT1M53bAM037pWLf+4eTra+N2wN5wMAvVYGHO9COz/QoWhHSGA9e+lFtxMaEjk+R5cuNA9LKC4Jeuac2iXZ6QjqpyBwCAGhdQe20lva7ZRyTo5uPdBJMwVtwVkyg4uoFnEcVVGycqUG+RXFGLlcmkxs4SyBL9xn7CHrS4UAAAAxHskd7gIlXmI62ov2ShRBGMlqfM=</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAAhefSikh9UWTO5p0RMId2AAAAAACAAAAAAAQZgAAAAEAACAAAABXsoMXHEZsDomDo5O6MCFxXBZWws2Dems7TmScykxsAgAAAAAOgAAAAAIAACAAAAC15QFTr8QP+SXqvVBObsD151XQBPnndQpzkM+8JriA2iAAAACluJht5uPspvBCOG9C8HEtEyaAwxrBSHsP5kA5xMfzwkAAAABGf/60wclDDRb0AkuoHQNAKBPIRaHrc84rZOyGqQl1FtbGIfIx6diwU9mpTbQFTNfIewmLQOMxG6QbM2WgXoig</EncryptedPassword>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
   </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/FacebookAgaveWeb.dll">
+      <publishTime>11/12/2013 21:04:11</publishTime>
+    </File>
+    <File Include="Content/App.css">
+      <publishTime>09/06/2013 06:28:17</publishTime>
+    </File>
+    <File Include="Content/back.png">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Content/FBLogo.png">
+      <publishTime>09/06/2013 06:28:17</publishTime>
+    </File>
+    <File Include="Content/ffosmall.png">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Content/FhHRx.gif">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Content/friends-for-office.png">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Content/jquery-ui-smoothness.css">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Content/Office.css">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Friends.svc">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Images/ffosmall.png">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Images/friends-for-office.png">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Pages/channel.ashx">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Pages/FacebookAgave.html">
+      <publishTime>11/12/2013 20:38:21</publishTime>
+    </File>
+    <File Include="Pages/FriendsHelp.html">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Pages/privacy.aspx">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/FacebookScript.debug.js">
+      <publishTime>11/12/2013 21:10:38</publishTime>
+    </File>
+    <File Include="Scripts/FacebookScript.js">
+      <publishTime>11/12/2013 21:10:38</publishTime>
+    </File>
+    <File Include="Scripts/JavaScript1.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.min.js">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui.js">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Scripts/jquery.ui.accordion.js">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Scripts/jquery.ui.widget.js">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Scripts/mscorlib.debug.js">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Scripts/mscorlib.js">
+      <publishTime>09/06/2013 06:28:19</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/access-web-16.00.debug.js">
+      <publishTime>11/12/2013 21:03:05</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/access-web-16.00.js">
+      <publishTime>11/12/2013 21:03:05</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/AccessWebApp-16.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/AccessWebApp-16.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ar-sa/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ar-sa/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ar-sa/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ar-sa/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/bg-bg/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/bg-bg/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/bg-bg/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/bg-bg/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/cs-cz/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/cs-cz/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/cs-cz/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/cs-cz/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/da-dk/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/da-dk/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/da-dk/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/da-dk/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/de-de/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/de-de/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/de-de/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/de-de/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/el-gr/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/el-gr/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/el-gr/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/el-gr/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/en-us/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/en-us/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/en-us/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/en-us/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/es-es/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/es-es/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/es-es/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/es-es/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/et-ee/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/et-ee/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/et-ee/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/et-ee/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/excel-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/excel-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/excelwebapp-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/excelwebapp-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fi-fi/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fi-fi/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fi-fi/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fi-fi/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fr-fr/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fr-fr/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fr-fr/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/fr-fr/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/he-il/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/he-il/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/he-il/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/he-il/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hi-in/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hi-in/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hi-in/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hi-in/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hr-hr/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hr-hr/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hr-hr/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hr-hr/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hu-hu/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hu-hu/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hu-hu/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/hu-hu/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/id-id/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/id-id/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/id-id/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/id-id/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/it-it/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/it-it/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/it-it/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/it-it/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ja-jp/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ja-jp/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ja-jp/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ja-jp/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/kk-kz/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/kk-kz/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/kk-kz/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/kk-kz/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ko-kr/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ko-kr/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ko-kr/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ko-kr/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lt-lt/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lt-lt/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lt-lt/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lt-lt/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lv-lv/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lv-lv/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lv-lv/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/lv-lv/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/MicrosoftAjax.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ms-my/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ms-my/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ms-my/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ms-my/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nb-no/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nb-no/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nb-no/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nb-no/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nl-nl/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nl-nl/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nl-nl/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/nl-nl/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/office.debug.js">
+      <publishTime>11/12/2013 21:03:08</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/office.js">
+      <publishTime>11/12/2013 21:03:08</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/outlook-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/outlook-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/outlookwebapp-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/outlookwebapp-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pl-pl/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pl-pl/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pl-pl/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pl-pl/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/powerpoint-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/powerpoint-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/project-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/project-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-br/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-br/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-br/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-br/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-pt/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-pt/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-pt/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/pt-pt/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ro-ro/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ro-ro/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ro-ro/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ro-ro/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ru-ru/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ru-ru/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ru-ru/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/ru-ru/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sk-sk/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sk-sk/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sk-sk/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sk-sk/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sl-si/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sl-si/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sl-si/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sl-si/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sr-latn-cs/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sr-latn-cs/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sr-latn-cs/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sr-latn-cs/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sv-se/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sv-se/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sv-se/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/sv-se/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/th-th/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/th-th/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/th-th/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/th-th/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/tr-tr/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/tr-tr/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/tr-tr/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/tr-tr/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/uk-ua/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/uk-ua/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/uk-ua/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/uk-ua/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/vi-vn/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/vi-vn/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/vi-vn/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/vi-vn/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/word-15.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/word-15.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-cn/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-cn/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-cn/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-cn/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-tw/office_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-tw/office_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-tw/outlook_strings.debug.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/Office/1.0/zh-tw/outlook_strings.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Scripts/_officeintellisense.js">
+      <publishTime>11/12/2013 20:36:49</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>09/06/2013 06:28:18</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>11/12/2013 21:11:09</publishTime>
+    </File>
+  </ItemGroup>
 </Project>

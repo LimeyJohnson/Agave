@@ -92,13 +92,13 @@ namespace FacebookScript
                     js.Src = "//connect.facebook.net/en_US/all.js";
                     reference.ParentNode.InsertBefore(js, reference);
                 }
-                BindingOptions bo = new BindingOptions();
-                bo.ID = TableBinding;
-                bo.columnNames = new string[] {"FBID","First Name","Last Name","Birthday","Gender"};
-                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult bindingResult)
-                {
-                    Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-                });
+                //BindingOptions bo = new BindingOptions();
+                //bo.ID = TableBinding;
+                //bo.columnNames = new string[] {"FBID","First Name","Last Name","Birthday","Gender"};
+                //Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult bindingResult)
+                //{
+                //    Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                //});
                 Requests.LogAction("Init", UserID ?? "unknown", "", "");
             };
 
@@ -156,27 +156,27 @@ namespace FacebookScript
         public static void InitFields()
         {
             fields = new Dictionary<string, Field>();
-            fields["uid"] = new RequiredField("uid", "FBID");
-            fields["first_name"] = new Field("first_name", "First Name", "Basic", null, true);
-            fields["last_name"] = new Field("last_name", "Last Name", "Basic", null, true);
-            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic", "friends_birthday", true);
-            fields["sex"] = new Field("sex", "Gender", "Basic", null, true);
-            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts", null);
-            fields["quotes"] = new Field("quotes", "Quotes", "Extended", "friends_likes", false);
-            fields["political"] = new Field("political", "Political", "Extended", "friends_religion_politics");
+            fields["uid"] = new RequiredField("uid", "FBID", "1");
+            fields["first_name"] = new Field("first_name", "First Name", "Basic", null, "Andrew", true);
+            fields["last_name"] = new Field("last_name", "Last Name", "Basic", null, "Johnson", true);
+            fields["birthday_date"] = new Field("birthday_date", "Birthday", "Basic", "friends_birthday", "07/20/1986", true);
+            fields["sex"] = new Field("sex", "Gender", "Basic", null, "Male", true);
+            fields["mutual_friend_count"] = new Field("mutual_friend_count", "Mutual Friends", "Counts", null, "360");
+            fields["quotes"] = new Field("quotes", "Quotes", "Extended", "friends_likes", "To each his own", false);
+            fields["political"] = new Field("political", "Political", "Extended", "friends_religion_politics", "Centrist");
             fields["relationship_status"] = new Field("relationship_status", "Relationship Status", "Extended", "friends_relationships", null);
-            fields["religion"] = new Field("religion", "Religion", "Extended", "friends_religion_politics");
-            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts", null);
-            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts", null);
-            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment", "friends_work_history", 0);
-            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment", "friends_work_history", 0);
-            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location", "friends_location");
-            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location", "friends_location");
-            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location", "friends_location");
-            fields["interests"] = new Field("interests", "Interests", "Extended", "friends_interests");
-            fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended", null);
-            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended", "friends_likes");
-            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended", null);
+            fields["religion"] = new Field("religion", "Religion", "Extended", "friends_religion_politics", "Religion");
+            fields["wall_count"] = new Field("wall_count", "Wall Count", "Counts", null, "2045");
+            fields["friend_count"] = new Field("friend_count", "Friend Count", "Counts", null, "360");
+            fields["work_Employer"] = new StructField("work", "Employer", "employer", "name", "Employment", "friends_work_history", "Microsoft", 0);
+            fields["work_Position"] = new StructField("work", "Position", "position", "name", "Employment", "friends_work_history", "Microsoft", 0);
+            fields["current_location_City"] = new StructField("current_location", "Current City", "city", null, "Location", "friends_location", "Redmond");
+            fields["current_location_State"] = new StructField("current_location", "Current State", "state", null, "Location", "friends_location", "Washington");
+            fields["current_location_Country"] = new StructField("current_location", "Current Country", "country", null, "Location", "friends_location", "USA");
+            fields["interests"] = new Field("interests", "Interests", "Extended", "friends_interests", "Bowling");
+            fields["profile_url"] = new Field("profile_url", "Profile URL", "Extended", null, "profile URL");
+            fields["sports"] = new ArrayField("sports", "Sports", "name", "Extended", "friends_likes", "Soccer");
+            fields["status_Message"] = new StructField("status", "Current Status", "message", null, "Extended", null, "Latest Status Message");
 
         }
         public static void InsertAccordions()
@@ -269,9 +269,15 @@ namespace FacebookScript
         {
             SetView(Modal);
             TableData td = new TableData();
-            Array fieldNames = new Array();
             td.HeadersDouble = new Array[1];
             td.HeadersDouble[0] = new Array();
+            TableData sample = new TableData();
+            sample.HeadersDouble = new Array[1];
+            sample.HeadersDouble[0] = new Array();
+            sample.Rows = new Array[1][];
+            sample.Rows[0] = new Array[1];
+            Array fieldNames = new Array();
+            
             Array permissions = new Array();
             Dictionary<string, Field> dict = new Dictionary<string, Field>();
             jQuery.Each(fields, delegate(string name, object value)
@@ -281,6 +287,8 @@ namespace FacebookScript
                 {
                     dict[name] = ff;
                     td.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
+                    sample.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
+                    sample.Rows[0][sample.Rows[0].Length] = ff.Sample;
                     fieldNames[fieldNames.Length] = ff.FieldName;
                     if (ff.Permission != null && permissions.IndexOf(ff.Permission) < 0) permissions[permissions.Length] = ff.Permission;
                 }
@@ -295,26 +303,34 @@ namespace FacebookScript
             string query = "SELECT " + fieldList + " FROM user WHERE uid IN (SELECT uid2 from friend WHERE uid1 = me())";
             ApiOptions queryOptions = new ApiOptions();
             queryOptions.Q = query;
-            LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
+            PromptBindingOptions bo = new PromptBindingOptions();
+            bo.ID = TableBinding;
+            bo.PromptText = "Please map the field that will be imported from facebook to field in your database";
+            bo.sampleData = sample;
+            Office.Context.Document.Bindings.AddFromPromptAsync(BindingType.Table, bo, delegate(ASyncResult promptResult)
             {
-                if (logonResponse.status == "connected")
+                LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
                 {
-                    Facebook.api("fql", queryOptions, delegate(ApiResponse response)
+                    if (logonResponse.status == "connected")
                     {
-                        if (Script.Boolean(response.error))
+                        Facebook.api("fql", queryOptions, delegate(ApiResponse response)
                         {
-                            Requests.LogAction("GetDataFromFacebook", UserID, response.error, "Could not get data from facebook");
-                        }
-                        else
-                        {
-                            InsertFreindsIntoExcel(response.data, td, dict);
-                        }
-                    });
-                }
-                else
-                {
-                    HandleFacebookAuthEvent(logonResponse);
-                }
+                            if (Script.Boolean(response.error))
+                            {
+                                Requests.LogAction("GetDataFromFacebook", UserID, response.error, "Could not get data from facebook");
+                            }
+                            else
+                            {
+                                InsertFreindsIntoExcel(response.data, td, dict);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        HandleFacebookAuthEvent(logonResponse);
+                    }
+                });
+
             });
         }
         public static void InsertFreindsIntoExcel(Dictionary[] data, TableData td, Dictionary<string, Field> dict)
@@ -357,8 +373,8 @@ namespace FacebookScript
                     }
                 });
             });
-           // UpdateFriendView((string)td.Rows[0][0]);
-             SetView(Friend);
+            // UpdateFriendView((string)td.Rows[0][0]);
+            SetView(Friend);
 
         }
         public static TableData GenerateTableData(int size, int length)
