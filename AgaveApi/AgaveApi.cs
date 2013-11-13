@@ -75,6 +75,7 @@ namespace AgaveApi
         public extern void AddHandlerAsync(EventType eventType, BindingSelectionChanged handler, ASyncResultCallBack callback);
         public extern void DeleteAllDataValuesAsync(ASyncResultCallBack callback);
         public extern void AddColumnsAsync(TableData data, ASyncResultCallBack callback);
+        public extern void AddRowsAsync(object[][] rows, ASyncResultCallBack callback);
         public string Id;
         public EventType Type;
     }
@@ -119,7 +120,7 @@ namespace AgaveApi
     public sealed class PromptBindingOptions : BindingOptions
     {
         public string PromptText;
-        public TableData sampleData;
+        public TableData SampleData;
     }
 
     [Imported, IgnoreNamespace, ScriptName("Object")]

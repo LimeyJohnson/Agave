@@ -273,11 +273,11 @@ namespace FacebookScript
             td.HeadersDouble[0] = new Array();
             TableData sample = new TableData();
             sample.HeadersDouble = new Array[1];
-            sample.HeadersDouble[0] = new Array();
+            sample.HeadersDouble[0] = new Array[0];
             sample.Rows = new Array[1][];
-            sample.Rows[0] = new Array[1];
+            sample.Rows[0] = new Array[0];
             Array fieldNames = new Array();
-            
+
             Array permissions = new Array();
             Dictionary<string, Field> dict = new Dictionary<string, Field>();
             jQuery.Each(fields, delegate(string name, object value)
@@ -287,7 +287,7 @@ namespace FacebookScript
                 {
                     dict[name] = ff;
                     td.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
-                    sample.HeadersDouble[0][td.HeadersDouble[0].Length] = ff.DisplayText;
+                    sample.HeadersDouble[0][sample.HeadersDouble[0].Length] = ff.DisplayText;
                     sample.Rows[0][sample.Rows[0].Length] = ff.Sample;
                     fieldNames[fieldNames.Length] = ff.FieldName;
                     if (ff.Permission != null && permissions.IndexOf(ff.Permission) < 0) permissions[permissions.Length] = ff.Permission;
@@ -306,8 +306,8 @@ namespace FacebookScript
             PromptBindingOptions bo = new PromptBindingOptions();
             bo.ID = TableBinding;
             bo.PromptText = "Please map the field that will be imported from facebook to field in your database";
-            //bo.sampleData = sample;
-            Office.Context.Document.Bindings.AddFromPromptAsync(bo, delegate(ASyncResult promptResult)
+            bo.SampleData = sample;
+            Office.Context.Document.Bindings.AddFromPromptAsync(BindingType.Table, bo, delegate(ASyncResult promptResult)
             {
                 LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
                 {
@@ -346,20 +346,10 @@ namespace FacebookScript
                     td.Rows[i][y] = f.ParseResult(data[i]);
                 }
             }
-            GetDataAsyncOptions options = new GetDataAsyncOptions();
-            options.CoercionType = CoercionType.Table;
-            BindingOptions bo = new BindingOptions();
-            bo.columnNames = (Array)td.Headers[0];
-            bo.ID = TableBinding;
-            Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult createBindingCallback)
+            object[][] myMatrix = td.Rows;
+            Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult getResultCallback)
             {
-                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, HandleTableSelection, delegate(ASyncResult addHandlerResult)
-                {
-                    Requests.LogAction("Something", "IO", "Error", "Message");
-                });
-                GetDataAsyncOptions newOptions = new GetDataAsyncOptions();
-                newOptions.CoercionType = CoercionType.Table;
-                Office.Select("bindings#" + TableBinding).SetDataAsync(td, newOptions, delegate(ASyncResult callResult)
+                ((BindingObject) getResultCallback.Value).AddRowsAsync(myMatrix, delegate(ASyncResult callResult)
                 {
                     if (callResult.Status == AsyncResultStatus.Failed)
                     {

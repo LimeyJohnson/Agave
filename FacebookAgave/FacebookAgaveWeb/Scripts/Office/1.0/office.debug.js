@@ -1,5 +1,5 @@
 /* Office JavaScript API library */
-/* Version: 16.0.2211.1000 */
+/* Version: 16.0.2305.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -296,6 +296,9 @@ OSF._OfficeAppFactory = (function OSF__OfficeAppFactory() {
         },
         getInitializationHelper: function OSF__OfficeAppFactory$getInitializationHelper() {
             return _initializationHelper;
+        },
+        getCachedSessionSettingsKey: function OSF__OfficeAppFactory$getCachedSessionSettingsKey() {
+            return _WebAppState.conversationID != null ? _WebAppState.conversationID + "CachedSessionSettings" : "NoConversationIdCachedSessionSettings";
         }
     };
 })();

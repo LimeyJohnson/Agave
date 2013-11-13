@@ -1,5 +1,5 @@
 /* Access web application specific API library */
-/* Version: 16.0.2211.1000 */
+/* Version: 16.0.2305.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -539,7 +539,7 @@ Microsoft.Office.WebExtension.Parameters = {
     FilterType: "filterType",
     Columns: "columns",
     SampleData: "sampleData",
-    NavigationType: "navigationType",
+    GoToType: "goToType",
     SelectionMode: "selectionMode",
     Id: "id",
     PromptText: "promptText",
@@ -922,191 +922,6 @@ OSF.DDA.ErrorCodeManager = (function () {
         }
     };
 })();
-Microsoft.Office.WebExtension.RequirementType = {
-    Set: "Set",
-    Method: "Method"
-};
-OSF.DDA.FeatureManager = (function (currentVersion) {
-    var sets = {
-    };
-    var methods = {
-    };
-    var FeatureProperties = {
-        Requirements: "Requirements",
-        Requirement: "Requirement",
-        Name: "name",
-        MinVersion: "minVersion",
-        MaxVersion: "maxVersion"
-    };
-    var DefaultVersioning = {
-        Min: currentVersion,
-        Max: currentVersion
-    };
-    function OSF_DDA_FeatureManager$L_LEQ_R(left, right) {
-        var l = left.split('.');
-        var r = right.split('.');
-        var lMajor = parseInt(l[0]);
-        var rMajor = parseInt(r[0]);
-        return lMajor < rMajor || ((lMajor == rMajor) && (parseInt(l[1]) <= parseInt(r[1])));
-    }
-    function OSF_DDA_FeatureManager$GetFeatureCollection(type) {
-        if(type !== undefined && !OSF.OUtil.listContainsValue(Microsoft.Office.WebExtension.RequirementType, type)) {
-            return;
-        }
-        switch(type) {
-            case Microsoft.Office.WebExtension.RequirementType.Set:
-                return sets;
-            case Microsoft.Office.WebExtension.RequirementType.Method:
-                return methods;
-            default:
-                var ret = {
-                };
-                for(var t in Microsoft.Office.WebExtension.RequirementType) {
-                    ret[Microsoft.Office.WebExtension.RequirementType[t]] = OSF_DDA_FeatureManager$GetFeatureCollection(Microsoft.Office.WebExtension.RequirementType[t]);
-                }
-                return ret;
-        }
-    }
-    function OSF_DDA_FeatureManager$CheckFeature(type, name, versioning) {
-        versioning = versioning || {
-        };
-        var minVersion = versioning.min || DefaultVersioning.Min;
-        var maxVersion = versioning.max || DefaultVersioning.Max;
-        var features;
-        switch(typeof type) {
-            case 'string':
-                features = OSF_DDA_FeatureManager$GetFeatureCollection(type);
-                break;
-            case 'object':
-                features = type;
-                break;
-        }
-        if(!features) {
-            return false;
-        }
-        var feature = features[name];
-        return (feature !== undefined) && OSF_DDA_FeatureManager$L_LEQ_R(minVersion, feature.maxVersion) && OSF_DDA_FeatureManager$L_LEQ_R(feature.minVersion, maxVersion);
-    }
-    function OSF_DDA_FeatureManager$ParseRequirements(xml) {
-        var malformedXml = "OSF.DDA.FeatureManager$XmlParser: The xml is malformed and cannot be parsed";
-        var parsedXml = new DOMParser().parseFromString(xml, "text/xml");
-        var requirementsNodes = parsedXml.getElementsByTagName(FeatureProperties.Requirements);
-        if(requirementsNodes.length != 1) {
-            throw malformedXml;
-        }
-        var requirementsNode = requirementsNodes[0];
-        var defaultMinVersion = requirementsNode.getAttribute(FeatureProperties.MinVersion) || DefaultVersioning.Min;
-        var defaultMaxVersion = requirementsNode.getAttribute(FeatureProperties.MaxVersion) || DefaultVersioning.Max;
-        var requirementNodes = requirementsNode.getElementsByTagName(FeatureProperties.Requirement);
-        var requirements = {
-        };
-        for(var i = 0; i < requirementNodes.length; i++) {
-            var requirement = requirementNodes[i];
-            var set = requirement.getAttribute(Microsoft.Office.WebExtension.RequirementType.Set);
-            var method = requirement.getAttribute(Microsoft.Office.WebExtension.RequirementType.Method);
-            if(!set === !method) {
-                throw malformedXml;
-            }
-            var type;
-            if(set) {
-                type = Microsoft.Office.WebExtension.RequirementType.Set;
-            } else if(method) {
-                type = Microsoft.Office.WebExtension.RequirementType.Method;
-            }
-            if(!requirements[type]) {
-                requirements[type] = {
-                };
-            }
-            var fellows = requirements[type];
-            var name = set || method;
-            if(fellows[name]) {
-                throw malformedXml;
-            }
-            fellows[name] = {
-                type: type,
-                versioning: {
-                    min: requirement.getAttribute(FeatureProperties.MinVersion) || defaultMinVersion,
-                    max: requirement.getAttribute(FeatureProperties.MaxVersion) || defaultMaxVersion
-                }
-            };
-        }
-        return requirements;
-    }
-    function OSF_DDA_FeatureManager$MissingFeaturesFromXml(xml, shortCircuit) {
-        try  {
-            var requirements = OSF_DDA_FeatureManager$ParseRequirements(xml);
-            var record = [];
-            for(var type in requirements) {
-                var supported = OSF_DDA_FeatureManager$GetFeatureCollection(type);
-                var requested = requirements[type];
-                for(var name in requested) {
-                    var requirement = requested[name];
-                    if(!OSF_DDA_FeatureManager$CheckFeature(supported, name, requirement.versioning)) {
-                        if(shortCircuit) {
-                            return null;
-                        } else {
-                            record.push[requirement];
-                        }
-                    }
-                }
-            }
-            return record;
-        } catch (ex) {
-            return null;
-        }
-    }
-    function OSF_DDA_FeatureManager$AddFeature(type, name, versioning, replaceExisting, features) {
-        if(!OSF.OUtil.listContainsValue(Microsoft.Office.WebExtension.RequirementType, type)) {
-            return false;
-        }
-        features = features || OSF_DDA_FeatureManager$GetFeatureCollection(type);
-        if(features && (!features[name] || replaceExisting)) {
-            versioning = versioning || {
-            };
-            features[name] = {
-                type: type,
-                minVersion: versioning.min || DefaultVersioning.Min,
-                maxVersion: versioning.max || DefaultVersioning.Max
-            };
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return {
-        addFeature: function () {
-            return OSF_DDA_FeatureManager$AddFeature.apply(this, arguments);
-        },
-        addFeatures: function OSF_DDA_FeatureManager$AddFeatures(type, features, versioning, replaceExisting) {
-            var record = [];
-            var fc;
-            if(OSF.OUtil.listContainsValue(Microsoft.Office.WebExtension.RequirementType, type)) {
-                fc = OSF_DDA_FeatureManager$GetFeatureCollection(type);
-            }
-            for(var index in features) {
-                var feature = features[index];
-                record[index] = OSF_DDA_FeatureManager$AddFeature(feature.type || type, feature.name, feature.versioning || versioning, replaceExisting, fc);
-            }
-            return record;
-        },
-        supportedFeatures: OSF_DDA_FeatureManager$GetFeatureCollection,
-        getFeature: function OSF_DDA_FeatureManager$GetFeature(type, name) {
-            if(OSF.OUtil.listContainsValue(Microsoft.Office.WebExtension.RequirementType, type)) {
-                return OSF_DDA_FeatureManager$GetFeatureCollection(type)[name];
-            }
-        },
-        checkFeature: OSF_DDA_FeatureManager$CheckFeature,
-        checkFeaturesFromXml: function OSF_DDA_FeatureManager$CheckFeaturesFromXml(xml) {
-            var missingFeatures = OSF_DDA_FeatureManager$MissingFeaturesFromXml(xml, true);
-            return missingFeatures !== null && missingFeatures.length == 0;
-        }
-    };
-})('1.1');
-Microsoft.Office.WebExtension.Requirements = {
-    supportedFeatures: OSF.DDA.FeatureManager.supportedFeatures,
-    getFeature: OSF.DDA.FeatureManager.getFeature,
-    checkFeature: OSF.DDA.FeatureManager.checkFeature
-};
 Microsoft.Office.WebExtension.ApplicationMode = {
     WebEditor: "webEditor",
     WebViewer: "webViewer",
@@ -1510,7 +1325,6 @@ OSF.DDA.AsyncMethodCalls = {
 };
 OSF.DDA.AsyncMethodCalls.define = function (callDefinition) {
     OSF.DDA.AsyncMethodCalls[callDefinition.method.id] = OSF.DDA.AsyncMethodCallFactory.manufacture(callDefinition);
-    OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Method, callDefinition.method.displayName, callDefinition.versioning);
 };
 OSF.DDA.Error = function OSF_DDA_Error(name, message, code) {
     OSF.OUtil.defineEnumerableProperties(this, {
@@ -3279,6 +3093,15 @@ OSF.InitializationHelper = function OSF_InitializationHelper(hostInfo, webAppSta
     this._initializeSettings = function OSF_InitializationHelper$initializeSettings(appContext, refreshSupported) {
         var settings;
         var serializedSettings = appContext.get_settings();
+        if(window.sessionStorage) {
+            var storageSettings = window.sessionStorage.getItem(OSF._OfficeAppFactory.getCachedSessionSettingsKey());
+            if(storageSettings) {
+                serializedSettings = JSON ? JSON.parse(storageSettings) : Sys.Serialization.JavaScriptSerializer.deserialize(storageSettings, true);
+            } else {
+                storageSettings = JSON ? JSON.stringify(serializedSettings) : Sys.Serialization.JavaScriptSerializer.serialize(serializedSettings);
+                window.sessionStorage.setItem(OSF._OfficeAppFactory.getCachedSessionSettingsKey(), storageSettings);
+            }
+        }
         var deserializedSettings = OSF.DDA.SettingsManager.deserializeSettings(serializedSettings);
         if(refreshSupported) {
             settings = new OSF.DDA.RefreshableSettings(deserializedSettings);
@@ -3364,7 +3187,6 @@ OSF.getClientEndPoint = function OSF$getClientEndPoint() {
     var initializationHelper = OSF._OfficeAppFactory.getInitializationHelper();
     return initializationHelper._webAppState.clientEndPoint;
 };
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "DataCoercion");
 Microsoft.Office.WebExtension.CoercionType = {
     Text: "text",
     Matrix: "matrix",
@@ -3511,177 +3333,6 @@ OSF.DDA.DataCoercion = (function OSF_DDA_DataCoercion() {
         }
     };
 })();
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "Selection");
-OSF.DDA.AsyncMethodNames.addNames({
-    GetSelectedDataAsync: "getSelectedDataAsync",
-    SetSelectedDataAsync: "setSelectedDataAsync"
-});
-(function () {
-    function processData(dataDescriptor, caller, callArgs) {
-        var data = dataDescriptor[Microsoft.Office.WebExtension.Parameters.Data];
-        if(OSF.DDA.TableDataProperties && data && (data[OSF.DDA.TableDataProperties.TableRows] != undefined || data[OSF.DDA.TableDataProperties.TableHeaders] != undefined)) {
-            data = OSF.DDA.OMFactory.manufactureTableData(data);
-        }
-        data = OSF.DDA.DataCoercion.coerceData(data, callArgs[Microsoft.Office.WebExtension.Parameters.CoercionType]);
-        return data == undefined ? null : data;
-    }
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.GetSelectedDataAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.CoercionType,
-                "enum": Microsoft.Office.WebExtension.CoercionType
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.ValueFormat,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.ValueFormat,
-                    "defaultValue": Microsoft.Office.WebExtension.ValueFormat.Unformatted
-                }
-            }, 
-            {
-                name: Microsoft.Office.WebExtension.Parameters.FilterType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.FilterType,
-                    "defaultValue": Microsoft.Office.WebExtension.FilterType.All
-                }
-            }
-        ],
-        privateStateCallbacks: [],
-        onSucceeded: processData
-    });
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.SetSelectedDataAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Data,
-                "types": [
-                    "string", 
-                    "object", 
-                    "number", 
-                    "boolean"
-                ]
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.CoercionType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.CoercionType,
-                    "calculate": function (requiredArgs) {
-                        return OSF.DDA.DataCoercion.determineCoercionType(requiredArgs[Microsoft.Office.WebExtension.Parameters.Data]);
-                    }
-                }
-            }
-        ],
-        privateStateCallbacks: []
-    });
-})();
-OSF.DDA.WAC.Delegate.ParameterMap.define({
-    type: OSF.DDA.WAC.UniqueArguments.GetData,
-    toHost: [
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Id,
-            value: "BindingId"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.CoercionType,
-            value: "CoerceType"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.ValueFormat,
-            value: "ValueFormat"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.FilterType,
-            value: "FilterType"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Rows,
-            value: "Rows"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Columns,
-            value: "Columns"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.StartRow,
-            value: "StartRow"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.StartColumn,
-            value: "StartCol"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.RowCount,
-            value: "RowCount"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.ColumnCount,
-            value: "ColCount"
-        }
-    ]
-});
-OSF.DDA.WAC.Delegate.ParameterMap.define({
-    type: OSF.DDA.WAC.UniqueArguments.SetData,
-    toHost: [
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Id,
-            value: "BindingId"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.CoercionType,
-            value: "CoerceType"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Data,
-            value: OSF.DDA.WAC.UniqueArguments.Data
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Rows,
-            value: "Rows"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Columns,
-            value: "Columns"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.StartRow,
-            value: "StartRow"
-        }, 
-        {
-            name: Microsoft.Office.WebExtension.Parameters.StartColumn,
-            value: "StartCol"
-        }
-    ]
-});
-OSF.DDA.WAC.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetSelectedDataMethod,
-    fromHost: [
-        {
-            name: Microsoft.Office.WebExtension.Parameters.Data,
-            value: OSF.DDA.WAC.UniqueArguments.Data
-        }
-    ],
-    toHost: [
-        {
-            name: OSF.DDA.WAC.UniqueArguments.GetData,
-            value: OSF.DDA.WAC.Delegate.ParameterMap.self
-        }
-    ]
-});
-OSF.DDA.WAC.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidSetSelectedDataMethod,
-    toHost: [
-        {
-            name: OSF.DDA.WAC.UniqueArguments.SetData,
-            value: OSF.DDA.WAC.Delegate.ParameterMap.self
-        }
-    ]
-});
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "Settings");
 OSF.DDA.SettingsManager = {
     SerializedSettings: "serializedSettings",
     DateJSONPrefix: "Date(",
@@ -3737,6 +3388,13 @@ OSF.DDA.SettingsManager = {
 OSF.DDA.Settings = function OSF_DDA_Settings(settings) {
     settings = settings || {
     };
+    var cacheSessionSettings = function (settings) {
+        if(window.sessionStorage) {
+            var serializedSettings = OSF.DDA.SettingsManager.serializeSettings(settings);
+            var storageSettings = JSON ? JSON.stringify(serializedSettings) : Sys.Serialization.JavaScriptSerializer.serialize(serializedSettings);
+            window.sessionStorage.setItem(OSF._OfficeAppFactory.getCachedSessionSettingsKey(), storageSettings);
+        }
+    };
     OSF.OUtil.defineEnumerableProperties(this, {
         "get": {
             value: function OSF_DDA_Settings$get(name) {
@@ -3771,6 +3429,7 @@ OSF.DDA.Settings = function OSF_DDA_Settings(settings) {
                     throw e;
                 }
                 settings[name] = value;
+                cacheSessionSettings(settings);
             }
         },
         "remove": {
@@ -3786,6 +3445,7 @@ OSF.DDA.Settings = function OSF_DDA_Settings(settings) {
                     throw e;
                 }
                 delete settings[name];
+                cacheSessionSettings(settings);
             }
         }
     });
@@ -4580,7 +4240,6 @@ OSF.DDA.AsyncMethodNames.addNames({
         ]
     });
 })();
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "TableBindings");
 OSF.OUtil.augmentList(OSF.DDA.PropertyDescriptors, {
     TableDataProperties: "TableDataProperties"
 });
@@ -4714,6 +4373,84 @@ OSF.DDA.AsyncMethodNames.addNames({
         ]
     });
 })();
+OSF.DDA.WAC.Delegate.ParameterMap.define({
+    type: OSF.DDA.WAC.UniqueArguments.GetData,
+    toHost: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Id,
+            value: "BindingId"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.CoercionType,
+            value: "CoerceType"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.ValueFormat,
+            value: "ValueFormat"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.FilterType,
+            value: "FilterType"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Rows,
+            value: "Rows"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Columns,
+            value: "Columns"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.StartRow,
+            value: "StartRow"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.StartColumn,
+            value: "StartCol"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.RowCount,
+            value: "RowCount"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.ColumnCount,
+            value: "ColCount"
+        }
+    ]
+});
+OSF.DDA.WAC.Delegate.ParameterMap.define({
+    type: OSF.DDA.WAC.UniqueArguments.SetData,
+    toHost: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Id,
+            value: "BindingId"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.CoercionType,
+            value: "CoerceType"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Data,
+            value: OSF.DDA.WAC.UniqueArguments.Data
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Rows,
+            value: "Rows"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Columns,
+            value: "Columns"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.StartRow,
+            value: "StartRow"
+        }, 
+        {
+            name: Microsoft.Office.WebExtension.Parameters.StartColumn,
+            value: "StartCol"
+        }
+    ]
+});
 OSF.DDA.WAC.Delegate.ParameterMap.addComplexType(OSF.DDA.PropertyDescriptors.BindingProperties);
 OSF.DDA.WAC.Delegate.ParameterMap.define({
     type: OSF.DDA.WAC.UniqueArguments.BindingRequest,
@@ -4992,7 +4729,7 @@ OSF.DDA.AsyncMethodCalls.define({
     ],
     privateStateCallbacks: [],
     onSucceeded: function (bindingDescriptor) {
-        OSF.DDA.OMFactory.manufactureBinding(bindingDescriptor, Microsoft.Office.WebExtension.context.document);
+        return OSF.DDA.OMFactory.manufactureBinding(bindingDescriptor, Microsoft.Office.WebExtension.context.document);
     }
 });
 OSF.DDA.WAC.Delegate.ParameterMap.define({
@@ -5010,7 +4747,6 @@ OSF.DDA.WAC.Delegate.ParameterMap.define({
         }
     ]
 });
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "DocumentEvent");
 OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, {
     DocumentSelectionChanged: "documentSelectionChanged"
 });
@@ -5027,7 +4763,6 @@ OSF.DDA.DocumentSelectionChangedEventArgs = function OSF_DDA_DocumentSelectionCh
 OSF.DDA.WAC.Delegate.ParameterMap.define({
     type: OSF.DDA.EventDispId.dispidDocumentSelectionChangedEvent
 });
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "BindingEvent");
 OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, {
     BindingSelectionChanged: "bindingSelectionChanged",
     BindingDataChanged: "bindingDataChanged"
@@ -5092,12 +4827,9 @@ OSF.DDA.WAC.Delegate.ParameterMap.define({
         }
     ]
 });
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "DataFilter");
 OSF.OUtil.augmentList(Microsoft.Office.WebExtension.FilterType, {
     OnlyVisible: "onlyVisible"
 });
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "PartialTableBindings");
-OSF.DDA.FeatureManager.addFeature(Microsoft.Office.WebExtension.RequirementType.Set, "SampleData");
 Microsoft.Office.WebExtension.Table = {
     ThisRow: "thisRow"
 };
@@ -5141,13 +4873,20 @@ OSF.DDA.AccessDocument = function Microsoft_Office_WebExtension_AccessDocument(o
     OSF.DDA.DispIdHost.addAsyncMethods(bf, [
         OSF.DDA.AsyncMethodNames.AddFromPromptAsync
     ]);
-    OSF.DDA.AccessDocument.uber.constructor.call(this, officeAppContext, bf, settings);
+    OSF.DDA.AccessDocument.uber.constructor.call(this, officeAppContext, settings);
+    if(bf) {
+        OSF.OUtil.defineEnumerableProperty(this, "bindings", {
+            get: function OSF_DDA_Document$GetBindings() {
+                return bf;
+            }
+        });
+    }
     if(this.mode == OSF.ClientMode.ReadOnly) {
         this.url = document.URL;
     }
     OSF.OUtil.finalizeProperties(this);
 };
-OSF.OUtil.extend(OSF.DDA.AccessDocument, OSF.DDA.JsomDocument);
+OSF.OUtil.extend(OSF.DDA.AccessDocument, OSF.DDA.Document);
 OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function OSF_InitializationHelper$loadAppSpecificScriptAndCreateOM(appContext, appReady, basePath) {
     OSF.DDA.ErrorCodeManager.initializeErrorMessages(Strings.OfficeOM);
     appContext.doc = new OSF.DDA.AccessDocument(appContext, this._initializeSettings(appContext, true));
