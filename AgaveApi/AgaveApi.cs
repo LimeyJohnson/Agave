@@ -38,6 +38,7 @@ namespace AgaveApi
         public extern void AddFromSelectionAsync(BindingType bindingType, BindingOptions options);
         public extern void AddFromSelectionAsync(BindingType bindingType, BindingOptions options, ASyncResultCallBack callback);
         public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options);
+        public extern void AddFromPromptAsync(PromptBindingOptions options, ASyncResultCallBack callback);
         public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options, ASyncResultCallBack callback);
         public extern void GetByIdAsync(string id, ASyncResultCallBack callback);
     }

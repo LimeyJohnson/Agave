@@ -306,8 +306,8 @@ namespace FacebookScript
             PromptBindingOptions bo = new PromptBindingOptions();
             bo.ID = TableBinding;
             bo.PromptText = "Please map the field that will be imported from facebook to field in your database";
-            bo.sampleData = sample;
-            Office.Context.Document.Bindings.AddFromPromptAsync(BindingType.Table, bo, delegate(ASyncResult promptResult)
+            //bo.sampleData = sample;
+            Office.Context.Document.Bindings.AddFromPromptAsync(bo, delegate(ASyncResult promptResult)
             {
                 LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
                 {

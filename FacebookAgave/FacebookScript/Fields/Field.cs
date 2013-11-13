@@ -28,6 +28,7 @@ namespace FacebookScript
             this.m_fieldName = fieldName;
             this.m_containerName = containerName;
             this.m_permission = permission;
+            this.m_sample = sample;
            // bool savedChecked;
             //if ((savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)) != null)
             //{
