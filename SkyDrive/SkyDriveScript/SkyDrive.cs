@@ -1,4 +1,4 @@
-// Class1.cs
+// SkyDrive.cs
 //
 
 using System;
@@ -30,26 +30,6 @@ namespace SkyDriveScript
             uiOptions.onloggedin = new Action<LoginResponse>(GetName);
             LiveApi.Ui(uiOptions);
 
-            jQuery.OnDocumentReady(delegate()
-            {
-                jQuery.OnDocumentReady(delegate()
-                {
-                    InitOptions initOptions = new InitOptions();
-                    initOptions.client_id = "000000004C100093";
-                    initOptions.redirect_uri = "http://filesagave.azurewebsites.net/App/callback.html";
-                    initOptions.scope = "wl.signin";
-                    initOptions.response_type = "code";
-                    initOptions.logging = true;
-                    LiveApi.Init(initOptions).Then(OnSuccess, OnFailure);
-                    LiveApi.Event.subscribe("auth.login", OnLogon);
-                    LiveApi.Event.subscribe("wl.log", OnLog);
-                    UiOptions uiOptions = new UiOptions();
-                    uiOptions.name = "signin";
-                    uiOptions.element = "signin";
-                    uiOptions.brand = "skydrive";
-                    uiOptions.onloggedin = new Action<LoginResponse>(GetName);
-                    LiveApi.Ui(uiOptions);
-                });
             Office.Initialize = delegate(InitializationEnum initReason)
             {
            
@@ -66,7 +46,7 @@ namespace SkyDriveScript
         }
         public static void GetName(LoginResponse response)
         {
-            LiveApi.Api(new Dictionary<string, string>("path", "me", "method", "GET")).Then(delegate(Dictionary<string, string> apiResponse)
+            LiveApi.Api(new ApiOptions("path", "me", "method", "GET")).Then(delegate(Dictionary<string, string> apiResponse)
                     {
                         jQuery.Select("#first_name").Value(apiResponse["first_name"]);
                     });
@@ -78,6 +58,8 @@ namespace SkyDriveScript
         public static void OnSuccess(LoginResponse successResponse)
         {
             jQuery.Select("#first_name").Value("Pass");
+            jQuery.Select("Something");
         }
+        
     }
 }

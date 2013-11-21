@@ -15,10 +15,14 @@
     <AssemblyName>SkyDriveWeb</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <TargetOfficeVersion>15.0</TargetOfficeVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -252,8 +256,12 @@
     <Content Include="Scripts\Office\1.0\zh-tw\outlook_strings.js" />
     <Content Include="Scripts\Office\MicrosoftAjax.js" />
     <Content Include="Scripts\Skydrive.js" />
-    <Content Include="Scripts\SkyDriveScript.debug.js" />
     <Content Include="Scripts\SkyDriveScript.js" />
+    <Content Include="Scripts\SkyDriveScript.min.js" />
+    <Content Include="Scripts\ss.js" />
+    <Content Include="Scripts\ss.min.js" />
+    <Content Include="Scripts\ssloader.js" />
+    <Content Include="Scripts\ssloader.min.js" />
     <Content Include="Scripts\_officeintellisense.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
@@ -269,6 +277,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SkyDriveScript\SkyDriveScript.csproj">
+      <Project>{209c3efd-b172-44ec-92e3-db22d38022f2}</Project>
+      <Name>SkyDriveScript</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -280,19 +294,21 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>80</DevelopmentServerPort>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
+          <IISUrl>http://localhost:11616/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>http://filesagave.azurewebsites.net</CustomServerUrl>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets" Condition="Exists('..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,6 +1,3 @@
-// Class1.cs
-//
-
 using System;
 using System.Html;
 using System.Runtime.CompilerServices;
@@ -10,19 +7,19 @@ namespace Live
 {
 
     #region Classes
-    [Imported, IgnoreNamespace, ScriptName("WL")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("WL")]
     public static class LiveApi
     {
-        public extern static PromiseObject Login(Dictionary<string, string> args);
+        public extern static PromiseObject Login(params object[] nameValuePairs);
         public extern static PromiseObject Login(LoginOptions options);
-        public extern static PromiseObject Api(Dictionary<string, string> args);
+        public extern static PromiseObject Api(ApiOptions options);
         public extern static PromiseObject Init(InitOptions options);
         public extern static PromiseObject Ui(UiOptions options);
         public extern static PromiseObject FileDialog(FileDialogOptions options);
-        [PreserveCase]
+        [ScriptName(PreserveCase=true)]
         public static EventObject Event;
     }
-    [Imported, IgnoreNamespace, ScriptName("Object")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
     public class UiOptions
     {
         public string name;
@@ -30,12 +27,12 @@ namespace Live
         public string brand;
         public Action<LoginResponse> onloggedin;
     }
-    [Imported, IgnoreNamespace, ScriptName("Object")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
     public class FileDialogOptions
     {
         public string mode;
     }
-    [Imported, IgnoreNamespace, ScriptName("Object")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
     public class InitOptions
     {
 
@@ -46,17 +43,17 @@ namespace Live
         public bool logging;
 
     }
-    [Imported, IgnoreNamespace]
+    [ScriptImport, ScriptIgnoreNamespace]
     public class EventObject
     {
         public extern void subscribe(string authType, Action<LoginResponse> callback);
     }
-    [Imported, IgnoreNamespace, ScriptName("Object")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
     public class LoginOptions
     {
         public extern LoginScope Scope { set; }
     }
-    [Imported, IgnoreNamespace, ScriptName("Object")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
     public class PromiseObject
     {
         public extern void Then(Action<LoginResponse> action);
@@ -65,27 +62,19 @@ namespace Live
         public extern void Then(Action action);
 
     }
-    [Imported, IgnoreNamespace, ScriptName("Object")]
+
     public class LoginResponse
     {
         public string status;
     }
 
-    [Imported, IgnoreNamespace, ScriptName("Object")]
-    public class ApiOptions
-    {
-        public string Path;
-        public string Method;
-    }
-
-
 
     #endregion
     #region Enums
-    [Imported, IgnoreNamespace, ScriptName("")]
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("")]
     public enum LoginScope
     {
-        [PreserveCase, ScriptName("wl.skydrive_update")]
+        [ScriptName("wl.skydrive_update")]
         SkydriveUpdate,
     }
 
