@@ -47,9 +47,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImportLibrarys\ImportLibrarys.csproj">
+    <ProjectReference Include="..\AppForOffice\AppForOffice.csproj">
+      <Project>{68227de0-6df6-4dbf-9953-29705dd171d1}</Project>
+      <Name>AppForOffice</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImportLibrarys\FaceBook.csproj">
       <Project>{e4953878-c1b1-43b5-930c-708ce8f50cda}</Project>
-      <Name>ImportLibrarys</Name>
+      <Name>FaceBook</Name>
     </ProjectReference>
     <ProjectReference Include="..\LiveApi\LiveApi.csproj">
       <Project>{05fe6e88-c2c5-4e1d-897f-2d3097e770b3}</Project>
