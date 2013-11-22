@@ -31,7 +31,20 @@
   </PropertyGroup>
   <ItemGroup>
     <ScriptInfo Include="Properties\ScriptInfo.txt" />
-    <Compile Include="AgaveApi.cs" />
+    <Compile Include="Binding\PromptBindingOptions.cs" />
+    <Compile Include="Binding\BindingOptions.cs" />
+    <Compile Include="Data\GetDataAsyncOptions.cs" />
+    <Compile Include="Data\TableData.cs" />
+    <Compile Include="Event\BindingSelectionChangedEventArgs.cs" />
+    <Compile Include="Event\BindingEventArgs.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="AsyncResult.cs" />
+    <Compile Include="Binding\BindingObject.cs" />
+    <Compile Include="SettingsObject.cs" />
+    <Compile Include="DocumentObject.cs" />
+    <Compile Include="Binding\BindingsObject.cs" />
+    <Compile Include="ContextObject.cs" />
+    <Compile Include="Office.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

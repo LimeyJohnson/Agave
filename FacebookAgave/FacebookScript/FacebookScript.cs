@@ -102,7 +102,7 @@ namespace FacebookScript
                {
                    if (result.Error == null)
                    {
-                       Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                       Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new Action<BindingSelectionChangedEventArgs>(HandleTableSelection));
                    }
                });
                 Requests.LogAction("Init", UserID ?? "unknown", "", "");
@@ -420,7 +420,7 @@ namespace FacebookScript
                             bindingOptions.ID = TableBinding;
                             Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bindingOptions, delegate(ASyncResult bindingResult)
                             {
-                                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                                Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new Action<BindingSelectionChangedEventArgs>(HandleTableSelection));
                             });
                             Requests.LogAction("Insert Data", UserID, "", "New Table");
                         }

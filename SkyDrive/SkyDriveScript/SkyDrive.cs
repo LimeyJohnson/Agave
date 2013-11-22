@@ -9,7 +9,7 @@ using AppForOffice;
 using Live;
 namespace SkyDriveScript
 {
-
+    
     public static class SkyDrive
     {
         static SkyDrive()
