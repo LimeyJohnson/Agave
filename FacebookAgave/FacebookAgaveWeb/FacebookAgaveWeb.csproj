@@ -84,8 +84,8 @@
     <Content Include="Pages\FriendsHelp.html" />
     <Content Include="Pages\privacy.aspx" />
     <Content Include="Scripts\FacebookScript.js" />
-    <Content Include="Scripts\JavaScript1.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />

@@ -8,6 +8,8 @@ using jQueryApi;
 using FreindsLibrary;
 using AppForOffice;
 using System.Collections;
+using jQueryApi.UI;
+using jQueryApi.UI.Widgets;
 namespace FacebookScript
 {
     public static class FacebookScript
@@ -212,7 +214,10 @@ namespace FacebookScript
                comboBoxLocation.Append(string.Format(template, s, selectAllCheckboxSelected ? "checked='checked'" : "", checkBoxHtml.Join("<br/>")));
                jQuery.Select("#ah" + s).Change(HandleAccordionSelectAll);
            });
-            Script.Literal("$('#fieldchoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
+            ((AccordionObject)jQuery.Select("#fieldchoices")).Accordion(new AccordionOptions( "header", "> div > h3", "collapsible", true, "heightStyle", "content"));
+            
+
+            //Script.Literal("$('#fieldchoices').accordion({header: '> div > h3', collapsible: true, heightStyle:'content' } )");
             jQuery.Select("input[id^='" + Field.checkBoxPrefix + "']").Change(HandleFieldChange);
             Office.Context.Document.Settings.SaveAsync(delegate(ASyncResult SaveResult) { });
         }

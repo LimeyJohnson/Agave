@@ -47,6 +47,9 @@
     <Reference Include="Script.jQuery">
       <HintPath>..\packages\ScriptSharp.Lib.jQuery.0.8\lib\Script.jQuery.dll</HintPath>
     </Reference>
+    <Reference Include="Script.jQuery.UI">
+      <HintPath>..\packages\ScriptSharp.Lib.jQuery.UI.0.8\lib\Script.jQuery.UI.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web">
       <HintPath>..\packages\ScriptSharp.Lib.HTML.0.8\lib\Script.Web.dll</HintPath>
     </Reference>

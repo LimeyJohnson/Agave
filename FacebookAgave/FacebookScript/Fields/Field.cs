@@ -28,7 +28,7 @@ namespace FacebookScript
             this.m_containerName = containerName;
             this.m_permission = permission;
             bool savedChecked;
-            if ((savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)) != null)
+            if (Script.Boolean(savedChecked = (bool)Office.Context.Document.Settings.Get(this.ID)))
             {
                 this.m_checked = savedChecked;
             }
