@@ -12,6 +12,7 @@ using jQueryApi.UI;
 using jQueryApi.UI.Widgets;
 namespace FacebookScript
 {
+    [assembly:ScriptReference("jquerywidgets")]
     public static class FacebookScript
     {
         public static string UserID;
