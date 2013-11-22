@@ -41,6 +41,7 @@ namespace AgaveApi
         public extern void AddFromPromptAsync(PromptBindingOptions options, ASyncResultCallBack callback);
         public extern void AddFromPromptAsync(BindingType bindingType, PromptBindingOptions options, ASyncResultCallBack callback);
         public extern void GetByIdAsync(string id, ASyncResultCallBack callback);
+        public extern void ReleaseByIdAsync(string id, ASyncResultCallBack callback);
     }
     [Imported, IgnoreNamespace]
     public class DocumentObject
@@ -129,7 +130,7 @@ namespace AgaveApi
         public CoercionType CoercionType;
         public ValueFormat ValueFormat;
         public FilterType FilterType;
-        public ScopeType ScopeType;
+        public TableType Rows;
         public int StartRow;
         public int StartColumn;
         public int RowCount;
@@ -185,11 +186,11 @@ namespace AgaveApi
         [PreserveCase]
         UnFormatted,
     }
-    [Imported, IgnoreNamespace, ScriptName("Office.ScopeType")]
-    public enum ScopeType
+    [Imported, IgnoreNamespace, ScriptName("Office.Table")]
+    public enum TableType
     {
         [PreserveCase]
-        SelectedRows,
+        ThisRow,
         [PreserveCase]
         All
     }

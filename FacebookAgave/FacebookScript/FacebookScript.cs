@@ -62,6 +62,7 @@ namespace FacebookScript
                 //Sync up goto main buttons they are all insert tags ending in main
                 jQuery.Select("img[id$='main']").Click(delegate(jQueryEvent e) { SetView(Main); });
                 jQuery.Select("#settings").Click(delegate(jQueryEvent eventargs) { SetView(Insert); });
+                jQuery.Select("#removebindings").Click(new jQueryEventHandler(RemoveBinding));
                 //Office.Context.Document.Settings.RefreshAsync(delegate(ASyncResult result) { });
                 Friend = jQuery.Select("#friend");
                 Views[Views.Length] = Friend;
@@ -92,16 +93,29 @@ namespace FacebookScript
                     js.Src = "//connect.facebook.net/en_US/all.js";
                     reference.ParentNode.InsertBefore(js, reference);
                 }
-                //BindingOptions bo = new BindingOptions();
-                //bo.ID = TableBinding;
-                //bo.columnNames = new string[] {"FBID","First Name","Last Name","Birthday","Gender"};
-                //Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult bindingResult)
-                //{
-                //    Office.Select("bindings#" + TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
-                //});
+
+                SetHandler();
+                
+
                 Requests.LogAction("Init", UserID ?? "unknown", "", "");
             };
 
+        }
+        public static void RemoveBinding(jQueryEvent events)
+    {
+        Office.Context.Document.Bindings.ReleaseByIdAsync(TableBinding, delegate(ASyncResult removeResult)
+        {
+        });
+    }
+        public static void SetHandler()
+        {
+            Office.Context.Document.Bindings.GetByIdAsync(TableBinding, delegate(ASyncResult getResultCallback)
+            {
+                if (Script.Boolean(getResultCallback.Value))
+                {
+                    ((BindingObject)getResultCallback.Value).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                }
+            });
         }
         public static void SetError(string ErrorText)
         {
@@ -358,7 +372,7 @@ namespace FacebookScript
                     }
                     else
                     {
-
+                        SetHandler();
                         Requests.LogAction("Insert Data", UserID, "", "Existing Table");
                     }
                 });
@@ -397,7 +411,7 @@ namespace FacebookScript
             {
                 GetDataAsyncOptions options = new GetDataAsyncOptions();
                 options.CoercionType = CoercionType.Table;
-                options.ScopeType = ScopeType.SelectedRows;
+                options.Rows = TableType.ThisRow;
                 Office.Select("bindings#" + TableBinding).GetDataAsync(options, delegate(ASyncResult result)
                 {
                     if (result.Status == AsyncResultStatus.Succeeded)
