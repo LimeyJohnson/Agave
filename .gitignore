@@ -8,5 +8,7 @@ FacebookScript.debug.js
 FacebookScript.js
 AgaveScript.js
 AgaveScript.debug.js
+SkyDriveScript.js
+SkyDriveScript.debug.js
 # mstest test results
 TestResults
