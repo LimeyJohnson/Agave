@@ -68,9 +68,11 @@
     <None Include="Properties\PublishProfiles\FilesAgave - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\FilesAgave - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\FilesAgave - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\skydriveagave - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
-    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\mscorlib.js" />
     <None Include="Scripts\Office\1.1\office.debug-vsdoc.js" />
     <Content Include="Scripts\Office\1.1\access-web-16.00.debug.js" />
@@ -135,7 +137,6 @@
     <Content Include="Scripts\Office\Themes\OfficeThemes.css" />
     <Content Include="Scripts\Skydrive.js" />
     <Content Include="Scripts\SkyDriveScript.js" />
-    <Content Include="Scripts\SkyDriveScript.min.js" />
     <Content Include="Scripts\ss.js" />
     <Content Include="Scripts\ss.min.js" />
     <Content Include="Scripts\ssloader.js" />

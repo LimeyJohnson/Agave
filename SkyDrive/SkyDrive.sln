@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDrive", "SkyDrive\SkyDri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDriveWeb", "SkyDriveWeb\SkyDriveWeb.csproj", "{A4F2F709-D092-475B-90E7-04440270E711}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceBook", "..\Imports\Facebook\FaceBook.csproj", "{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDriveScript", "SkyDriveScript\SkyDriveScript.csproj", "{209C3EFD-B172-44EC-92E3-DB22D38022F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppForOffice", "..\Imports\AppForOffice\AppForOffice.csproj", "{68227DE0-6DF6-4DBF-9953-29705DD171D1}"
@@ -31,10 +29,6 @@ Global
 		{A4F2F709-D092-475B-90E7-04440270E711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F2F709-D092-475B-90E7-04440270E711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4F2F709-D092-475B-90E7-04440270E711}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{209C3EFD-B172-44EC-92E3-DB22D38022F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{209C3EFD-B172-44EC-92E3-DB22D38022F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{209C3EFD-B172-44EC-92E3-DB22D38022F2}.Release|Any CPU.ActiveCfg = Release|Any CPU

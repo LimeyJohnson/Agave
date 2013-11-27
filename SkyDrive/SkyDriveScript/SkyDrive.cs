@@ -18,7 +18,7 @@ namespace SkyDriveScript
             {
                 InitOptions initOptions = new InitOptions();
                 initOptions.client_id = "000000004C100093";
-                initOptions.redirect_uri = "http://filesagave.azurewebsites.net/App/callback.html";
+                initOptions.redirect_uri = "http://skydriveagave.azurewebsites.net/App/callback.html";
                 initOptions.scope = "wl.signin";
                 initOptions.response_type = "code";
                 initOptions.logging = true;
