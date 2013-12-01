@@ -10,7 +10,8 @@ namespace Live
         public InitOptions(params object[] nameValuePairs) { }
         public string client_id;
         public string redirect_uri;
-        public string scope;
+        [ScriptField]
+        public string[] Scope{get{return null;} set {}}
         public string response_type;
         public bool logging;
 

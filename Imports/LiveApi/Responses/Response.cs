@@ -7,9 +7,9 @@ using System.Text;
 namespace Live
 {
     [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
-    public class ApiResponse:Response
+    public class Response
     {
-        [ScriptField, ScriptName("first_name")]
-        public string FirstName { get { return null; } set { } }
+        [ScriptField]
+        public string Status { get { return null; } set { } }
     }
 }

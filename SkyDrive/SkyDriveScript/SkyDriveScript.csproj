@@ -36,6 +36,7 @@
     <None Include="packages.config" />
     <None Include="Properties\FxCop.ruleset" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Folder.cs" />
     <Compile Include="SkyDrive.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,10 +55,6 @@
     <ProjectReference Include="..\..\Imports\LiveApi\LiveApi.csproj">
       <Project>{f90999ce-6694-4cf2-8742-2babb9b74529}</Project>
       <Name>LiveApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ImportLibrarys\FaceBook.csproj">
-      <Project>{e4953878-c1b1-43b5-930c-708ce8f50cda}</Project>
-      <Name>FaceBook</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

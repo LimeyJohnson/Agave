@@ -12,7 +12,7 @@ namespace Live
     {
         public extern static PromiseGeneric<LoginResponse> Login(params object[] nameValuePairs);
         public extern static PromiseGeneric<LoginResponse> Login(LoginOptions options);
-        public extern static PromiseGeneric<Dictionary<string,string>> Api(ApiOptions options);
+        public extern static PromiseGeneric<ApiResponse> Api(ApiOptions options);
         public extern static PromiseGeneric<LoginResponse> Init(InitOptions options);
         public extern static Promise Ui(UiOptions options);
         public extern static Promise FileDialog(FileDialogOptions options);

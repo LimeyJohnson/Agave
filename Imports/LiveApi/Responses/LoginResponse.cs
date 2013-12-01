@@ -6,8 +6,8 @@ using System.Runtime.CompilerServices;
 namespace Live
 {
     [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
-    public class LoginResponse
+    public class LoginResponse:Response
     {
-        public string status;
+       
     }
 }

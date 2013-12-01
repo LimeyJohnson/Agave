@@ -138,9 +138,7 @@
     <Content Include="Scripts\Skydrive.js" />
     <Content Include="Scripts\SkyDriveScript.js" />
     <Content Include="Scripts\ss.js" />
-    <Content Include="Scripts\ss.min.js" />
     <Content Include="Scripts\ssloader.js" />
-    <Content Include="Scripts\ssloader.min.js" />
     <Content Include="Scripts\_officeintellisense.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
