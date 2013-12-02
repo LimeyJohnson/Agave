@@ -7,11 +7,14 @@ using System.Html;
 using jQueryApi;
 using AppForOffice;
 using Live;
+using System.Html.Data.Files;
 namespace SkyDriveScript
 {
-
+   
     public static class SkyDrive
     {
+        public static string FolderID;
+        public static string FileName;
         static SkyDrive()
         {
             Office.Initialize = delegate(InitializationEnum initReason)
@@ -33,9 +36,47 @@ namespace SkyDriveScript
                 LiveApi.Ui(uiOptions);
                 jQuery.Select("#createFolder").Click(new jQueryEventHandler(CreateFolder));
                 LiveApi.Ui(new UiOptions("name","skydrivepicker","mode", "open", "element", "picker","onselected",new Action<LoginResponse>(OnSuccess)));
+                Element dropzone = Document.GetElementById("dropzone");
+                dropzone.AddEventListener("dragenter", NoOpHandler, false);
+                dropzone.AddEventListener("dragexit", NoOpHandler, false);
+                dropzone.AddEventListener("dragover", NoOpHandler, false);
+                dropzone.AddEventListener("drop", Drop, false);
+               
             };
         }
+        public static void NoOpHandler(ElementEvent evt)
+        {
+            evt.StopPropagation();
+            evt.PreventDefault();
+        }
 
+        public static void Drop(ElementEvent evt)
+        {
+            evt.StopPropagation();
+            evt.PreventDefault();
+            FileList fl = (FileList)Script.Literal("{0}.dataTransfer.files", evt);
+            if (fl.Length > 0)
+            {
+                SetTextBox(fl[0].Name);
+                HandleFileUploads(fl);
+            }
+            
+
+        }
+        public static void HandleFileUploads(FileList fl)
+        {
+            FileReader reader = new FileReader();
+            reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad); 
+            FileName = fl[0].Name;
+            reader.ReadAsArrayBuffer(fl[0]);
+           // FileHelper.SaveFile(FolderID, FileName, fl[0]).Then(OnSuccess, OnFailure);
+        }
+        public static void OnFileLoad(FileProgressEvent evt)
+        {
+            SetTextBox("File Loaded");
+            string result = (string) Script.Literal("{0}.result", evt.Target);
+            FileHelper.SaveFileNoApi(FolderID, FileName, result);
+        }
         private static void CreateFolder(jQueryEvent e)
         {
             //Folder.CreateFolder("MyNewFolderAgain","My brand new folder").Then(OnSuccess, OnFailure);
@@ -43,6 +84,7 @@ namespace SkyDriveScript
             {
                 Folder folderResponse = (Folder)response;
                 SetTextBox(folderResponse.ID);
+                FolderID = folderResponse.ID;
             });
         }
 

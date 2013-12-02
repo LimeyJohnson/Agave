@@ -35,16 +35,19 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\FxCop.ruleset" />
+    <Compile Include="CookieHelper.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Folder.cs" />
+    <Compile Include="FolderHelper.cs" />
     <Compile Include="SkyDrive.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Script.jQuery">
       <HintPath>..\packages\ScriptSharp.Lib.jQuery.0.8\lib\Script.jQuery.dll</HintPath>
     </Reference>
-    <Reference Include="Script.Web">
-      <HintPath>..\packages\ScriptSharp.Lib.HTML.0.8\lib\Script.Web.dll</HintPath>
+    <Reference Include="Script.Web, Version=0.9.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\scriptsharp\bin\Debug\Script.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
