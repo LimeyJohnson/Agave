@@ -30,12 +30,13 @@
     <DocumentationFile>bin\Release\LiveApi.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Objects\Folder.cs" />
     <Compile Include="Options\CreateFolderOptions.cs" />
     <Compile Include="Responses\Response.cs" />
     <Compile Include="Responses\ApiResponse.cs" />
     <Compile Include="Responses\LoginResponse.cs" />
     <ScriptInfo Include="Properties\ScriptInfo.txt" />
-    <Compile Include="Promise.cs" />
+    <Compile Include="Objects\Promise.cs" />
     <Compile Include="Options\FileDialogOptions.cs" />
     <Compile Include="Options\LoginOptions.cs" />
     <Compile Include="Options\InitOptions.cs" />

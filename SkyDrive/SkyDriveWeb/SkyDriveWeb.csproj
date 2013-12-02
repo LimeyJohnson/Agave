@@ -64,12 +64,9 @@
     <Content Include="Images\Close.png" />
     <Content Include="Images\Settings.png" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\FilesAgave - FTP %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\FilesAgave - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\FilesAgave - Web Deploy %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\FilesAgave - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\skydriveagave.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery.js" />

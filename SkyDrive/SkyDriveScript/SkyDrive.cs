@@ -38,7 +38,17 @@ namespace SkyDriveScript
 
         private static void CreateFolder(jQueryEvent e)
         {
-            Folder.CreateFolder("MyNewFolderAgain","My brand new folder").Then(OnSuccess, OnFailure);
+            //Folder.CreateFolder("MyNewFolderAgain","My brand new folder").Then(OnSuccess, OnFailure);
+            FolderHelper.GetRootFolder.Then(delegate(Response response) 
+            {
+                Folder folderResponse = (Folder)response;
+                SetTextBox(folderResponse.ID);
+            });
+        }
+
+        private static void SetTextBox(string p)
+        {
+            jQuery.Select("#first_name").Value(p);
         }
         public static void OnLog(Response response)
         {
@@ -50,8 +60,9 @@ namespace SkyDriveScript
         }
         public static void GetName(Response response)
         {
-            LiveApi.Api(new ApiOptions("path", "me", "method", "GET")).Then(delegate(ApiResponse apiResponse)
+            LiveApi.Api(new ApiOptions("path", "me", "method", "GET")).Then(delegate(Response newResponse)
             {
+                ApiResponse apiResponse = (ApiResponse)newResponse;
                 jQuery.Select("#first_name").Value(apiResponse.FirstName);
             });
         }
@@ -64,6 +75,6 @@ namespace SkyDriveScript
             jQuery.Select("#first_name").Value("Pass");
            
         }
-
+        
     }
 }

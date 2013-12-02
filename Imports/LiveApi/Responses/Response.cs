@@ -11,5 +11,7 @@ namespace Live
     {
         [ScriptField]
         public string Status { get { return null; } set { } }
+        [ScriptField, ScriptName("data")]
+        public Folder FolderData { get { return null; } set { } }
     }
 }

@@ -10,12 +10,18 @@ using Live;
 namespace SkyDriveScript
 {
 
-    public static class Folder
+    public static class FolderHelper
     {
-        public static PromiseGeneric<ApiResponse> CreateFolder(string folderName, string description)
+        public static PromiseGeneric<Response> CreateFolder(string folderName, string description)
         {
             return LiveApi.Api(new ApiOptions("path", "/me/skydrive", "method", "post", "body", new CreateFolderOptions("name", folderName, "description", description)));
         }
-        
+        public static PromiseGeneric<Response> GetRootFolder
+        {
+            get
+            {
+                return LiveApi.Api(new ApiOptions("path", "/me/skydrive", "method", "get"));
+            }
+        }
     }
 }
