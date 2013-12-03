@@ -69,13 +69,12 @@ namespace SkyDriveScript
             reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad); 
             FileName = fl[0].Name;
             reader.ReadAsArrayBuffer(fl[0]);
-           // FileHelper.SaveFile(FolderID, FileName, fl[0]).Then(OnSuccess, OnFailure);
         }
         public static void OnFileLoad(FileProgressEvent evt)
         {
             SetTextBox("File Loaded");
             string result = (string) Script.Literal("{0}.result", evt.Target);
-            FileHelper.SaveFileNoApi(FolderID, FileName, result);
+            FileHelper.SaveFileJquery(FolderID, FileName, result);
         }
         private static void CreateFolder(jQueryEvent e)
         {
@@ -88,7 +87,7 @@ namespace SkyDriveScript
             });
         }
 
-        private static void SetTextBox(string p)
+        public static void SetTextBox(string p)
         {
             jQuery.Select("#first_name").Value(p);
         }
