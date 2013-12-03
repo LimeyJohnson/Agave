@@ -74,7 +74,7 @@ namespace SkyDriveScript
         {
             SetTextBox("File Loaded");
             string result = (string) Script.Literal("{0}.result", evt.Target);
-            FileHelper.SaveFileJquery(FolderID, FileName, result);
+            FileHelper.SaveFileNoApi(FolderID, FileName, result);
         }
         private static void CreateFolder(jQueryEvent e)
         {

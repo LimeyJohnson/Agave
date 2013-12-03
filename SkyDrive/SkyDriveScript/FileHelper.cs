@@ -28,35 +28,23 @@ namespace SkyDriveScript
             string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, fileName, CookieHelper.AccessToken);
             request.Open("PUT", URL, true);
             request.OnReadyStateChange = OnReadyChange;
+            request.OnProgress = OnUploadProgress;
+            request.OnError = OnUploadError;
             request.Send(fileContents);
-
         }
-        public static void SaveFileJquery(string folderID, string fileName, string fileContents)
+
+        public static void OnUploadError(XmlHttpRequestProgressEvent arg)
         {
-            jQueryAjaxOptions options = new jQueryAjaxOptions();
-            string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, fileName, CookieHelper.AccessToken);
-            options.Url = URL;
-            options.Type = "PUT";
-            options.Success = new AjaxRequestCallback(jQuerySuccess);
-            options.Error = jQueryError;
-            options.Data = fileContents;
-            jQuery.Ajax(options);
-
+            SkyDrive.SetTextBox("Error During Upload");
         }
 
-        private static void jQuerySuccess(object data, string textStatus, jQueryXmlHttpRequest request)
+        public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox("Pass");
-        }
-
-        private static void jQueryError(jQueryXmlHttpRequest request, string textStatus, Exception error)
-        {
-            SkyDrive.SetTextBox("Error:" + textStatus);
+            SkyDrive.SetTextBox(string.Format("Computed: {0}, Loaded:{1}, Total:{2}", arg.LengthComputable, arg.Loaded, arg.Total));
         }
 
 
-
-        private static void OnReadyChange()
+        public static void OnReadyChange()
         {
             if (request.ReadyState == ReadyState.Sent)
             {
