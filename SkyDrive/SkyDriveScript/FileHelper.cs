@@ -15,6 +15,7 @@ namespace SkyDriveScript
     {
         public static XmlHttpRequest request;
         public static string APIBaseUrl = @"https://apis.live.net/v5.0";
+        public static int Counter = 0;
         public static PromiseGeneric<Response> SaveFile(string folderID, string fileName, string fileContents)
         {
             string path = string.Format(@"/{0}/files/{1}", folderID, fileName);
@@ -30,7 +31,13 @@ namespace SkyDriveScript
             request.OnReadyStateChange = OnReadyChange;
             request.OnProgress = OnUploadProgress;
             request.OnError = OnUploadError;
+            request.OnLoad = OnLoad;
             request.Send(fileContents);
+        }
+
+        public static void OnLoad(XmlHttpRequestProgressEvent arg)
+        {
+            SkyDrive.SetTextBox("DONE "+(Counter++));
         }
 
         public static void OnUploadError(XmlHttpRequestProgressEvent arg)
@@ -40,7 +47,7 @@ namespace SkyDriveScript
 
         public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox(string.Format("Computed: {0}, Loaded:{1}, Total:{2}", arg.LengthComputable, arg.Loaded, arg.Total));
+            SkyDrive.SetTextBox(string.Format("{3} Computed: {0}, Loaded:{1}, Total:{2}", arg.LengthComputable, arg.Loaded, arg.Total, Counter++));
         }
 
 
@@ -48,9 +55,10 @@ namespace SkyDriveScript
         {
             if (request.ReadyState == ReadyState.Sent)
             {
-
+                SkyDrive.SetTextBox("File Upload Complete");
             }
         }
+        
 
     }
 }
