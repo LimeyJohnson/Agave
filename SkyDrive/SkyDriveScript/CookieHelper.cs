@@ -29,7 +29,7 @@ namespace SkyDriveScript
                         for (int x = 0; x < authPairs.Length; x++)
                         {
                             string[] authPair = authPairs[x].Split("=");
-                            if (authPair[0] == AccessTokenString)
+                            if (authPair[0].Trim() == AccessTokenString)
                             {
                                 return authPair[1];
                             }

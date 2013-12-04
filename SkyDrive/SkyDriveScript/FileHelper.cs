@@ -31,10 +31,10 @@ namespace SkyDriveScript
             request.OnReadyStateChange = OnReadyChange;
             //request.OnProgress = OnUploadProgress;
             request.OnError = OnUploadError;
-            request.SetRequestHeader("Access-Control-Allow-Origin", "http://skydriveagave.azurewebsites.net/");
+            //request.SetRequestHeader("Access-Control-Allow-Origin", "http://skydriveagave.azurewebsites.net/");
             request.OnLoad = OnLoad;
-            request.ResponseType = XMLHttpRequestResponseType.Json;
-            Script.Literal("{0}.upload.onprogress = {1};", request, new Action<XmlHttpRequestProgressEvent>(OnUploadProgress));
+            request.ResponseType = XmlHttpRequestResponseType.Json;
+            request.Upload.OnProgress = OnUploadProgress;
             request.Send(fileContents);
         }
 
