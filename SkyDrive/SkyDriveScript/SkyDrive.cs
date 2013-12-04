@@ -15,6 +15,7 @@ namespace SkyDriveScript
     {
         public static string FolderID;
         public static string FileName;
+        public static ulong FileSize;
         static SkyDrive()
         {
             Office.Initialize = delegate(InitializationEnum initReason)
@@ -68,6 +69,7 @@ namespace SkyDriveScript
             FileReader reader = new FileReader();
             reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad); 
             FileName = fl[0].Name;
+            FileSize = fl[0].Size;
             reader.ReadAsArrayBuffer(fl[0]);
         }
         public static void OnFileLoad(FileProgressEvent evt)
@@ -90,6 +92,10 @@ namespace SkyDriveScript
         public static void SetTextBox(string p)
         {
             jQuery.Select("#first_name").Value(p);
+        }
+        public static void SetProgressTextBox(string p)
+        {
+            jQuery.Select("#progress").Value(p);
         }
         public static void OnLog(Response response)
         {

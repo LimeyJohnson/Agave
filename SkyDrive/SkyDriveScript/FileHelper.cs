@@ -30,14 +30,16 @@ namespace SkyDriveScript
             request.Open("PUT", URL, true);
             request.OnReadyStateChange = OnReadyChange;
             request.OnProgress = OnUploadProgress;
-            request.OnError = OnUploadError;
-            request.OnLoad = OnLoad;
+          //  request.OnError = OnUploadError;
+          //  request.OnLoad = OnLoad;
+            request.ResponseType = XMLHttpRequestResponseType.Json;
+            Script.Literal("{0}.upload.onprogress = {1};", request, new Action<XmlHttpRequestProgressEvent>(OnUploadProgress));
             request.Send(fileContents);
         }
 
         public static void OnLoad(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox("DONE "+(Counter++));
+            SkyDrive.SetTextBox("DONE "+(Counter++) + request.ResponseText);
         }
 
         public static void OnUploadError(XmlHttpRequestProgressEvent arg)
@@ -47,15 +49,26 @@ namespace SkyDriveScript
 
         public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox(string.Format("{3} Computed: {0}, Loaded:{1}, Total:{2}", arg.LengthComputable, arg.Loaded, arg.Total, Counter++));
+            int progress = (int) (((ulong)arg.Loaded/SkyDrive.FileSize) * 100);
+            SkyDrive.SetProgressTextBox(string.Format("{2} Loaded:{0}, Total:{1}, {3}%", arg.Loaded, SkyDrive.FileSize, (Counter++), progress));
+
         }
 
 
         public static void OnReadyChange()
         {
-            if (request.ReadyState == ReadyState.Sent)
+            switch(request.ReadyState)
             {
-                SkyDrive.SetTextBox("File Upload Complete");
+                case ReadyState.Open: SkyDrive.SetTextBox("Open" + (Counter++));
+                    break;
+                case ReadyState.Uninitialized: SkyDrive.SetTextBox("Uninitialized" + (Counter++));
+                    break;
+                case ReadyState.HeadersReceived: SkyDrive.SetTextBox("HeadersReceived" + (Counter++));
+                    break;
+                case ReadyState.Receiving: SkyDrive.SetTextBox("Receiving" + (Counter++));
+                    break;
+                case ReadyState.Done: SkyDrive.SetTextBox("Done" + (Counter++));
+                    break;
             }
         }
         
