@@ -60,6 +60,7 @@
   <ItemGroup>
     <Content Include="App\callback.html" />
     <Content Include="App\Home\Home.html" />
+    <Content Include="Content\App.css" />
     <Content Include="Content\Office.css" />
     <Content Include="Images\Close.png" />
     <Content Include="Images\Settings.png" />

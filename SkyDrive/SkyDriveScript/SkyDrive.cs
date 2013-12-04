@@ -26,17 +26,9 @@ namespace SkyDriveScript
                 initOptions.Scope = new string[] { "wl.skydrive_update", "wl.signin" };
                 initOptions.response_type = "code";
                 initOptions.logging = true;
-                LiveApi.Init(initOptions).Then(OnSuccess, OnFailure);
+                LiveApi.Init(initOptions).Then(OnInitSuccess, OnFailure);
                 LiveApi.Event.subscribe("auth.login", OnLogon);
                 LiveApi.Event.subscribe("wl.log", OnLog);
-                UiOptions uiOptions = new UiOptions();
-                uiOptions.Name = "signin";
-                uiOptions.Element = "signin";
-                uiOptions.brand = "skydrive";
-                uiOptions.onloggedin = new Action<LoginResponse>(GetName);
-                LiveApi.Ui(uiOptions);
-                jQuery.Select("#createFolder").Click(new jQueryEventHandler(CreateFolder));
-                LiveApi.Ui(new UiOptions("name","skydrivepicker","mode", "open", "element", "picker","onselected",new Action<LoginResponse>(OnSuccess)));
                 Element dropzone = Document.GetElementById("dropzone");
                 dropzone.AddEventListener("dragenter", NoOpHandler, false);
                 dropzone.AddEventListener("dragexit", NoOpHandler, false);
@@ -59,26 +51,13 @@ namespace SkyDriveScript
             if (fl.Length > 0)
             {
                 SetTextBox(fl[0].Name);
-                HandleFileUploads(fl);
+                for(int x = 0; x<fl.Length; x++)
+                {
+                    FileHelper.AddFileToUploadQueue(fl[x]);
+                }
             }
-            
-
         }
-        public static void HandleFileUploads(FileList fl)
-        {
-            FileReader reader = new FileReader();
-            reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad); 
-            FileName = fl[0].Name;
-            FileSize = fl[0].Size;
-            reader.ReadAsArrayBuffer(fl[0]);
-        }
-        public static void OnFileLoad(FileProgressEvent evt)
-        {
-            SetTextBox("File Loaded");
-            string result = (string) Script.Literal("{0}.result", evt.Target);
-            FileHelper.SaveFileNoApi(FolderID, FileName, result);
-        }
-        private static void CreateFolder(jQueryEvent e)
+        private static void GetRootFolder()
         {
             //Folder.CreateFolder("MyNewFolderAgain","My brand new folder").Then(OnSuccess, OnFailure);
             FolderHelper.GetRootFolder.Then(delegate(Response response) 
@@ -104,8 +83,10 @@ namespace SkyDriveScript
         public static void OnLogon(Response response)
         {
             jQuery.Select("#first_name").Value(response.Status);
+            GetName();
+            GetRootFolder();
         }
-        public static void GetName(Response response)
+        public static void GetName()
         {
             LiveApi.Api(new ApiOptions("path", "me", "method", "GET")).Then(delegate(Response newResponse)
             {
@@ -117,11 +98,22 @@ namespace SkyDriveScript
         {
             jQuery.Select("#first_name").Value("Fail");
         }
-        public static void OnSuccess(Response successResponse)
+        public static void OnInitSuccess(Response successResponse)
         {
-            jQuery.Select("#first_name").Value("Pass");
-           
+            UiOptions uiOptions = new UiOptions();
+            uiOptions.Name = "signin";
+            uiOptions.Element = "signin";
+            uiOptions.brand = "skydrive";
+            LiveApi.Ui(uiOptions);
+            jQuery.Select("#first_name").Value("OnInitSuccess");
+            LiveApi.Ui(new UiOptions("name", "skydrivepicker", "mode", "open", "element", "picker", "onselected", new Action<LoginResponse>(OnPickerSuccess)));
         }
+
+        private static void OnPickerSuccess(LoginResponse arg)
+        {
+            SetTextBox("OnPickerSuccess");
+        }
+        
         
     }
 }

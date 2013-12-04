@@ -8,6 +8,7 @@ using jQueryApi;
 using System.Net;
 using Live;
 using System.Html.Data.Files;
+using System.Collections;
 namespace SkyDriveScript
 {
 
@@ -16,22 +17,45 @@ namespace SkyDriveScript
         public static XmlHttpRequest request;
         public static string APIBaseUrl = @"https://apis.live.net/v5.0";
         public static int Counter = 0;
-        public static PromiseGeneric<Response> SaveFile(string folderID, string fileName, string fileContents)
+        public static ArrayList Files;
+        public static File CurrentFile;
+        public static FileReader Reader;
+        static FileHelper()
         {
-            string path = string.Format(@"/{0}/files/{1}", folderID, fileName);
-            return LiveApi.Api(new ApiOptions("path", path, "method", "put", "body", fileContents));
+            Files = new ArrayList();
         }
 
-        public static void SaveFileNoApi(string folderID, string fileName, string fileContents)
+        public static void AddFileToUploadQueue(File newFiles)
+        {
+            Files.Add(newFiles);
+            LoadNextFile();
+        }
+
+        private static void LoadNextFile()
+        {
+            if(CurrentFile==null && Files.Count > 0)
+            {
+                CurrentFile = (File) Files[0];
+                Reader = new FileReader();
+                Reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad);
+                Reader.ReadAsArrayBuffer(CurrentFile);
+            }
+            
+        }
+
+        private static void OnFileLoad(FileProgressEvent arg)
+        {
+            SkyDrive.SetTextBox("File Loaded" + CurrentFile.Name);
+            SaveFileNoApi(Reader.Result);
+        }
+
+        public static void SaveFileNoApi(object fileContents)
         {
             request = new XmlHttpRequest();
-
-            string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, fileName, CookieHelper.AccessToken);
+            string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, SkyDrive.FolderID, CurrentFile.Name, CookieHelper.AccessToken);
             request.Open("PUT", URL, true);
             request.OnReadyStateChange = OnReadyChange;
-            //request.OnProgress = OnUploadProgress;
             request.OnError = OnUploadError;
-            //request.SetRequestHeader("Access-Control-Allow-Origin", "http://skydriveagave.azurewebsites.net/");
             request.OnLoad = OnLoad;
             request.ResponseType = XmlHttpRequestResponseType.Json;
             request.Upload.OnProgress = OnUploadProgress;
@@ -40,7 +64,10 @@ namespace SkyDriveScript
 
         public static void OnLoad(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox("DONE "+(Counter++) + request.ResponseText);
+            SkyDrive.SetTextBox("DONE "+CurrentFile.Name);
+            Files.Remove(CurrentFile);
+            CurrentFile = null;
+            LoadNextFile();
         }
 
         public static void OnUploadError(XmlHttpRequestProgressEvent arg)
@@ -50,9 +77,8 @@ namespace SkyDriveScript
 
         public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
         {
-            int progress = (int) (((ulong)arg.Loaded/SkyDrive.FileSize) * 100);
-            SkyDrive.SetProgressTextBox(string.Format("{2} Loaded:{0}, Total:{1}, {3}%", arg.Loaded, SkyDrive.FileSize, (Counter++), progress));
-
+            int progress = (int) (((ulong)arg.Loaded/CurrentFile.Size) * 100);
+            SkyDrive.SetProgressTextBox(string.Format("{2} Loaded:{0}, Total:{1}, {3}%", arg.Loaded, CurrentFile.Size, (Counter++), progress));
         }
 
 
