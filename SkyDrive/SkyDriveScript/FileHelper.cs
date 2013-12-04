@@ -29,9 +29,10 @@ namespace SkyDriveScript
             string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, fileName, CookieHelper.AccessToken);
             request.Open("PUT", URL, true);
             request.OnReadyStateChange = OnReadyChange;
-            request.OnProgress = OnUploadProgress;
-          //  request.OnError = OnUploadError;
-          //  request.OnLoad = OnLoad;
+            //request.OnProgress = OnUploadProgress;
+            request.OnError = OnUploadError;
+            request.SetRequestHeader("Access-Control-Allow-Origin", "http://skydriveagave.azurewebsites.net/");
+            request.OnLoad = OnLoad;
             request.ResponseType = XMLHttpRequestResponseType.Json;
             Script.Literal("{0}.upload.onprogress = {1};", request, new Action<XmlHttpRequestProgressEvent>(OnUploadProgress));
             request.Send(fileContents);
