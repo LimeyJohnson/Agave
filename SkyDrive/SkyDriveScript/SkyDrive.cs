@@ -85,6 +85,7 @@ namespace SkyDriveScript
             jQuery.Select("#first_name").Value(response.Status);
             GetName();
             GetRootFolder();
+            jQuery.Select("#signin").Hide();
         }
         public static void GetName()
         {
