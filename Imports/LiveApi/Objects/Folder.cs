@@ -11,9 +11,13 @@ namespace Live
     {
        [ScriptField]
        public string ID { get { return null; } set { } }
-       
-       
-			
+
+       [ScriptField]
+       public string Name { get { return null; } set { } }
+
+       [ScriptField]
+       public string Source { get { return null; } set { } }
+       	
     }
     
 }

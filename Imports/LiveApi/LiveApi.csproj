@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="Objects\Folder.cs" />
     <Compile Include="Options\CreateFolderOptions.cs" />
+    <Compile Include="Responses\FileListResponse.cs" />
     <Compile Include="Responses\Response.cs" />
     <Compile Include="Responses\ApiResponse.cs" />
     <Compile Include="Responses\LoginResponse.cs" />

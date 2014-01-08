@@ -9,6 +9,7 @@ using System.Net;
 using Live;
 using System.Html.Data.Files;
 using System.Collections;
+using AppForOffice;
 namespace SkyDriveScript
 {
 
@@ -20,6 +21,7 @@ namespace SkyDriveScript
         public static ArrayList Files;
         public static File CurrentFile;
         public static FileReader Reader;
+        public static int RecordID =1;
         static FileHelper()
         {
             Files = new ArrayList();
@@ -33,12 +35,17 @@ namespace SkyDriveScript
 
         private static void LoadNextFile()
         {
-            if(CurrentFile==null && Files.Count > 0)
+            if (CurrentFile == null && Files.Count > 0)
             {
-                CurrentFile = (File) Files[0];
+                CurrentFile = (File)Files[0];
                 Reader = new FileReader();
                 Reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad);
                 Reader.ReadAsArrayBuffer(CurrentFile);
+            }
+            else
+            {
+                //We are truly done at this point refresh the view
+                FolderHelper.RefreshView(RecordID, "filelist");
             }
             
         }
@@ -51,15 +58,25 @@ namespace SkyDriveScript
 
         public static void SaveFileNoApi(object fileContents)
         {
-            request = new XmlHttpRequest();
-            string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, SkyDrive.FolderID, CurrentFile.Name, CookieHelper.AccessToken);
-            request.Open("PUT", URL, true);
-            request.OnReadyStateChange = OnReadyChange;
-            request.OnError = OnUploadError;
-            request.OnLoad = OnLoad;
-            request.ResponseType = XmlHttpRequestResponseType.Json;
-            request.Upload.OnProgress = OnUploadProgress;
-            request.Send(fileContents);
+            GetDataAsyncOptions gdo = new GetDataAsyncOptions();
+            gdo.Rows = RowType.ThisRow;
+            gdo.CoercionType = CoercionType.Matrix;
+            Office.Select("bindings#" + SkyDrive.TableBinding).GetDataAsync(gdo, delegate(ASyncResult result)
+            {
+                RecordID = (int)result.MatrixValue[0][0];
+                FolderHelper.GetRecordFolderID(RecordID, delegate(string folderID)
+                {
+                    request = new XmlHttpRequest();
+                    string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, CurrentFile.Name, CookieHelper.AccessToken);
+                    request.Open("PUT", URL, true);
+                    request.OnReadyStateChange = OnReadyChange;
+                    request.OnError = OnUploadError;
+                    request.OnLoad = OnLoad;
+                    request.ResponseType = XmlHttpRequestResponseType.Json;
+                    request.Upload.OnProgress = OnUploadProgress;
+                    request.Send(fileContents);
+                });
+            });
         }
 
         public static void OnLoad(XmlHttpRequestProgressEvent arg)

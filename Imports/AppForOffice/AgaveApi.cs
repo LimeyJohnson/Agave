@@ -109,6 +109,7 @@ namespace AppForOffice
     {
         public string ID;
         public object AsyncContext;
+        public string[] Columns;
     }
     [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
    public sealed class PromptBindingOptions: BindingOptions
@@ -127,6 +128,7 @@ namespace AppForOffice
         public int RowCount;
         public int ColumnCount;
         public object AsyncContext;
+        public RowType Rows;
     }
     [ScriptImport, ScriptIgnoreNamespace, ScriptName("Object")]
     public sealed class BindingDataChangedEventArgs
@@ -161,7 +163,16 @@ namespace AppForOffice
         [ScriptName(PreserveCase=true)]
         Failed,
     }
+    [ScriptImport, ScriptIgnoreNamespace, ScriptName("Office.Table")]
+    public enum RowType
+    {
+        [ScriptName(PreserveCase=true)]
+        ThisRow
+    }
+
+
     [ScriptImport, ScriptIgnoreNamespace, ScriptName("Office.FilterType")]
+
     public enum FilterType
     {
         [ScriptName(PreserveCase=true)]

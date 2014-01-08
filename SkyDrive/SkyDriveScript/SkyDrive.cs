@@ -13,9 +13,10 @@ namespace SkyDriveScript
    
     public static class SkyDrive
     {
-        public static string FolderID;
+        public static string FolderID = "folder.a729d230873cf73c.A729D230873CF73C!84491";
         public static string FileName;
         public static ulong FileSize;
+        public static string TableBinding = "TableBinding";
         static SkyDrive()
         {
             Office.Initialize = delegate(InitializationEnum initReason)
@@ -29,13 +30,34 @@ namespace SkyDriveScript
                 LiveApi.Init(initOptions).Then(OnInitSuccess, OnFailure);
                 LiveApi.Event.subscribe("auth.login", OnLogon);
                 LiveApi.Event.subscribe("wl.log", OnLog);
+                LiveApi.GetLoginStatus().Then(OnLogon, OnFailure);
+                    
                 Element dropzone = Document.GetElementById("dropzone");
                 dropzone.AddEventListener("dragenter", NoOpHandler, false);
                 dropzone.AddEventListener("dragexit", NoOpHandler, false);
                 dropzone.AddEventListener("dragover", NoOpHandler, false);
                 dropzone.AddEventListener("drop", Drop, false);
-               
+                
+                BindingOptions bo = new BindingOptions();
+                bo.ID = TableBinding;
+                bo.Columns = new string[]{"ID"};
+                Office.Context.Document.Bindings.AddFromNamedItemAsync("Candidates", BindingType.Table, bo, delegate(ASyncResult result)
+                {
+                    Office.Select("bindings#"+TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, OnBindingSelectionChanged);
+                });
+                   
             };
+        }
+        public static void OnBindingSelectionChanged(BindingSelectionChangedEventArgs args)
+        {
+            GetDataAsyncOptions gdo = new GetDataAsyncOptions();
+            gdo.Rows = RowType.ThisRow;
+            gdo.CoercionType = CoercionType.Matrix;
+            Office.Select("bindings#" + TableBinding).GetDataAsync(gdo, delegate(ASyncResult result)
+            {
+                int recordID = (int)result.MatrixValue[0][0];
+                FolderHelper.RefreshView(recordID, "filelist");
+            });
         }
         public static void NoOpHandler(ElementEvent evt)
         {
@@ -60,12 +82,7 @@ namespace SkyDriveScript
         private static void GetRootFolder()
         {
             //Folder.CreateFolder("MyNewFolderAgain","My brand new folder").Then(OnSuccess, OnFailure);
-            FolderHelper.GetRootFolder.Then(delegate(Response response) 
-            {
-                Folder folderResponse = (Folder)response;
-                SetTextBox(folderResponse.ID);
-                FolderID = folderResponse.ID;
-            });
+            FolderHelper.RefreshView(1, "filelist");
         }
 
         public static void SetTextBox(string p)
@@ -86,6 +103,7 @@ namespace SkyDriveScript
             GetName();
             GetRootFolder();
             jQuery.Select("#signin").Hide();
+            jQuery.Select("#content-main").Hide();
         }
         public static void GetName()
         {
@@ -107,7 +125,7 @@ namespace SkyDriveScript
             uiOptions.brand = "skydrive";
             LiveApi.Ui(uiOptions);
             jQuery.Select("#first_name").Value("OnInitSuccess");
-            LiveApi.Ui(new UiOptions("name", "skydrivepicker", "mode", "open", "element", "picker", "onselected", new Action<LoginResponse>(OnPickerSuccess)));
+            //LiveApi.Ui(new UiOptions("name", "skydrivepicker", "mode", "open", "element", "picker", "onselected", new Action<LoginResponse>(OnPickerSuccess)));
         }
 
         private static void OnPickerSuccess(LoginResponse arg)
