@@ -99,11 +99,15 @@ namespace SkyDriveScript
         }
         public static void OnLogon(Response response)
         {
-            jQuery.Select("#first_name").Value(response.Status);
-            GetName();
-            GetRootFolder();
-            jQuery.Select("#signin").Hide();
             jQuery.Select("#content-main").Hide();
+            if (response.Status == "connected")
+            {
+                jQuery.Select("#first_name").Value(response.Status);
+                //GetName();
+                //GetRootFolder();
+                jQuery.Select("#signin").Hide();
+                
+            }
         }
         public static void GetName()
         {
