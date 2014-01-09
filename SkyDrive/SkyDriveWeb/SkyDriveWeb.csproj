@@ -63,6 +63,7 @@
     <Content Include="Content\App.css" />
     <Content Include="Content\Office.css" />
     <Content Include="Images\Close.png" />
+    <Content Include="Images\FhHRx.gif" />
     <Content Include="Images\Settings.png" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />

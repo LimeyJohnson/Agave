@@ -21,6 +21,7 @@ namespace SkyDriveScript
         {
             Office.Initialize = delegate(InitializationEnum initReason)
             {
+                ViewManager.SwitchToView(ViewManager.SignIn);
                 InitOptions initOptions = new InitOptions();
                 initOptions.client_id = "000000004C100093";
                 initOptions.redirect_uri = "http://skydriveagave.azurewebsites.net/App/callback.html";
@@ -79,11 +80,6 @@ namespace SkyDriveScript
                 }
             }
         }
-        private static void GetRootFolder()
-        {
-            //Folder.CreateFolder("MyNewFolderAgain","My brand new folder").Then(OnSuccess, OnFailure);
-            FolderHelper.RefreshView(1, "filelist");
-        }
 
         public static void SetTextBox(string p)
         {
@@ -103,19 +99,9 @@ namespace SkyDriveScript
             if (response.Status == "connected")
             {
                 jQuery.Select("#first_name").Value(response.Status);
-                //GetName();
-                //GetRootFolder();
                 jQuery.Select("#signin").Hide();
-                
+                ViewManager.SwitchToView(ViewManager.FileList);
             }
-        }
-        public static void GetName()
-        {
-            LiveApi.Api(new ApiOptions("path", "me", "method", "GET")).Then(delegate(Response newResponse)
-            {
-                ApiResponse apiResponse = (ApiResponse)newResponse;
-                jQuery.Select("#first_name").Value(apiResponse.FirstName);
-            });
         }
         public static void OnFailure(Response failResponse)
         {
@@ -128,15 +114,8 @@ namespace SkyDriveScript
             uiOptions.Element = "signin";
             uiOptions.brand = "skydrive";
             LiveApi.Ui(uiOptions);
-            jQuery.Select("#first_name").Value("OnInitSuccess");
+            //jQuery.Select("#first_name").Value("OnInitSuccess");
             //LiveApi.Ui(new UiOptions("name", "skydrivepicker", "mode", "open", "element", "picker", "onselected", new Action<LoginResponse>(OnPickerSuccess)));
         }
-
-        private static void OnPickerSuccess(LoginResponse arg)
-        {
-            SetTextBox("OnPickerSuccess");
-        }
-        
-        
     }
 }
