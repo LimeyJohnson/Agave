@@ -17,6 +17,7 @@ namespace SkyDriveScript
         public static string FileName;
         public static ulong FileSize;
         public static string TableBinding = "TableBinding";
+        public static int CurrentID;
         static SkyDrive()
         {
             Office.Initialize = delegate(InitializationEnum initReason)
@@ -57,7 +58,8 @@ namespace SkyDriveScript
             Office.Select("bindings#" + TableBinding).GetDataAsync(gdo, delegate(ASyncResult result)
             {
                 int recordID = (int)result.MatrixValue[0][0];
-                FolderHelper.RefreshView(recordID, "filelist");
+                CurrentID = recordID;
+                FolderHelper.RefreshView();
             });
         }
         public static void NoOpHandler(ElementEvent evt)

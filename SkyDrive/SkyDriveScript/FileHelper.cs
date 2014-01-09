@@ -21,7 +21,6 @@ namespace SkyDriveScript
         public static ArrayList Files;
         public static File CurrentFile;
         public static FileReader Reader;
-        public static int RecordID =1;
         static FileHelper()
         {
             Files = new ArrayList();
@@ -45,9 +44,9 @@ namespace SkyDriveScript
             else
             {
                 //We are truly done at this point refresh the view
-                FolderHelper.RefreshView(RecordID, "filelist");
+                FolderHelper.RefreshView();
             }
-            
+
         }
 
         private static void OnFileLoad(FileProgressEvent arg)
@@ -61,27 +60,23 @@ namespace SkyDriveScript
             GetDataAsyncOptions gdo = new GetDataAsyncOptions();
             gdo.Rows = RowType.ThisRow;
             gdo.CoercionType = CoercionType.Matrix;
-            Office.Select("bindings#" + SkyDrive.TableBinding).GetDataAsync(gdo, delegate(ASyncResult result)
+            FolderHelper.GetRecordFolderID(delegate(string folderID)
             {
-                RecordID = (int)result.MatrixValue[0][0];
-                FolderHelper.GetRecordFolderID(RecordID, delegate(string folderID)
-                {
-                    request = new XmlHttpRequest();
-                    string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, CurrentFile.Name, CookieHelper.AccessToken);
-                    request.Open("PUT", URL, true);
-                    request.OnReadyStateChange = OnReadyChange;
-                    request.OnError = OnUploadError;
-                    request.OnLoad = OnLoad;
-                    request.ResponseType = XmlHttpRequestResponseType.Json;
-                    request.Upload.OnProgress = OnUploadProgress;
-                    request.Send(fileContents);
-                });
+                request = new XmlHttpRequest();
+                string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, CurrentFile.Name, CookieHelper.AccessToken);
+                request.Open("PUT", URL, true);
+                request.OnReadyStateChange = OnReadyChange;
+                request.OnError = OnUploadError;
+                request.OnLoad = OnLoad;
+                request.ResponseType = XmlHttpRequestResponseType.Json;
+                request.Upload.OnProgress = OnUploadProgress;
+                request.Send(fileContents);
             });
         }
 
         public static void OnLoad(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox("DONE "+CurrentFile.Name);
+            SkyDrive.SetTextBox("DONE " + CurrentFile.Name);
             Files.Remove(CurrentFile);
             CurrentFile = null;
             LoadNextFile();
@@ -94,14 +89,14 @@ namespace SkyDriveScript
 
         public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
         {
-            int progress = (int) (((ulong)arg.Loaded/CurrentFile.Size) * 100);
+            int progress = (int)(((ulong)arg.Loaded / CurrentFile.Size) * 100);
             SkyDrive.SetProgressTextBox(string.Format("{2} Loaded:{0}, Total:{1}, {3}%", arg.Loaded, CurrentFile.Size, (Counter++), progress));
         }
 
 
         public static void OnReadyChange()
         {
-            switch(request.ReadyState)
+            switch (request.ReadyState)
             {
                 case ReadyState.Open: SkyDrive.SetTextBox("Open" + (Counter++));
                     break;
@@ -115,7 +110,7 @@ namespace SkyDriveScript
                     break;
             }
         }
-        
+
 
     }
 }

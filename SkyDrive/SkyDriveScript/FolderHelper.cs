@@ -11,6 +11,7 @@ namespace SkyDriveScript
 
     public static class FolderHelper
     {
+        
         public static PromiseGeneric<Response> CreateFolder(string folderName, string description)
         {
             return LiveApi.Api(new ApiOptions("path", "/me/skydrive", "method", "post", "body", new CreateFolderOptions("name", folderName, "description", description)));
@@ -33,30 +34,30 @@ namespace SkyDriveScript
         {
             return LiveApi.FileListApi(new ApiOptions("path", folderID + "/files?download=true", "method", "get"));
         }
-        public static void RefreshView(int record, string divID)
+        public static void RefreshView()
         {
-            GetRecordFolderID(record, delegate(string folderID)
+            GetRecordFolderID(delegate(string folderID)
             {
-                jQuery.Select("#" + divID).Empty();
+                ViewManager.FileList.Empty();
                 GetFolderContents(folderID).Then(delegate(FileListResponse response)
                 {
                     for (int x = 0; x < response.Files.Length; x++)
                     {
                         string template = "<a href={0}>{1}</a><br/>";
                         string atag = string.Format(template, response.Files[x].Source, response.Files[x].Name);
-                        jQuery.Select("#" + divID).Append(atag);
+                        ViewManager.FileList.Append(atag);
                     }
                 }, SkyDrive.OnFailure);
             });
         }
-        public static void GetRecordFolderID(int recordID, Action<string> callback)
+        public static void GetRecordFolderID(Action<string> callback)
         {
             string folderID = null;
             RootFolderContents.Then(delegate(FileListResponse response)
             {
                 for (int x = 0; x < response.Files.Length; x++)
                 {
-                    if (response.Files[x].Name == recordID.ToString())
+                    if (response.Files[x].Name == SkyDrive.CurrentID.ToString())
                     {
                         folderID = response.Files[x].ID;
                         callback(folderID);
