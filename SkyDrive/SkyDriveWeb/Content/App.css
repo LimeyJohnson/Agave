@@ -2,6 +2,9 @@
     width:400px;
     height:400px;
 }
+#modal, #filelist, #signin{
+    display: none;
+}
 #modal {
     position: fixed;
     z-index: 1000;
@@ -9,5 +12,5 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background: rgba( 255, 255, 255, .8 ) url('../Content/FhHRx.gif') 50% 50% no-repeat;
+    background: rgba( 255, 255, 255, .8 ) url('../Images/FhHRx.gif') 50% 50% no-repeat;
 }

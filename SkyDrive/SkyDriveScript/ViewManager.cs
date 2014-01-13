@@ -36,7 +36,7 @@ namespace SkyDriveScript
                 }
                 else
                 {
-                    Hide(view);
+                    Hide(Views[x]);
                 }
             }
         }

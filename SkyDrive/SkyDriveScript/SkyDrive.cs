@@ -17,7 +17,7 @@ namespace SkyDriveScript
         public static string FileName;
         public static ulong FileSize;
         public static string TableBinding = "TableBinding";
-        public static int CurrentID;
+        public static int CurrentID = 0;
         static SkyDrive()
         {
             Office.Initialize = delegate(InitializationEnum initReason)
@@ -43,23 +43,34 @@ namespace SkyDriveScript
                 BindingOptions bo = new BindingOptions();
                 bo.ID = TableBinding;
                 bo.Columns = new string[]{"ID"};
-                Office.Context.Document.Bindings.AddFromNamedItemAsync("Candidates", BindingType.Table, bo, delegate(ASyncResult result)
+                Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult result)
                 {
                     Office.Select("bindings#"+TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, OnBindingSelectionChanged);
+                    OnBindingSelectionChanged(null);
                 });
                    
             };
         }
         public static void OnBindingSelectionChanged(BindingSelectionChangedEventArgs args)
         {
+            GetCurrentRecordID(delegate(int record) { FolderHelper.RefreshView(); });
+        }
+        public static void GetCurrentRecordID(Action<int> callback)
+        {
             GetDataAsyncOptions gdo = new GetDataAsyncOptions();
             gdo.Rows = RowType.ThisRow;
             gdo.CoercionType = CoercionType.Matrix;
             Office.Select("bindings#" + TableBinding).GetDataAsync(gdo, delegate(ASyncResult result)
             {
-                int recordID = (int)result.MatrixValue[0][0];
-                CurrentID = recordID;
-                FolderHelper.RefreshView();
+                if (result.Status == AsyncResultStatus.Succeeded && Script.Boolean(result.MatrixValue[0]) && Script.Boolean(result.MatrixValue[0][0]))
+                {
+                    int recordID = (int)result.MatrixValue[0][0];
+                    CurrentID = recordID;
+                    if (Script.Boolean(callback))
+                    {
+                        callback(recordID);
+                    }
+                }
             });
         }
         public static void NoOpHandler(ElementEvent evt)
@@ -101,7 +112,6 @@ namespace SkyDriveScript
             if (response.Status == "connected")
             {
                 jQuery.Select("#first_name").Value(response.Status);
-                jQuery.Select("#signin").Hide();
                 ViewManager.SwitchToView(ViewManager.FileList);
             }
         }
@@ -115,9 +125,8 @@ namespace SkyDriveScript
             uiOptions.Name = "signin";
             uiOptions.Element = "signin";
             uiOptions.brand = "skydrive";
+            uiOptions.onloggedin = OnLogon;
             LiveApi.Ui(uiOptions);
-            //jQuery.Select("#first_name").Value("OnInitSuccess");
-            //LiveApi.Ui(new UiOptions("name", "skydrivepicker", "mode", "open", "element", "picker", "onselected", new Action<LoginResponse>(OnPickerSuccess)));
         }
     }
 }
