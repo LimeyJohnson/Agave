@@ -10,6 +10,7 @@ using Live;
 using System.Html.Data.Files;
 using System.Collections;
 using AppForOffice;
+using jQueryApi.UI.Widgets;
 namespace SkyDriveScript
 {
 
@@ -21,9 +22,12 @@ namespace SkyDriveScript
         public static ArrayList Files;
         public static File CurrentFile;
         public static FileReader Reader;
+        public static ProgressBarObject PB;
         static FileHelper()
         {
             Files = new ArrayList();
+            PB = ((ProgressBarObject)jQuery.Select("#progressbar"));
+            PB.ProgressBar(new ProgressBarOptions("value", false));
         }
 
         public static void AddFileToUploadQueue(File newFiles)
@@ -37,6 +41,10 @@ namespace SkyDriveScript
             if (CurrentFile == null && Files.Count > 0)
             {
                 CurrentFile = (File)Files[0];
+
+                //setup the progress bar
+                PB.ProgressBar(new ProgressBarOptions("max", CurrentFile.Size));
+                ViewManager.Show(PB);
                 Reader = new FileReader();
                 Reader.OnLoad = new Action<FileProgressEvent>(OnFileLoad);
                 Reader.ReadAsArrayBuffer(CurrentFile);
@@ -89,8 +97,9 @@ namespace SkyDriveScript
 
         public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
         {
-            int progress = (int)(((ulong)arg.Loaded / CurrentFile.Size) * 100);
-            SkyDrive.SetProgressTextBox(string.Format("{2} Loaded:{0}, Total:{1}, {3}%", arg.Loaded, CurrentFile.Size, (Counter++), progress));
+            //int progress = (int)(((ulong)arg.Loaded / CurrentFile.Size) * 100);
+            PB.ProgressBar(new ProgressBarOptions("value", arg.Loaded));
+            //SkyDrive.SetProgressTextBox(string.Format("{2} Loaded:{0}, Total:{1}, {3}%", arg.Loaded, CurrentFile.Size, (Counter++), progress));
         }
 
 

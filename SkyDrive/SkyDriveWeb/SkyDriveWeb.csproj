@@ -40,6 +40,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Script.jQuery, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ScriptSharp.Lib.jQuery.0.8\lib\Script.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.jQuery.UI">
+      <HintPath>..\packages\ScriptSharp.Lib.jQuery.UI.0.8\lib\Script.jQuery.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.Web, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ScriptSharp.Lib.HTML.0.8\lib\Script.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -61,6 +72,7 @@
     <Content Include="App\callback.html" />
     <Content Include="App\Home\Home.html" />
     <Content Include="Content\App.css" />
+    <Content Include="Content\jquery-ui-1.10.3.custom.min.css" />
     <Content Include="Content\Office.css" />
     <Content Include="Images\Close.png" />
     <Content Include="Images\FhHRx.gif" />
@@ -69,8 +81,9 @@
     <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave.pubxml" />
-    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.custom.js" />
+    <Content Include="Scripts\jqueryUI.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\mscorlib.js" />
     <None Include="Scripts\Office\1.1\office.debug-vsdoc.js" />
@@ -143,9 +156,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -185,6 +195,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets" Condition="Exists('..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets')" />
+  <Import Project="..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets" Condition="Exists('..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
