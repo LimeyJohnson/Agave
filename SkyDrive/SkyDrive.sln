@@ -9,10 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDriveWeb", "SkyDriveWeb\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDriveScript", "SkyDriveScript\SkyDriveScript.csproj", "{209C3EFD-B172-44EC-92E3-DB22D38022F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppForOffice", "..\Imports\AppForOffice\AppForOffice.csproj", "{68227DE0-6DF6-4DBF-9953-29705DD171D1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveApi", "..\Imports\LiveApi\LiveApi.csproj", "{F90999CE-6694-4CF2-8742-2BABB9B74529}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,14 +29,6 @@ Global
 		{209C3EFD-B172-44EC-92E3-DB22D38022F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{209C3EFD-B172-44EC-92E3-DB22D38022F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{209C3EFD-B172-44EC-92E3-DB22D38022F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F90999CE-6694-4CF2-8742-2BABB9B74529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F90999CE-6694-4CF2-8742-2BABB9B74529}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F90999CE-6694-4CF2-8742-2BABB9B74529}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F90999CE-6694-4CF2-8742-2BABB9B74529}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

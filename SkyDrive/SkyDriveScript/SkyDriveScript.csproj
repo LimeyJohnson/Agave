@@ -43,26 +43,25 @@
     <Compile Include="SkyDrive.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Script.AppsForOffice">
+      <HintPath>..\packages\ScriptSharp.Lib.AppsForOffice.0.8\lib\Script.AppsForOffice.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.Facebook">
+      <HintPath>..\packages\ScriptSharp.Lib.Facebook.0.8\lib\Script.Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Script.jQuery">
       <HintPath>..\packages\ScriptSharp.Lib.jQuery.0.8\lib\Script.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="Script.jQuery.UI">
       <HintPath>..\packages\ScriptSharp.Lib.jQuery.UI.0.8\lib\Script.jQuery.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Script.LiveApi">
+      <HintPath>..\packages\ScriptSharp.Lib.LiveApi.0.8\lib\Script.LiveApi.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web, Version=0.9.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\scriptsharp\bin\Debug\Script.Web.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Imports\AppForOffice\AppForOffice.csproj">
-      <Project>{68227de0-6df6-4dbf-9953-29705dd171d1}</Project>
-      <Name>AppForOffice</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Imports\LiveApi\LiveApi.csproj">
-      <Project>{f90999ce-6694-4cf2-8742-2babb9b74529}</Project>
-      <Name>LiveApi</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets" Condition="Exists('..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets')" />
