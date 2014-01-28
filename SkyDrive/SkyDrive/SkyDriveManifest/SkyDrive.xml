@@ -11,7 +11,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://skydriveagave.azurewebsites.net/app/home/home.html" />
+    <SourceLocation DefaultValue="http://skydriveagave.azurewebsites.net/home.html" />
     <RequestedWidth>400</RequestedWidth>
     <RequestedHeight>400</RequestedHeight>
   </DefaultSettings>

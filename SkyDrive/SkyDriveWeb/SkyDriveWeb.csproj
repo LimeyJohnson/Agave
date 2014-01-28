@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\callback.html" />
-    <Content Include="App\Home\Home.html" />
+    <Content Include="Home.html" />
     <Content Include="Content\App.css" />
     <Content Include="Content\jquery-ui-1.10.3.custom.min.css" />
     <Content Include="Content\Office.css" />
@@ -81,6 +81,7 @@
     <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave.pubxml" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.custom.js" />
     <Content Include="Scripts\jqueryUI.js" />
