@@ -25,7 +25,7 @@ namespace SkyDriveScript
                 ViewManager.SwitchToView(ViewManager.SignIn);
                 InitOptions initOptions = new InitOptions();
                 initOptions.client_id = "000000004C100093";
-                initOptions.redirect_uri = "http://skydriveagave.azurewebsites.net/App/callback.html";
+                initOptions.redirect_uri = "https://friendsinoffice.com/skydrive/App/callback.html";
                 initOptions.Scope = new string[] { "wl.skydrive_update", "wl.signin" };
                 initOptions.response_type = "code";
                 initOptions.logging = true;

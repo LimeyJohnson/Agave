@@ -78,6 +78,7 @@
     <Content Include="Images\FhHRx.gif" />
     <Content Include="Images\Settings.png" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FriendsInOfficeSubDir.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave.pubxml" />

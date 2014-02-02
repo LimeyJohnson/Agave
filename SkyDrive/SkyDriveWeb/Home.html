@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <title></title>
-    <link href="../../Content/App.css" rel="stylesheet" />
-    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
-    <link href="../../Content/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="Content/App.css" rel="stylesheet" />
+    <link href="Content/Office.css" rel="stylesheet" type="text/css" />
+    <link href="Content/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
     <!--<script src="http://appsforoffice.microsoft.com/lib/1.0/hosted/office.js" type="text/javascript"></script>-->
     <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
     <!--    <script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>       -->
-    <script src="../../Scripts/require.js"></script>
+    <script src="Scripts/require.js"></script>
     <script type="text/javascript">
         require.config({
-            baseUrl: 'scripts',
+            baseUrl: '/skydrive/scripts',
             paths: {
                 // the left side is the module ID,
                 // the right side is the path to
@@ -24,12 +24,23 @@
                 // js/lib/jquery-1.9.0.js, relative to
                 // the HTML page.
                 jquery: 'jquery-1.9.1',
+                jqueryUI: 'jqueryUI',
                 Office: 'Office/1.1/office',
                 LiveApi: "//js.live.net/v5.0/wl.debug"
+            },
+            shim: {
+                jqueryUI: {
+                    exports: "$",
+                    deps: ["jquery"]
+                },
+                Office: {
+                    exports: "Office"
+                }
             }
+
         });
     </script>
-    <script src="../../Scripts/SkyDriveScript.js" data-main="scripts/SkyDriveScript"></script>
+    <script src="Scripts/SkyDriveScript.js" data-main="scripts/SkyDriveScript"></script>
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="-1">
 
