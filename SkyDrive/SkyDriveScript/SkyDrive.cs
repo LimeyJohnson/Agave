@@ -123,9 +123,17 @@ namespace SkyDriveScript
             UiOptions uiOptions = new UiOptions();
             uiOptions.Name = "signin";
             uiOptions.Element = "signin";
-            uiOptions.brand = "skydrive";
-            uiOptions.onloggedin = OnLogon;
+            uiOptions.Brand = "skydrive";
+            uiOptions.Onloggedin = OnLogon;
             LiveApi.Ui(uiOptions);
+
+            UiOptions pickerOptions = new UiOptions();
+            pickerOptions.Name = "skydrivepicker";
+            pickerOptions.Element = "dropzone";
+            pickerOptions.Mode = "open";
+            pickerOptions.Select = "single";
+            pickerOptions.Onselected = OnLogon;
+            LiveApi.Ui(pickerOptions);
         }
     }
 }
