@@ -11,7 +11,7 @@
     <Capability Name="Workbook" />
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://filesagave.azurewebsites.net/app/home.html" />
+    <SourceLocation DefaultValue="https://friendsinoffice.com/skydrive/home.html" />
     <RequestedWidth>400</RequestedWidth>
     <RequestedHeight>400</RequestedHeight>
   </DefaultSettings>

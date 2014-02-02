@@ -1,0 +1,81 @@
+[1mdiff --git a/SkyDrive/SkyDriveScript/FileHelper.cs b/SkyDrive/SkyDriveScript/FileHelper.cs[m
+[1mindex 33e5513..949675b 100644[m
+[1m--- a/SkyDrive/SkyDriveScript/FileHelper.cs[m
+[1m+++ b/SkyDrive/SkyDriveScript/FileHelper.cs[m
+[36m@@ -28,35 +28,23 @@[m [mpublic static void SaveFileNoApi(string folderID, string fileName, string fileCo[m
+             string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, fileName, CookieHelper.AccessToken);[m
+             request.Open("PUT", URL, true);[m
+             request.OnReadyStateChange = OnReadyChange;[m
+[32m+[m[32m            request.OnProgress = OnUploadProgress;[m
+[32m+[m[32m            request.OnError = OnUploadError;[m
+             request.Send(fileContents);[m
+[31m-[m
+[31m-        }[m
+[31m-        public static void SaveFileJquery(string folderID, string fileName, string fileContents)[m
+[31m-        {[m
+[31m-            jQueryAjaxOptions options = new jQueryAjaxOptions();[m
+[31m-            string URL = string.Format("{0}/{1}/files/{2}?access_token={3}", APIBaseUrl, folderID, fileName, CookieHelper.AccessToken);[m
+[31m-            options.Url = URL;[m
+[31m-            options.Type = "PUT";[m
+[31m-            options.Success = new AjaxRequestCallback(jQuerySuccess);[m
+[31m-            options.Error = jQueryError;[m
+[31m-            options.Data = fileContents;[m
+[31m-            jQuery.Ajax(options);[m
+[31m-[m
+         }[m
+ [m
+[31m-        private static void jQuerySuccess(object data, string textStatus, jQueryXmlHttpRequest request)[m
+[32m+[m[32m        public static void OnUploadError(XmlHttpRequestProgressEvent arg)[m
+         {[m
+[31m-            SkyDrive.SetTextBox("Pass");[m
+[32m+[m[32m            SkyDrive.SetTextBox("Error During Upload");[m
+         }[m
+ [m
+[31m-        private static void jQueryError(jQueryXmlHttpRequest request, string textStatus, Exception error)[m
+[32m+[m[32m        public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)[m
+         {[m
+[31m-            SkyDrive.SetTextBox("Error:" + textStatus);[m
+[32m+[m[32m            SkyDrive.SetTextBox(string.Format("Computed: {0}, Loaded:{1}, Total:{2}", arg.LengthComputable, arg.Loaded, arg.Total));[m
+         }[m
+ [m
+ [m
+[31m-[m
+[31m-        private static void OnReadyChange()[m
+[32m+[m[32m        public static void OnReadyChange()[m
+         {[m
+             if (request.ReadyState == ReadyState.Sent)[m
+             {[m
+[1mdiff --git a/SkyDrive/SkyDriveScript/SkyDrive.cs b/SkyDrive/SkyDriveScript/SkyDrive.cs[m
+[1mindex a174768..f184a46 100644[m
+[1m--- a/SkyDrive/SkyDriveScript/SkyDrive.cs[m
+[1m+++ b/SkyDrive/SkyDriveScript/SkyDrive.cs[m
+[36m@@ -74,7 +74,7 @@[m [mpublic static void OnFileLoad(FileProgressEvent evt)[m
+         {[m
+             SetTextBox("File Loaded");[m
+             string result = (string) Script.Literal("{0}.result", evt.Target);[m
+[31m-            FileHelper.SaveFileJquery(FolderID, FileName, result);[m
+[32m+[m[32m            FileHelper.SaveFileNoApi(FolderID, FileName, result);[m
+         }[m
+         private static void CreateFolder(jQueryEvent e)[m
+         {[m
+[1mdiff --git a/SkyDrive/SkyDriveWeb/SkyDriveWeb.csproj.user b/SkyDrive/SkyDriveWeb/SkyDriveWeb.csproj.user[m
+[1mindex f437a4e..2c6fd13 100644[m
+[1m--- a/SkyDrive/SkyDriveWeb/SkyDriveWeb.csproj.user[m
+[1m+++ b/SkyDrive/SkyDriveWeb/SkyDriveWeb.csproj.user[m
+[36m@@ -1,7 +1,7 @@[m
+ ﻿<?xml version="1.0" encoding="utf-8"?>[m
+ <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">[m
+   <PropertyGroup>[m
+[31m-    <NameOfLastUsedPublishProfile>skydriveagave - Web Deploy</NameOfLastUsedPublishProfile>[m
+[32m+[m[32m    <NameOfLastUsedPublishProfile>skydriveagave</NameOfLastUsedPublishProfile>[m[41m[m
+   </PropertyGroup>[m
+   <ProjectExtensions>[m
+     <VisualStudio>[m
+warning: LF will be replaced by CRLF in SkyDrive/packages/ScriptSharp.0.8/tools/ss.min.js.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in SkyDrive/packages/ScriptSharp.Runtime.0.8/content/Scripts/ss.min.js.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in SkyDrive/packages/ScriptSharp.Runtime.0.8/content/Scripts/ssloader.min.js.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in SkyDrive/packages/jQuery.1.8.2/Content/Scripts/jquery-1.8.2.js.
+The file will have its original line endings in your working directory.
