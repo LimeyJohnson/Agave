@@ -122,7 +122,7 @@ namespace SkyDriveScript
                 }
                 else
                 {
-                    ViewManager.SwitchToView(ViewManager.FileList);
+                    ViewManager.SwitchToView(ViewManager.FileListDiv);
                 }
             }
             else

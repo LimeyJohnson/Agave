@@ -5,22 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Html;
 using jQueryApi;
-using Live;
 namespace SkyDriveScript
 {
 
     public static class ViewManager
     {
         static List<jQueryObject> Views = new List<jQueryObject>();
-        public static jQueryObject FileList;
+        public static jQueryObject FileListDiv;
         public static jQueryObject SignIn;
         public static jQueryObject Settings;
         public static jQueryObject Modal;
         public static jQueryObject FolderPicker;
         static ViewManager()
         {
-            FileList = jQuery.Select("#filelist");
-            Views.Add(FileList);
+            FileListDiv = jQuery.Select("#filelistdiv");
+            Views.Add(FileListDiv);
             SignIn = jQuery.Select("#signin");
             Views.Add(SignIn);
             Modal = jQuery.Select("#modal");

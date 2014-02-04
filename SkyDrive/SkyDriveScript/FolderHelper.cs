@@ -38,14 +38,14 @@ namespace SkyDriveScript
         {
             GetRecordFolderID(delegate(string folderID)
             {
-                ViewManager.FileList.Empty();
+                ViewManager.FileListDiv.Empty();
                 GetFolderContents(folderID).Then(delegate(FileListResponse response)
                 {
                     for (int x = 0; x < response.Files.Length; x++)
                     {
                         string template = "<a href={0}>{1}</a><br/>";
                         string atag = string.Format(template, response.Files[x].Source, response.Files[x].Name);
-                        ViewManager.FileList.Append(atag);
+                        ViewManager.FileListDiv.Append(atag);
                     }
                 }, SkyDrive.OnFailure);
             });
