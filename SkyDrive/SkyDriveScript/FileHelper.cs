@@ -59,7 +59,6 @@ namespace SkyDriveScript
 
         private static void OnFileLoad(FileProgressEvent arg)
         {
-            SkyDrive.SetTextBox("File Loaded" + CurrentFile.Name);
             SaveFileNoApi(Reader.Result);
         }
 
@@ -84,7 +83,6 @@ namespace SkyDriveScript
 
         public static void OnLoad(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox("DONE " + CurrentFile.Name);
             Files.Remove(CurrentFile);
             CurrentFile = null;
             LoadNextFile();
@@ -92,7 +90,7 @@ namespace SkyDriveScript
 
         public static void OnUploadError(XmlHttpRequestProgressEvent arg)
         {
-            SkyDrive.SetTextBox("Error During Upload");
+            
         }
 
         public static void OnUploadProgress(XmlHttpRequestProgressEvent arg)
@@ -105,19 +103,6 @@ namespace SkyDriveScript
 
         public static void OnReadyChange()
         {
-            switch (request.ReadyState)
-            {
-                case ReadyState.Open: SkyDrive.SetTextBox("Open" + (Counter++));
-                    break;
-                case ReadyState.Uninitialized: SkyDrive.SetTextBox("Uninitialized" + (Counter++));
-                    break;
-                case ReadyState.HeadersReceived: SkyDrive.SetTextBox("HeadersReceived" + (Counter++));
-                    break;
-                case ReadyState.Receiving: SkyDrive.SetTextBox("Receiving" + (Counter++));
-                    break;
-                case ReadyState.Done: SkyDrive.SetTextBox("Done" + (Counter++));
-                    break;
-            }
         }
 
 

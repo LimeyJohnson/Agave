@@ -12,7 +12,7 @@ namespace SkyDriveScript
 {
     public static class SkyDrive
     {
-        public static string FolderID = "folder.a729d230873cf73c.A729D230873CF73C!84491";
+        public static string FolderID;// = "folder.a729d230873cf73c.A729D230873CF73C!84491";
         public static string FileName;
         public static ulong FileSize;
         public static string TableBinding = "TableBinding";
@@ -24,14 +24,12 @@ namespace SkyDriveScript
                 ViewManager.SwitchToView(ViewManager.SignIn);
                 InitOptions initOptions = new InitOptions();
                 initOptions.client_id = "000000004C100093";
-                initOptions.redirect_uri = "https://friendsinoffice.com/skydrive/App/callback.html";
+                initOptions.redirect_uri = "https://friendsinoffice.com/skydrive/App/callback.aspx";
                 initOptions.Scope = new string[] { "wl.skydrive_update", "wl.signin" };
                 initOptions.response_type = "code";
                 initOptions.logging = true;
                 LiveApi.Init(initOptions).Then(OnInitSuccess, OnFailure);
-                LiveApi.Event.subscribe("auth.login", OnLogon);
-                LiveApi.Event.subscribe("wl.log", OnLog);
-                LiveApi.GetLoginStatus().Then(OnLogon, OnFailure);
+                
                     
                 Element dropzone = Document.GetElementById("dropzone");
                 dropzone.AddEventListener("dragenter", NoOpHandler, false);
@@ -45,7 +43,7 @@ namespace SkyDriveScript
                 Office.Context.Document.Bindings.AddFromSelectionAsync(BindingType.Table, bo, delegate(ASyncResult result)
                 {
                     Office.Select("bindings#"+TableBinding).AddHandlerAsync(EventType.BindingSelectionChanged, OnBindingSelectionChanged);
-                    OnBindingSelectionChanged(null);
+                    //OnBindingSelectionChanged(null);
                 });
                    
             };
@@ -107,11 +105,35 @@ namespace SkyDriveScript
         }
         public static void OnLogon(Response response)
         {
-            jQuery.Select("#content-main").Hide();
             if (response.Status == "connected")
             {
-                jQuery.Select("#first_name").Value(response.Status);
-                ViewManager.SwitchToView(ViewManager.FileList);
+
+                //Check if we know where to put the files. If so show the file list, if not show the file picker
+                if (string.IsNullOrEmpty(FolderID))
+                {
+                    UiOptions pickerOptions = new UiOptions();
+                    pickerOptions.Name = "skydrivepicker";
+                    pickerOptions.Element = "folderpicker";
+                    pickerOptions.Mode = "open";
+                    pickerOptions.Select = "single";
+                    pickerOptions.Onselected = OnLogon;
+                    LiveApi.Ui(pickerOptions);
+                    ViewManager.SwitchToView(ViewManager.FolderPicker);
+                }
+                else
+                {
+                    ViewManager.SwitchToView(ViewManager.FileList);
+                }
+            }
+            else
+            {
+                UiOptions uiOptions = new UiOptions();
+                uiOptions.Name = "signin";
+                uiOptions.Element = "signin";
+                uiOptions.Brand = "skydrive";
+                uiOptions.Onloggedin = OnLogon;
+                LiveApi.Ui(uiOptions);
+                ViewManager.SwitchToView(ViewManager.SignIn);
             }
         }
         public static void OnFailure(Response failResponse)
@@ -120,20 +142,9 @@ namespace SkyDriveScript
         }
         public static void OnInitSuccess(Response successResponse)
         {
-            UiOptions uiOptions = new UiOptions();
-            uiOptions.Name = "signin";
-            uiOptions.Element = "signin";
-            uiOptions.Brand = "skydrive";
-            uiOptions.Onloggedin = OnLogon;
-            LiveApi.Ui(uiOptions);
-
-            UiOptions pickerOptions = new UiOptions();
-            pickerOptions.Name = "skydrivepicker";
-            pickerOptions.Element = "dropzone";
-            pickerOptions.Mode = "open";
-            pickerOptions.Select = "single";
-            pickerOptions.Onselected = OnLogon;
-            LiveApi.Ui(pickerOptions);
+            LiveApi.Event.subscribe("auth.login", OnLogon);
+            LiveApi.Event.subscribe("wl.log", OnLog);
+            LiveApi.GetLoginStatus().Then(OnLogon, OnFailure);
         }
     }
 }

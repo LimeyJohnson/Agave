@@ -2,7 +2,7 @@
     width:400px;
     height:400px;
 }
-#modal, #filelist, #signin, #progressbar{
+#modal, #filelist, #signin, #progressbar, #folderpicker{
     display: none;
 }
 #modal {

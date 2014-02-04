@@ -29,6 +29,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,20 +39,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Script.jQuery, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ScriptSharp.Lib.jQuery.0.8\lib\Script.jQuery.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.jQuery.UI">
-      <HintPath>..\packages\ScriptSharp.Lib.jQuery.UI.0.8\lib\Script.jQuery.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.Web, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ScriptSharp.Lib.HTML.0.8\lib\Script.Web.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Json" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -69,6 +64,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\callback.aspx" />
     <Content Include="App\callback.html" />
     <Content Include="Home.html" />
     <Content Include="Content\App.css" />
@@ -78,9 +74,8 @@
     <Content Include="Images\FhHRx.gif" />
     <Content Include="Images\Settings.png" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FacebookAgave.pubxml" />
     <None Include="Properties\PublishProfiles\FriendsInOfficeSubDir.pubxml" />
-    <None Include="Properties\PublishProfiles\skydriveagave - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\skydriveagave - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\skydriveagave.pubxml" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -171,6 +166,16 @@
       <Name>SkyDriveScript</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App\callback.aspx.cs">
+      <DependentUpon>callback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App\JsonWebToken.cs" />
+    <Compile Include="App\OAuthToken.cs" />
+    <Compile Include="App\OAuthError.cs" />
+    <Compile Include="App\OAuthConstants.cs" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -197,7 +202,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets" Condition="Exists('..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets')" />
-  <Import Project="..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets" Condition="Exists('..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets')" />
+  <!-- <Import Project="..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets" Condition="Exists('..\packages\ScriptSharp.0.8\tools\ScriptSharp.targets')" /> -->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
