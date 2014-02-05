@@ -5,8 +5,8 @@
   <Version>1.0.0.0</Version>
   <ProviderName>andrewjo</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="SkyDrive" />
-  <Description DefaultValue="SkyDrive Description"/>
+  <DisplayName DefaultValue="Files" />
+  <Description DefaultValue="Files Description"/>
   <Capabilities>
     <Capability Name="Workbook" />
   </Capabilities>

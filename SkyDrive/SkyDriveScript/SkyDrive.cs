@@ -12,7 +12,7 @@ namespace SkyDriveScript
 {
     public static class SkyDrive
     {
-        public static string FolderID;// = "folder.a729d230873cf73c.A729D230873CF73C!84491";
+        public static string FolderID = "folder.a729d230873cf73c.A729D230873CF73C!84491";
         public static string FileName;
         public static ulong FileSize;
         public static string TableBinding = "TableBinding";
@@ -50,7 +50,10 @@ namespace SkyDriveScript
         }
         public static void OnBindingSelectionChanged(BindingSelectionChangedEventArgs args)
         {
-            GetCurrentRecordID(delegate(int record) { FolderHelper.RefreshView(); });
+            GetCurrentRecordID(delegate(int record) {
+                ViewManager.FileList.Empty();
+                FolderHelper.RefreshView(); 
+            });
         }
         public static void GetCurrentRecordID(Action<int> callback)
         {
@@ -83,7 +86,6 @@ namespace SkyDriveScript
             FileList fl = (FileList)Script.Literal("{0}.dataTransfer.files", evt);
             if (fl.Length > 0)
             {
-                SetTextBox(fl[0].Name);
                 for(int x = 0; x<fl.Length; x++)
                 {
                     FileHelper.AddFileToUploadQueue(fl[x]);
@@ -91,18 +93,6 @@ namespace SkyDriveScript
             }
         }
 
-        public static void SetTextBox(string p)
-        {
-            jQuery.Select("#first_name").Value(p);
-        }
-        public static void SetProgressTextBox(string p)
-        {
-            jQuery.Select("#progress").Value(p);
-        }
-        public static void OnLog(Response response)
-        {
-            jQuery.Select("#first_name").Value("Log");
-        }
         public static void OnLogon(Response response)
         {
             if (response.Status == "connected")
@@ -143,8 +133,7 @@ namespace SkyDriveScript
         public static void OnInitSuccess(Response successResponse)
         {
             LiveApi.Event.subscribe("auth.login", OnLogon);
-            LiveApi.Event.subscribe("wl.log", OnLog);
-            LiveApi.GetLoginStatus().Then(OnLogon, OnFailure);
+            LiveApi.GetLoginStatus(true /*Force*/).Then(OnLogon, OnFailure);
         }
     }
 }

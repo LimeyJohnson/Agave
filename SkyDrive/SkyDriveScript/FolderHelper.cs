@@ -12,9 +12,9 @@ namespace SkyDriveScript
     public static class FolderHelper
     {
         
-        public static PromiseGeneric<Response> CreateFolder(string folderName, string description)
+        public static PromiseGeneric<Response> CreateFolder(string baseFolder, string folderName, string description)
         {
-            return LiveApi.Api(new ApiOptions("path", "/me/skydrive", "method", "post", "body", new CreateFolderOptions("name", folderName, "description", description)));
+            return LiveApi.Api(new ApiOptions("path", baseFolder, "method", "post", "body", new CreateFolderOptions("name", folderName, "description", description)));
         }
         public static PromiseGeneric<Response> GetRootFolder
         {
@@ -36,16 +36,19 @@ namespace SkyDriveScript
         }
         public static void RefreshView()
         {
+            //Clear out any files that in the list
+            
             GetRecordFolderID(delegate(string folderID)
             {
-                ViewManager.FileListDiv.Empty();
                 GetFolderContents(folderID).Then(delegate(FileListResponse response)
                 {
+                    ViewManager.FileList.Empty();
+                    ViewManager.Hide(FileHelper.PB);
                     for (int x = 0; x < response.Files.Length; x++)
                     {
-                        string template = "<a href={0}>{1}</a><br/>";
-                        string atag = string.Format(template, response.Files[x].Source, response.Files[x].Name);
-                        ViewManager.FileListDiv.Append(atag);
+                        string template = "<li class='ui-widget-content'><a href={0}>{1}</a></li>";
+                        string listtag = string.Format(template, response.Files[x].Source, response.Files[x].Name);
+                        ViewManager.FileList.Append(listtag);
                     }
                 }, SkyDrive.OnFailure);
             });
@@ -63,7 +66,16 @@ namespace SkyDriveScript
                         callback(folderID);
                         return;
                     }
+                    
+                    
                 }
+                //If we reach here we need to create the folder
+                CreateFolder(SkyDrive.FolderID, SkyDrive.CurrentID.ToString(), "Access Agave Record Folder for Record " + SkyDrive.CurrentID.ToString()).Then(delegate(Response r)
+                {
+                    Folder f = (Folder)r;
+                    callback(f.ID);
+                    return;
+                });
             }, SkyDrive.OnFailure);
 
         }

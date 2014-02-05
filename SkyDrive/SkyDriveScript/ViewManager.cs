@@ -16,6 +16,7 @@ namespace SkyDriveScript
         public static jQueryObject Settings;
         public static jQueryObject Modal;
         public static jQueryObject FolderPicker;
+        public static jQueryObject FileList;
         static ViewManager()
         {
             FileListDiv = jQuery.Select("#filelistdiv");
@@ -26,6 +27,7 @@ namespace SkyDriveScript
             Views.Add(Modal);
             FolderPicker = jQuery.Select("#folderpicker");
             Views.Add(FolderPicker);
+            FileList = jQuery.Select("#filelist");
         }
 
         public static void SwitchToView(jQueryObject view)
