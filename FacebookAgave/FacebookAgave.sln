@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookAgave", "FacebookAg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookAgaveWeb", "FacebookAgaveWeb\FacebookAgaveWeb.csproj", "{47809B78-96DA-45F5-AC9E-385B4F4CE9FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceBook", "..\Imports\Facebook\FaceBook.csproj", "{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppForOffice", "..\Imports\AppForOffice\AppForOffice.csproj", "{68227DE0-6DF6-4DBF-9953-29705DD171D1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookScript", "FacebookScript\FacebookScript.csproj", "{3A8B2A87-0D97-40F8-B74C-4EF1C07857A4}"
 EndProject
 Global
@@ -29,14 +25,6 @@ Global
 		{47809B78-96DA-45F5-AC9E-385B4F4CE9FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47809B78-96DA-45F5-AC9E-385B4F4CE9FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47809B78-96DA-45F5-AC9E-385B4F4CE9FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05FE6E88-C2C5-4E1D-897F-2D3097E770B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68227DE0-6DF6-4DBF-9953-29705DD171D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3A8B2A87-0D97-40F8-B74C-4EF1C07857A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A8B2A87-0D97-40F8-B74C-4EF1C07857A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A8B2A87-0D97-40F8-B74C-4EF1C07857A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
