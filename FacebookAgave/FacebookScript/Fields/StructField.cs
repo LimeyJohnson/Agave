@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Html;
 using jQueryApi;
 using FreindsLibrary;
-using AgaveApi;
+using AppForOffice;
 using System.Collections;
 using System.Runtime.CompilerServices;
 
@@ -15,7 +15,6 @@ namespace FacebookScript
         string DictField;
         string SubDictField;
         int? ArrayIndex;
-        [AlternateSignature]
         public extern StructField(string fieldName, string displayName, string dictField, string subDictField, string containerName, string permission, string sample);
         public StructField(string fieldName, string displayName, string dictField, string subDictField, string containerName, string permission, string sample, int? arrayIndex)
             : base(fieldName, displayName, containerName, permission, sample)

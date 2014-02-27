@@ -10,7 +10,7 @@
 <IconUrl DefaultValue="https://friendsinoffice.com/content/ffosmall.png" />
   <SupportUrl DefaultValue="https://friendsinoffice.com/pages/friendshelp.html"></SupportUrl>
   <Capabilities>
-    <Capability Name="Database" />
+    <Capability Name="Workbook"></Capability>
   </Capabilities>
   <DefaultSettings>
     <SourceLocation DefaultValue="https://friendsinoffice.com/AccessFacebook/pages/Facebookagave.html" />

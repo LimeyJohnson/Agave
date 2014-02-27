@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Html;
 using jQueryApi;
 using FreindsLibrary;
-using AgaveApi;
+using AppForOffice;
 using System.Collections;
 using System.Runtime.CompilerServices;
 
@@ -20,7 +20,6 @@ namespace FacebookScript
         public static string checkBoxPrefix = "fieldscb";
         protected const string nullToken = "Unknown";
 
-        [AlternateSignature]
         public extern Field(string fieldName, string displayName, string containerName, string permission, string sample);
         public Field(string fieldName, string displayName, string containerName, string permission, string sample, bool? defaultChecked)
         {

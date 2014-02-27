@@ -116,7 +116,7 @@ namespace FacebookScript
             {
                 if (Script.Boolean(getResultCallback.Value))
                 {
-                    ((BindingObject)getResultCallback.Value).AddHandlerAsync(EventType.BindingSelectionChanged, new BindingSelectionChanged(HandleTableSelection));
+                    ((BindingObject)getResultCallback.Value).AddHandlerAsync(EventType.BindingSelectionChanged, HandleTableSelection);
                 }
             });
         }
@@ -334,11 +334,11 @@ namespace FacebookScript
                         {
                             if (Script.Boolean(response.error))
                             {
-                                Requests.LogAction("GetDataFromFacebook", UserID, response.error, "Could not get data from facebook");
+                                Requests.LogAction("GetDataFromFacebook", UserID, response.error.Message, "Could not get data from facebook");
                             }
                             else
                             {
-                                InsertFreindsIntoExcel(response.data, td, dict);
+                                InsertFreindsIntoExcel(response.dataDict, td, dict);
                             }
                         });
                     }
@@ -439,9 +439,9 @@ namespace FacebookScript
                 string graphCall = UserID + @"/mutualfriends/" + friendID;
                 Facebook.api(graphCall, delegate(ApiResponse response)
                 {
-                    for (int i = 0; i < response.data.Length; i++)
+                    for (int i = 0; i < response.dataDict.Length; i++)
                     {
-                        friendsNames[friendsNames.Length] = response.data[i]["name"];
+                        friendsNames[friendsNames.Length] = response.dataDict[i]["name"];
                     }
                     friendsNames.Sort();
                     jQuery.Select("#friendlist").Html(friendsNames.Join("<br/>"));
