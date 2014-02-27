@@ -8,5 +8,13 @@ FacebookScript.debug.js
 FacebookScript.js
 AgaveScript.js
 AgaveScript.debug.js
+SkyDriveScript.js
+SkyDriveScript.debug.js
+ss.min.js
+ssloader.min.js
+skydrivescript.min.js
+FacebookScript.min.js
 # mstest test results
 TestResults
+# PublishProfiles
+PublishProfiles/

@@ -14,13 +14,13 @@
     <RootNamespace>FacebookAgaveWeb</RootNamespace>
     <AssemblyName>FacebookAgaveWeb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <TargetOfficeVersion>15.0</TargetOfficeVersion>
-    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -85,10 +85,9 @@
     <Content Include="Pages\FacebookAgave.html" />
     <Content Include="Pages\FriendsHelp.html" />
     <Content Include="Pages\privacy.aspx" />
-    <Content Include="Scripts\FacebookScript.debug.js" />
     <Content Include="Scripts\FacebookScript.js" />
-    <Content Include="Scripts\JavaScript1.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\Office\1.0\outlook-15.debug-vsdoc.js" />
     <None Include="Scripts\Office\1.0\office-vsdoc.js" />
@@ -278,6 +277,10 @@
     <Content Include="Scripts\Office\1.0\zh-tw\office_strings.js" />
     <Content Include="Scripts\Office\1.0\zh-tw\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1.0\zh-tw\outlook_strings.js" />
+    <Content Include="Scripts\ss.js" />
+    <Content Include="Scripts\ss.min.js" />
+    <Content Include="Scripts\ssloader.js" />
+    <Content Include="Scripts\ssloader.min.js" />
     <Content Include="Scripts\_officeintellisense.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -309,6 +312,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FacebookScript\FacebookScript.csproj">
+      <Project>{3a8b2a87-0d97-40f8-b74c-4ef1c07857a4}</Project>
+      <Name>FacebookScript</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -320,7 +329,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>62587</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
@@ -334,6 +343,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets" Condition="Exists('..\packages\ScriptSharp.Runtime.0.8\tools\ScriptSharpWeb.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

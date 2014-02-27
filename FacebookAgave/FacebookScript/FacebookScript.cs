@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Html;
 using jQueryApi;
 using FreindsLibrary;
-using AgaveApi;
+using AppForOffice;
 using System.Collections;
+using jQueryApi.UI;
+using jQueryApi.UI.Widgets;
 namespace FacebookScript
 {
+    [assembly:ScriptReference("jquerywidgets")]
     public static class FacebookScript
     {
         public static string UserID;
