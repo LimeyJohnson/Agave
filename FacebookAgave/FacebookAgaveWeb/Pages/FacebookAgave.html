@@ -8,14 +8,16 @@
     <link rel="stylesheet" type="text/css" href="../Content/Office.css" />
     <link rel="stylesheet" type="text/css" href="../Content/App.css" />
     <link href="../Content/jquery-ui-smoothness.css" rel="stylesheet" />
+    <script data-main="../Scripts/FacebookScript.js" type="text/javascript" src="../Scripts/require.js"></script>
     
-    <script type="text/javascript">
+<script type="text/javascript">
         require.config({
             baseUrl: '/accessfacebook/scripts',
             paths: {
                 jquery: 'jquery-1.7.1',
                 jqueryUI: 'jqueryUI',
-                Office: 'https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js',
+                Office: 'https://appsforoffice.microsoft.com/lib/1.1/hosted/office',
+                FB:'//connect.facebook.net/en_US/all'
             },
             shim: {
                 jqueryUI: {
@@ -24,11 +26,15 @@
                 },
                 Office: {
                     exports: "Office"
+                },
+                FB: {
+                    exports: "FB"
                 }
+
             }
         });
     </script>
-
+    
 </head>
 <body>
     <div id="fb-root"></div>

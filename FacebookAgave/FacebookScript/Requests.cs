@@ -9,13 +9,9 @@ namespace FacebookScript
 {
     public static class Requests
     {
-#if DEBUG
-        public static string Environment = "Test";
-        public static string URL = "http://localhost:62587/";
-#else
+
         public static string Environment = "Production";
         public static string URL = "https://friendsinoffice.com/";
-#endif
         public static void LogAction(string Action, string UserID, string ErrorText, string Message)
         {
             LogEntry actionLog = new LogEntry();

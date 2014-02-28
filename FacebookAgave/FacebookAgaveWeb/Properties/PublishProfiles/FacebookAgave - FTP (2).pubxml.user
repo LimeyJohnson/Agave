@@ -6,6 +6,129 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAKorO+KDgOki3bD8Blrtr5wAAAAACAAAAAAADZgAAwAAAABAAAADUav9hof1i45FYpEmkpo//AAAAAASAAACgAAAAEAAAACE5KnJPs5wH/WB7YHIVoAqAAAAAZOunzMNtCFaAfI4A72fJk8nEPn9ha+QcaPFsTXA4vsawOk5HSMjiUeMpmxJeOMSCwspkQY2FCuAXkiv/1Atk1RdNODwrF4SXu+Swc/liGfaenhC3wn2A2VP2UXYldCOl2HdTjm0ADaxdvQtO0rIyJMBIEWqgNkNFpFLi1gPIFlcUAAAA344eX/SlnfA5I0bwOI2TP/KYr+A=</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAxSIG1segL0yXIVUQOAF36AAAAAACAAAAAAAQZgAAAAEAACAAAAAa9akzXGH20311JMEwTGf/3SSr//uvry3iA0jRrdhagQAAAAAOgAAAAAIAACAAAADDjPaWtixMY8D2gvUr5XLuej4vjuA/BmPIteWMceS2DiAAAABQsvqol1vT+zXgZgtnbW1Vyp6fwVsqgZfXYV3g4tGTT0AAAABN4UeQTqr8rEMX3yVH9qghbKSd0ypRwZZ5Xf6af+3IYIB3w4qpIgH6AQd70FxHSCm/6NzWYG71qUUOpSyCEWnd</EncryptedPassword>
+    <_PublishTargetUrl>ftp://waws-prod-bay-001.ftp.azurewebsites.windows.net/site/wwwroot/AccessFacebook</_PublishTargetUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/FacebookAgaveWeb.dll">
+      <publishTime>02/27/2014 14:56:45</publishTime>
+    </File>
+    <File Include="bin/FacebookScript.dll">
+      <publishTime>02/27/2014 14:56:45</publishTime>
+    </File>
+    <File Include="bin/Script.AppsForOffice.dll">
+      <publishTime>02/27/2014 14:17:47</publishTime>
+    </File>
+    <File Include="bin/Script.Facebook.dll">
+      <publishTime>02/27/2014 14:32:15</publishTime>
+    </File>
+    <File Include="bin/Script.jQuery.dll">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="bin/Script.Web.dll">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Content/App.css">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/back.png">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/FBLogo.png">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/ffosmall.png">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/FhHRx.gif">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/friends-for-office.png">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/jquery-ui-smoothness.css">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Content/Office.css">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Friends.svc">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Images/ffosmall.png">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Images/friends-for-office.png">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Pages/channel.ashx">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Pages/FacebookAgave.html">
+      <publishTime>02/27/2014 14:35:29</publishTime>
+    </File>
+    <File Include="Pages/FriendsHelp.html">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Pages/privacy.aspx">
+      <publishTime>12/29/2013 20:24:03</publishTime>
+    </File>
+    <File Include="Scripts/FacebookScript.js">
+      <publishTime>02/27/2014 14:56:39</publishTime>
+    </File>
+    <File Include="Scripts/FacebookScript.min.js">
+      <publishTime>02/27/2014 14:56:39</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.min.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Scripts/jquery.js">
+      <publishTime>02/27/2014 14:13:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery.ui.accordion.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Scripts/jquery.ui.widget.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Scripts/jqueryui.js">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Scripts/mscorlib.debug.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Scripts/mscorlib.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Scripts/require.js">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Scripts/ss.js">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Scripts/ss.min.js">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Scripts/ssloader.js">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Scripts/ssloader.min.js">
+      <publishTime>02/27/2014 14:13:18</publishTime>
+    </File>
+    <File Include="Scripts/_officeintellisense.js">
+      <publishTime>02/27/2014 14:13:17</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>12/29/2013 20:24:04</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>02/27/2014 14:18:14</publishTime>
+    </File>
+  </ItemGroup>
 </Project>

@@ -35,14 +35,9 @@ namespace FacebookScript
             FacebookWindow.AsyncInit = delegate()
             {
                 InitOptions options = new InitOptions();
-#if DEBUG
-                options.appId = "143445839182832";
-                //options.channelUrl = "http://localhost:62587/pages/channel.ashx";
-#else
 
                 options.channelUrl = "https://friendsinoffice.com/pages/channel.ashx";
                 options.appId = "263395420459543";
-#endif
                 options.status = true;
                 options.cookie = false;
                 Facebook.init(options);
@@ -86,16 +81,6 @@ namespace FacebookScript
                 {
                     if (!FacebookInited) Script.Literal("window.fbAsyncInit()");
                 }, 2000);
-                Element reference = Document.GetElementsByTagName("script")[0];
-                string JSID = "facebook-jssdk";
-                if (reference.ID != JSID)
-                {
-                    ScriptElement js = (ScriptElement)Document.CreateElement("script");
-                    js.ID = JSID;
-                    js.SetAttribute("async", true);
-                    js.Src = "//connect.facebook.net/en_US/all.js";
-                    reference.ParentNode.InsertBefore(js, reference);
-                }
 
                 SetHandler();
                 
@@ -167,7 +152,7 @@ namespace FacebookScript
         public static void LogonToFacebook(string scope, Action<LoginResponse> callback)
         {
             LoginOptions LoginOptions = new LoginOptions();
-            LoginOptions.scope = scope;
+            LoginOptions.scope = "email,friends_birthday,friends_likes";
             Facebook.login(callback, LoginOptions);
         }
         public static void InitFields()
@@ -326,10 +311,10 @@ namespace FacebookScript
             bo.SampleData = sample;
             Office.Context.Document.Bindings.AddFromPromptAsync(BindingType.Table, bo, delegate(ASyncResult promptResult)
             {
-                LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
-                {
-                    if (logonResponse.status == "connected")
-                    {
+               // LogonToFacebook(permissions.Join(), delegate(LoginResponse logonResponse)
+                //{
+                  //  if (logonResponse.status == "connected")
+                   // {
                         Facebook.api("fql", queryOptions, delegate(ApiResponse response)
                         {
                             if (Script.Boolean(response.error))
@@ -341,12 +326,12 @@ namespace FacebookScript
                                 InsertFreindsIntoExcel(response.dataDict, td, dict);
                             }
                         });
-                    }
-                    else
-                    {
-                        HandleFacebookAuthEvent(logonResponse);
-                    }
-                });
+                    //}
+                //    else
+                //    {
+                //        HandleFacebookAuthEvent(logonResponse);
+                //    }
+                //});
 
             });
         }
@@ -406,7 +391,7 @@ namespace FacebookScript
         }
         public static void SetProfilePic(string FriendID)
         {
-            jQuery.Select("#profilepic").CSS("background", "url(http://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center");
+            jQuery.Select("#profilepic").CSS("background", "url(https://graph.facebook.com/" + FriendID + "/picture?width=200&height=200) no-repeat center center");
         }
         public static void HandleTableSelection(BindingSelectionChangedEventArgs args)
         {
