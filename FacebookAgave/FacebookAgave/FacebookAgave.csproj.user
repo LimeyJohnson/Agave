@@ -2,5 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SharePointSiteUrl>http://limeylt/</SharePointSiteUrl>
+    <GeneratedFeatureId>3d8996bd-c9f7-45e7-a7bb-0853a8c2eab3</GeneratedFeatureId>
+    <GeneratedPackageId>636ce3b8-74a5-4633-9ad9-4a33d9ade37c</GeneratedPackageId>
+    <GeneratedModuleId>{cef386b4-713c-42b1-8721-dfffaf6ec27e}</GeneratedModuleId>
+    <GeneratedListId>{6b0d6fe6-6e9f-4e37-a040-3ed61d416f3e}</GeneratedListId>
+    <GeneratedProductId>{ed63558e-14ca-4c42-9259-2bc7937fb1f6}</GeneratedProductId>
+    <GeneratedAppVersion>1.0.0.0</GeneratedAppVersion>
+    <GeneratedClientSecret>dawFse3IoRkTeqwyfPKMFEBQMYSMMDa7pk+JsFHWLWs=</GeneratedClientSecret>
   </PropertyGroup>
 </Project>
