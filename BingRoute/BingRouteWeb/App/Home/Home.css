@@ -1,2 +1,17 @@
 ﻿/* Page-specific styling */
-
+#settings {
+    position: absolute;
+    width: 200px;
+    height: 56px;
+    z-index: 50;
+    border: 1px solid #999999;
+    background-color: #FFFFFF;
+    cursor: default;
+    display: block;
+    padding: 25px 25px 20px;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto auto auto auto;
+}

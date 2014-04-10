@@ -4,16 +4,15 @@
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="../../Scripts/jquery-1.9.1.js"></script>
+    <script src="../../Scripts/Office/MicrosoftAjax.js"></script>
     <script charset="UTF-8" type="text/javascript" src="https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&s=1">
     </script>
     <script src="../../Scripts/Office/1.1/office.js"></script>
     <script src="App/Home/Home.js"></script>
-    
+    <link href="App/Home/Home.css" rel="stylesheet" />
 </head>
-<body">
+<body>
     <div id='mapDiv' style="position:relative; width:400px; height:400px;"></div>
-    <input id="txtStart" type="text" value="Seattle" />
-    <input id="txtEnd" type="text" value="Portland" />
-    <input type="button" value="Calculate Route" onclick="ClickRoute()" />
+    <input type="button" value="Bind To Data" id="btnBind"/>
 </body>
 </html>
