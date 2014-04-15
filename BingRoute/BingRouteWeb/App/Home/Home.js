@@ -37,10 +37,7 @@ function BindToData() {
         }
     });
 }
-// Reads data from current document selection and displays a notification
-function getDataFromSelection() {
 
-}
 function RegisterCallbacks(binding) {
     binding.addHandlerAsync(Office.EventType.BindingSelectionChanged, HandleRecordChange);
     binding.addHandlerAsync(Office.EventType.BindingDataChanged, HandleDataChanged);
