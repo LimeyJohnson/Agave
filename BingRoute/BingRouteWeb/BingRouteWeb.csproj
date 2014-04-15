@@ -73,6 +73,7 @@
     <Content Include="App\Home\Home.js" />
     <Content Include="Content\Office.css" />
     <Content Include="FTP Access.txt" />
+    <Content Include="Images\bing-logo.png" />
     <Content Include="Images\Close.png" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\FTPAccess.pubxml" />

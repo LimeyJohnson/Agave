@@ -21,7 +21,8 @@ Office.initialize = function (reason) {
         }
     });
     $(GetMap);
-    $("#btnBind").click(BindToData)
+    $("#btnBind").click(BindToData);
+    $("#setdistance").click(SetDistance);
 };
 function BindToData() {
     var sampleDataTable = new Office.TableData();
@@ -62,7 +63,6 @@ function UpdateMap() {
         if (callback.status == Office.AsyncResultStatus.Succeeded) {
             FromAddress = callback.value.rows[0][0];
             ToAddress = callback.value.rows[0][1];
-            MilesTraveled = callback.value.rows[0][2];
             ClickRoute();
         }
     });
@@ -70,15 +70,10 @@ function UpdateMap() {
 function HandleDataChanged() {
     UpdateMap();
 }
-
-
-
 function GetMap() {
     // Remove old map;
     map = null;
     $('#mapDiv').empty();
-
-
 }
 
 function ClickRoute() {
@@ -88,7 +83,7 @@ function ClickRoute() {
 
 
 function MakeRouteRequest(credentials) {
-    var routeRequest = "https://dev.virtualearth.net/REST/v1/Routes?wp.0="+FromAddress+"&wp.1=" + ToAddress + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + credentials;
+    var routeRequest = "https://dev.virtualearth.net/REST/v1/Routes?wp.0=" + FromAddress + "&wp.1=" + ToAddress + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + credentials;
 
     CallRestService(routeRequest);
 
@@ -107,9 +102,8 @@ function RouteCallback(result) {
         map.setView({ bounds: viewBoundaries });
 
         //Update the map
-        var newMilesTraveled = Math.round(result.resourceSets[0].resources[0].travelDistance * 10.62137119) / 10;
-        UpdateMilesTraveled(newMilesTraveled);
-        
+        MilesTraveled = Math.round(result.resourceSets[0].resources[0].travelDistance * 10.62137119) / 10;
+        $("#miles label").text(MilesTraveled);
         // Draw the route
         var routeline = result.resourceSets[0].resources[0].routePath.line;
         var routepoints = new Array();
@@ -119,20 +113,19 @@ function RouteCallback(result) {
             routepoints[i] = new Microsoft.Maps.Location(routeline.coordinates[i][0], routeline.coordinates[i][1]);
         }
 
-
         // Draw the route on the map
         var routeshape = new Microsoft.Maps.Polyline(routepoints, { strokeColor: new Microsoft.Maps.Color(200, 0, 0, 200) });
         map.entities.push(routeshape);
 
     }
 }
-function UpdateMilesTraveled(newMilesTraveled)
-{
-    if (newMilesTraveled !== MilesTraveled) {
-        Office.select("bindings#" + BindingName).setDataAsync([[newMilesTraveled]], {
+function SetDistance(eventArgs) {
+    if (MilesTraveled !== 0) {
+        Office.select("bindings#" + BindingName).setDataAsync([[MilesTraveled]], {
             rows: "thisRow",
             columns: [PostField]
         }, function (callback) {
+            //Set Data Callback
         });
     }
 }

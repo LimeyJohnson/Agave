@@ -2,3 +2,15 @@
 #mapDiv{
     display:none;
 }
+.right{
+    float:right;
+}
+body{
+    background: url('../../images/bing-logo.png')no-repeat fixed center;
+    height: 99%;
+    margin: 0;
+    border: 1px solid;
+}
+html{
+    height: 100%;
+}
