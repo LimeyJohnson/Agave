@@ -26,8 +26,8 @@ Office.initialize = function (reason) {
 };
 function BindToData() {
     var sampleDataTable = new Office.TableData();
-    sampleDataTable.header = ['To Address', 'Miles Field'];
-    sampleDataTable.rows = [["Pensylvania", "2000"], ["Try Again", "please"]];
+    sampleDataTable.headers = [["From Address","To Address", "Distance Field"]];
+    sampleDataTable.rows = [["White House", "Seattle", "2716.2"], ["Houston","Dallas","293.3"], ["400 Broad St., Seattle, WA", "1 Microsoft Way, Redmond WA", "13.3"]];
 
     Office.context.document.bindings.addFromPromptAsync(Office.BindingType.Table, {
         id: BindingName,
@@ -63,6 +63,8 @@ function UpdateMap() {
         if (callback.status == Office.AsyncResultStatus.Succeeded) {
             FromAddress = callback.value.rows[0][0];
             ToAddress = callback.value.rows[0][1];
+            $("#fromaddress").text(FromAddress);
+            $("#toaddress").text(ToAddress);
             ClickRoute();
         }
     });
@@ -102,8 +104,9 @@ function RouteCallback(result) {
         map.setView({ bounds: viewBoundaries });
 
         //Update the map
-        MilesTraveled = Math.round(result.resourceSets[0].resources[0].travelDistance * 10.62137119) / 10;
-        $("#miles label").text(MilesTraveled);
+        var MilesTraveledMiles = result.resourceSets[0].resources[0].travelDistance * 0.62137119;
+        MilesTraveled = Math.round(MilesTraveledMiles * 10)/10;
+        $("#distance").text(MilesTraveled);
         // Draw the route
         var routeline = result.resourceSets[0].resources[0].routePath.line;
         var routepoints = new Array();

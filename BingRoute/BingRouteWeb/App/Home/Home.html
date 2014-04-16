@@ -12,11 +12,13 @@
     <link href="App/Home/Home.css" rel="stylesheet" />
 </head>
 <body>
+    <div id="header">Route Distance Calculator</div>
     <div id='mapDiv' style="position:relative; width:400px; height:400px;"></div>
     <div class="right"><input type="button" value="Bind To Data" id="btnBind" /></div>
     <div id="miles">
-        Distance : <label></label>
-        <br />
+        From : <label id="fromaddress" ></label><br/><br/>
+        To : <label id="toaddress"></label><br/><br />
+        Distance : <label id="distance"></label>
         <input id="setdistance" type="button" value="Set Distance"/>
     </div>
 </body>
