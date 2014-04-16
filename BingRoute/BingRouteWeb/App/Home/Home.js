@@ -104,8 +104,7 @@ function RouteCallback(result) {
         map.setView({ bounds: viewBoundaries });
 
         //Update the map
-        var MilesTraveledMiles = result.resourceSets[0].resources[0].travelDistance * 0.62137119;
-        MilesTraveled = Math.round(MilesTraveledMiles * 10)/10;
+        MilesTraveled= Math.round(result.resourceSets[0].resources[0].travelDistance * 6.2137119) / 10;
         $("#distance").text(MilesTraveled);
         // Draw the route
         var routeline = result.resourceSets[0].resources[0].routePath.line;
