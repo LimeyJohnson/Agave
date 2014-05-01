@@ -21,7 +21,8 @@ Office.initialize = function (reason) {
         }
     });
     $(GetMap);
-    $("#btnBind").click(BindToData)
+    $("#btnBind").click(BindToData);
+    $("#btnSetData").click(UpdateMilesTraveled);
 };
 function BindToData() {
     var sampleDataTable = new Office.TableData();
@@ -107,9 +108,8 @@ function RouteCallback(result) {
         map.setView({ bounds: viewBoundaries });
 
         //Update the map
-        var newMilesTraveled = Math.round(result.resourceSets[0].resources[0].travelDistance * 10.62137119) / 10;
-        UpdateMilesTraveled(newMilesTraveled);
-        
+        MilesTraveled = Math.round(result.resourceSets[0].resources[0].travelDistance * 10.62137119) / 10;
+        $("#distance").text("Distance = " + MilesTraveled);
         // Draw the route
         var routeline = result.resourceSets[0].resources[0].routePath.line;
         var routepoints = new Array();
@@ -126,10 +126,10 @@ function RouteCallback(result) {
 
     }
 }
-function UpdateMilesTraveled(newMilesTraveled)
+function UpdateMilesTraveled(event)
 {
-    if (newMilesTraveled !== MilesTraveled) {
-        Office.select("bindings#" + BindingName).setDataAsync([[newMilesTraveled]], {
+    if (MilesTraveled>0) {
+        Office.select("bindings#" + BindingName).setDataAsync([[MilesTraveled]], {
             rows: "thisRow",
             columns: [PostField]
         }, function (callback) {
